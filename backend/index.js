@@ -1,23 +1,18 @@
-import express from 'express';
-import connectDB from './config/connectDB.js';
-import dotenv from 'dotenv'
+import express from "express";
+import connectDB from "./config/connectDB.js";
+import dotenv from "dotenv";
+import authRouter from "./routes/auth.js";
 
-dotenv.config()
+dotenv.config();
 
+const app = express();
+const port = 8000;
 
-const app = express()
-const port = 8000
-express.json()
+app.use(express.json())
+app.use("/", authRouter);
 
-
-app.get("/" , (req,res)=>{
-    res.send("hello, from server ")
-})
-
-
-app.listen(port, ()=>{
-    console.log("Server started successfully ");
-    connectDB()
-
-    
-})
+app.listen(port, () => {
+  
+  console.log("Server started successfully ");
+  connectDB();
+});

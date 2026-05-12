@@ -1,12 +1,11 @@
 import express from "express";
-import user from "../models/userModel";
 import validator from "validator";
 import bcrypt from "bcrypt";
-import user from "../models/userModel";
+import user from "../models/userModel.js";
 
 const authRouter = express.Router();
 
-authRouter.post("/signin", async (req, res) => {
+authRouter.post("/signup", async (req, res) => {
   try {
     let { name, emailId, password, role } = req.body;
 
@@ -56,7 +55,7 @@ authRouter.post("/signin", async (req, res) => {
 
     // hash password
 
-    const hashPass = await bcrypt.hash(password);
+    const hashPass = await bcrypt.hash(password,10);
 
     // create db
 
@@ -67,7 +66,7 @@ authRouter.post("/signin", async (req, res) => {
       role,
     });
 
-    User.save();
+    await User.save();
 
     const safeinfo = {
       id: User._id,
@@ -83,3 +82,6 @@ authRouter.post("/signin", async (req, res) => {
     res.status(500).json({ message: error });
   }
 });
+
+
+export default authRouter
