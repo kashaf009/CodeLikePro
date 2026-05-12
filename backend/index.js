@@ -7,6 +7,7 @@ dotenv.config()
 
 const app = express()
 const port = 8000
+express.json()
 
 
 app.get("/" , (req,res)=>{

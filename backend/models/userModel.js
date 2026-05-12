@@ -5,8 +5,8 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      min: 4,
-      max: 30,
+      minlength: 4,
+      maxlength: 30,
     },
     emailId: {
       type: String,
@@ -16,12 +16,12 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      min: 8,
-      max: 30,
+      minlength: 8,
+      maxlength: 30,
     },
     descprition: {
       type: String,
-      max: 150,
+      maxlength: 150,
     },
     role: {
       type: String,
@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png",
     },
+    enrolledCourse:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:course
+    }
   },
   { timestamps: true },
 );
@@ -43,4 +47,4 @@ const userSchema = new mongoose.Schema(
 
 const user= mongoose.model("user", userSchema)
 
-export default userSchema
+export default user
