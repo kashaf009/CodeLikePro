@@ -125,13 +125,23 @@ authRouter.post("/login", async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.status(200).json({"message":"login Successfull"})
+    return res.status(200).json({ message: "login Successfull" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 });
 
+authRouter.get("logout", async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "Strict",
+    });
 
-
+    return res.status(200).json({ message: "logout successfull" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
 
 export default authRouter;
