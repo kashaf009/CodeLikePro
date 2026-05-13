@@ -2,6 +2,7 @@ import express from "express";
 import validator from "validator";
 import bcrypt from "bcrypt";
 import user from "../models/userModel.js";
+import getToken from "../config/token.js";
 
 const authRouter = express.Router();
 
@@ -66,7 +67,23 @@ authRouter.post("/signup", async (req, res) => {
       role,
     });
 
+
+
+    
+
+    const token =await getToken(User._id)
+    res.cookie("token",token,{
+      "httpOnly":true,
+      "secure":false,
+      "sameSite":"Strict",
+      "maxAge":7*24*60*60*1000
+
+    })
+
+
     await User.save();
+
+
 
     const safeinfo = {
       id: User._id,
@@ -79,7 +96,7 @@ authRouter.post("/signup", async (req, res) => {
       .status(201)
       .json({ success: true, message: "signup successfull", user: safeinfo });
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ "message": error.message });
   }
 });
 
