@@ -56,7 +56,7 @@ authRouter.post("/signup", async (req, res) => {
 
     // hash password
 
-    const hashPass = await bcrypt.hash(password,10);
+    const hashPass = await bcrypt.hash(password, 10);
 
     // create db
 
@@ -67,23 +67,15 @@ authRouter.post("/signup", async (req, res) => {
       role,
     });
 
-
-
-    
-
-    const token =await getToken(User._id)
-    res.cookie("token",token,{
-      "httpOnly":true,
-      "secure":false,
-      "sameSite":"Strict",
-      "maxAge":7*24*60*60*1000
-
-    })
-
+    const token = await getToken(User._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
     await User.save();
-
-
 
     const safeinfo = {
       id: User._id,
@@ -96,9 +88,50 @@ authRouter.post("/signup", async (req, res) => {
       .status(201)
       .json({ success: true, message: "signup successfull", user: safeinfo });
   } catch (error) {
-    res.status(500).json({ "message": error.message });
+    res.status(500).json({ message: error.message });
+  }
+});
+
+authRouter.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+
+    if (!emailId || !password) {
+      return res.status(400).json({ message: "All field required" });
+    }
+
+    if (!validator.isEmail(emailId)) {
+      return res.status(401).json({ message: "Enter valid EmailId" });
+    }
+
+    const verifiedUser = user.findOne(emailId);
+
+    if (!verifiedUser) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
+
+    const VerifyPass = bcrypt.compare(password, verifiedUser.password);
+
+    if (!VerifyPass) {
+      return res.status(404).json({ message: "Incorrect Password" });
+    }
+
+    const token = getToken(verifiedUser._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({"message":"login Successfull"})
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 });
 
 
-export default authRouter
+
+
+export default authRouter;
