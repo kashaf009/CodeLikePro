@@ -104,13 +104,13 @@ authRouter.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Enter valid EmailId" });
     }
 
-    const verifiedUser = user.findOne(emailId);
+    const verifiedUser =await user.findOne({emailId});
 
     if (!verifiedUser) {
       return res.status(404).json({ message: "User Not Found" });
     }
 
-    const VerifyPass = bcrypt.compare(password, verifiedUser.password);
+    const VerifyPass =await bcrypt.compare(password, verifiedUser.password);
 
     if (!VerifyPass) {
       return res.status(404).json({ message: "Incorrect Password" });
