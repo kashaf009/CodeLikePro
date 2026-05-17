@@ -3,6 +3,7 @@ import "@fontsource/space-grotesk";
 import "@fontsource/jetbrains-mono";
 import "@fontsource/ibm-plex-mono";
 import { FaCode } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 
 const Signup = () => {
   return (
@@ -66,7 +67,7 @@ const Signup = () => {
       </div>
 
       {/* signup side */}
-      <div className="md:px-25 px-10 pb-20  pt-15 h-screen bg-[linear-gradient(180deg,#051424_0%,#020817_100%)]">
+      <div className="md:px-25  px-10   pt-15 min-h-screen bg-[linear-gradient(180deg,#051424_0%,#020817_100%)]">
         <section className="w-[95%] md:w-[90%]">
           <h1 className="font-['inter'] text-[25px] md:text-[50px] tracking-tighter  text-[#dfe9f6]  font-black ">
             Start Your Journey.
@@ -121,10 +122,35 @@ const Signup = () => {
             >
               ROLE
             </label>
-            <div className="flex items-center justify-center gap-5 mt-3">
-              <span className="text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 border-gray-600 hover:border-[#31d8f5] rounded-md">STUDENT</span>
-              <span className="text-[#cdd3de]  py-1 px-3 md:py-2 md:px-6 border border-gray-600 hover:border-[#31d8f5] rounded-md">EDUCATOR</span>
+            <div className=" mb-8 flex items-center justify-center gap-5 mt-3">
+              <span className="text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 border-gray-600 hover:border-[#31d8f5] rounded-md">
+                STUDENT
+              </span>
+              <span className="text-[#cdd3de] py-1 px-3 md:py-2  md:px-6 border border-gray-600 hover:border-[#31d8f5] rounded-md">
+                EDUCATOR
+              </span>
             </div>
+
+            <div className="w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]">
+              <p className="text-center text-gray-200  font-semibold text-md">
+                Signup{" "}
+              </p>
+            </div>
+
+            <div className="mt-5   mb-5">
+              <p className="text-gray-400 text-center text-xs">
+                OR AUTHENTICATE WITH{" "}
+              </p>
+            </div>
+
+            <div className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
+              <span><FaGoogle className="text-white" /></span>
+              <p className="text-white">oogle</p>
+             
+            </div>
+
+            <p className="text-center text-sm text-gray-400">Already have an account? <span className="text-[#31d8f5] cursor-pointer hover:text-[#01a5c2] text-sm">Log in</span></p>
+
           </div>
         </section>
       </div>
