@@ -4,8 +4,20 @@ import "@fontsource/jetbrains-mono";
 import "@fontsource/ibm-plex-mono";
 import { FaCode } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const [showPass, setshowPass] = useState(false);
+  const [role, setRole] = useState("student");
+
+  const toggleShowPass = () => {
+    setshowPass(!showPass);
+  };
+
   return (
     <div className="md:grid md:grid-cols-2 ">
       {/* left side  */}
@@ -109,11 +121,23 @@ const Signup = () => {
             >
               PASSWORD
             </label>
-            <input
-              className="w-full mt-2 border rounded-md outline-[#31d8f5] border-gray-600 text-[#dfe9f6] py-2 px-4"
-              id="password"
-              type="password"
-            />
+            <div
+              htmlFor="password"
+              className="w-full focus-within:border-2 focus-within:border-[#41e0fb] flex mt-2 border items-center rounded-md out  border-gray-600 text-[#dfe9f6] py-2 px-2"
+            >
+              <input
+                className="w-[95%] outline-none"
+                id="password"
+                type={showPass ? "text" : "password"}
+              />
+              <span onClick={toggleShowPass}>
+                {showPass ? (
+                  <FaEyeSlash className="text-white" />
+                ) : (
+                  <FaEye className="text-white" />
+                )}
+              </span>
+            </div>
           </div>
           <div className="mt-7  ">
             <label
@@ -123,10 +147,20 @@ const Signup = () => {
               ROLE
             </label>
             <div className=" mb-8 flex items-center justify-center gap-5 mt-3">
-              <span className="text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 border-gray-600 hover:border-[#31d8f5] rounded-md">
+              <span
+                onClick={() => setRole("student")}
+                className={`text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
+
+      ${role === "student" ? "border-[#31d8f5]" : "border-gray-600"}`}
+              >
                 STUDENT
               </span>
-              <span className="text-[#cdd3de] py-1 px-3 md:py-2  md:px-6 border border-gray-600 hover:border-[#31d8f5] rounded-md">
+              <span
+                onClick={() => setRole("educator")}
+                className={`text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
+
+      ${role === "educator" ? "border-[#31d8f5]" : "border-gray-600"}`}
+              >
                 EDUCATOR
               </span>
             </div>
@@ -144,13 +178,23 @@ const Signup = () => {
             </div>
 
             <div className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
-              <span><FaGoogle className="text-white" /></span>
+              <span>
+                <FaGoogle className="text-white" />
+              </span>
               <p className="text-white">oogle</p>
-             
             </div>
 
-            <p className="text-center text-sm text-gray-400">Already have an account? <span className="text-[#31d8f5] cursor-pointer hover:text-[#01a5c2] text-sm">Log in</span></p>
-
+            <p className="text-center text-sm text-gray-400">
+              Already have an account?{" "}
+              <span
+                onClick={() => {
+                  navigate("/login");
+                }}
+                className="text-[#31d8f5] cursor-pointer hover:text-[#01a5c2] text-sm"
+              >
+                Log in
+              </span>
+            </p>
           </div>
         </section>
       </div>
