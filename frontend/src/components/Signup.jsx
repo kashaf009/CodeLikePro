@@ -6,12 +6,17 @@ import { FaCode } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
+import { addUser } from "../utils/userSlice";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
+  
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [showPass, setshowPass] = useState(false);
   const [role, setRole] = useState("student");
@@ -26,29 +31,29 @@ const Signup = () => {
   const handleSignup = async () => {
     try {
       const name = nameRef.current.value;
-    const emailId=emailRef.current.value;
-    const password=passwordRef.current.value;
-    
-    const response = await axios.post(BASE_URL+"/signup" , {
-      name,emailId,password,role
+      const emailId = emailRef.current.value;
+      const password = passwordRef.current.value;
 
-    }, {withCredentials:true})
+      const response = await axios.post(
+        BASE_URL + "/signup",
+        {
+          name,
+          emailId,
+          password,
+          role,
+        },
+        { withCredentials: true },
+      );
 
-    
+      dispatch(addUser(response?.data?.user));
 
-    
-
-    
-    
-    navigate("/")
-    
+      navigate("/");
     } catch (error) {
       console.log(error?.response?.data?.message);
-      
-      
     }
-
   };
+
+  
 
   return (
     <div className="md:grid md:grid-cols-2 ">
@@ -142,7 +147,7 @@ const Signup = () => {
               EMAIL
             </label>
             <input
-             ref={emailRef}
+              ref={emailRef}
               className="w-full mt-2 border rounded-md outline-[#31d8f5] border-gray-600 text-[#dfe9f6] py-2 px-4"
               id="email"
               type="email"
@@ -156,12 +161,11 @@ const Signup = () => {
               PASSWORD
             </label>
             <div
-            
               htmlFor="password"
               className="w-full focus-within:border-2 focus-within:border-[#41e0fb] flex mt-2 border items-center rounded-md out  border-gray-600 text-[#dfe9f6] py-2 px-2"
             >
               <input
-              ref={passwordRef}
+                ref={passwordRef}
                 className="w-[95%] outline-none"
                 id="password"
                 type={showPass ? "text" : "password"}
@@ -201,8 +205,15 @@ const Signup = () => {
               </span>
             </div>
 
-            <div htmlFor="signup" className="w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]">
-              <p onClick={handleSignup} id="signup" className="text-center  text-gray-200  font-semibold text-md">
+            <div
+              htmlFor="signup"
+              className="w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]"
+            >
+              <p
+                onClick={handleSignup}
+                id="signup"
+                className="text-center  text-gray-200  font-semibold text-md"
+              >
                 Signup{" "}
               </p>
             </div>
