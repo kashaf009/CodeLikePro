@@ -34,8 +34,11 @@ const Signup = () => {
 
     }, {withCredentials:true})
 
-    console.log(response.data);
-    console.log("");
+    
+
+    
+
+    
     
     navigate("/")
     
