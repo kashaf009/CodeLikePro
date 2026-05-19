@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import user from "../models/userModel";
+import user from "../models/userModel.js";
 
 const isAuth = async (req, res, next) => {
   try {
@@ -11,14 +11,14 @@ const isAuth = async (req, res, next) => {
         .json({ message: "Access denied. Please login first." });
     }
 
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     if (!decoded) {
       return res
         .status(401)
         .json({ message: "invalid token credential ,Please login" });
     }
 
-     const userdata = await user.findById({_id:decoded._id});
+     const userdata = await user.findById({_id:decoded.userId});
 
     if (!userdata) {
 
