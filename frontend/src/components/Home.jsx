@@ -19,7 +19,7 @@ const Home = () => {
       const res = await axios.get(BASE_URL + "/profile", {
         withCredentials: true,
       });
-      console.log(res.data.user);
+      // console.log(res.data.user);
       dispatch(addUser(res.data.user));
 
       //

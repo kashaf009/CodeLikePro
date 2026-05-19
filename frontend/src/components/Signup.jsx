@@ -52,7 +52,7 @@ const Signup = () => {
         { withCredentials: true },
       );
 
-      console.log(response?.data?.user);
+      // console.log(response?.data?.user);
 
       dispatch(addUser(response?.data?.user));
 
@@ -100,7 +100,7 @@ const Signup = () => {
             {" "}
             5k+
             <br />
-            <p className="text-[12px] mt-1 tracking-tight font-extrabold text-[#9ba6bb]">
+            <p className="text-[12px] mt-1 font-['IBM_Plex_Mono'] tracking-tight font-extrabold text-[#9ba6bb]">
               ACTIVE STUDENTS
             </p>
           </div>
@@ -108,7 +108,7 @@ const Signup = () => {
             {" "}
             20+
             <br />
-            <p className="text-[12px] mt-1 tracking-tight font-extrabold text-[#9ba6bb]">
+            <p className="text-[12px] mt-1 tracking-tight font-['IBM_Plex_Mono']  font-extrabold text-[#9ba6bb]">
               PRO BOOTCAMP
             </p>
           </div>
@@ -140,7 +140,7 @@ const Signup = () => {
 
           <div className="mt-10  ">
             <label
-              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['inter']"
+              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['IBM_Plex_Mono']"
               htmlFor="name"
             >
               FULL NAME
@@ -154,7 +154,7 @@ const Signup = () => {
           </div>
           <div className="mt-7  ">
             <label
-              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['inter']"
+              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['IBM_Plex_Mono']"
               htmlFor="email"
             >
               EMAIL
@@ -168,7 +168,7 @@ const Signup = () => {
           </div>
           <div className="mt-7  ">
             <label
-              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['inter']"
+              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['IBM_Plex_Mono']"
               htmlFor="password"
             >
               PASSWORD
@@ -194,7 +194,7 @@ const Signup = () => {
           </div>
           <div className="mt-7  ">
             <label
-              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['inter']"
+              className="text-[#cdd3de]  text-xs  font-black tracking-tighter font-['IBM_Plex_Mono']"
               htmlFor="password"
             >
               ROLE
@@ -202,7 +202,7 @@ const Signup = () => {
             <div className=" mb-8 flex items-center justify-center gap-5 mt-3">
               <span
                 onClick={() => setRole("student")}
-                className={`text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
+                className={`text-[#cdd3de] font-['IBM_Plex_Mono'] tracking-tight border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
 
       ${role === "student" ? "border-[#31d8f5]" : "border-gray-600"}`}
               >
@@ -210,7 +210,7 @@ const Signup = () => {
               </span>
               <span
                 onClick={() => setRole("educator")}
-                className={`text-[#cdd3de] border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
+                className={`text-[#cdd3de] font-['IBM_Plex_Mono'] tracking-tight border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
 
       ${role === "educator" ? "border-[#31d8f5]" : "border-gray-600"}`}
               >
@@ -225,14 +225,14 @@ const Signup = () => {
               <p
                 onClick={handleSignup}
                 id="signup"
-                className="text-center  text-gray-200  font-semibold text-md"
+                className="text-center font-['IBM_Plex_Mono'] uppercase  text-gray-200  font-semibold text-md"
               >
                 Signup{" "}
               </p>
             </div>
 
             <div className="mt-5   mb-5">
-              <p className="text-gray-400 text-center text-xs">
+              <p className="text-gray-400 font-['IBM_Plex_Mono'] tracking-tight text-center text-xs">
                 OR AUTHENTICATE WITH{" "}
               </p>
             </div>
@@ -244,7 +244,7 @@ const Signup = () => {
               <p className="text-white">oogle</p>
             </div>
 
-            <p className="text-center text-sm text-gray-400">
+            <p className="text-center text-sm font-['IBM_Plex_Mono'] tracking-tight text-gray-400">
               Already have an account?{" "}
               <span
                 onClick={() => {

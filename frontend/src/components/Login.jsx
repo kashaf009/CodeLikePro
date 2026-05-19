@@ -1,8 +1,111 @@
+import "@fontsource/inter";
+import "@fontsource/ibm-plex-mono";
+import { useState } from "react";
+import { FaEye, FaGoogle } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  return (
-    <div>Login</div>
-  )
-}
+  const [showPass, setshowPass] = useState(false);
+  const navigate = useNavigate()
 
-export default Login
+  const toggleShowPass = () => {
+    setshowPass(!showPass);
+  };
+  return (
+    <div className="flex justify-center w-full bg-[linear-gradient(180deg,#051424_0%,#020817_100%)]  min-h-screen ">
+      <div className="w-[35%] mx-auto">
+        <img
+          className="w-12 mx-auto   mb-5 mt-12 rounded-md  brightness-200"
+          src="icon.png"
+          alt=""
+          srcset=""
+        />
+        <h1 className="text-5xl mb-2 text-center font-extrabold text-[#dfe9f6]">
+          Welcome Back,
+        </h1>
+        <p className="text-5xl mb-3 font-extrabold text-[#dfe9f6] text-center">
+          Architect.
+        </p>
+        <p className="text-center font-['IBM_Plex_Mono'] text-xl mb-8 tracking-tight text-[#a2adbd]">login to continue</p>
+        <div className="bg-[linear-gradient(180deg,#16233b_0%,#101b30_100%)] rounded-md mb-20 px-10 pt-12 border border-white/10 backdrop-blur-xl  ">
+          <div className="flex gap-2 mb-5 flex-col ">
+            <label
+              className="uppercase font-black text-[12px] font-['IBM_Plex_Mono'] text-[#c6cedc]"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <div className="focus-within:border-[#3dd8fb] border rounded-md ">
+              <input
+              className="bg-slate-900 px-3 w-full outline-none text-[#c6cedc] placeholder:font-['inter'] placeholder:text-gray-600 rounded-md py-2 border  border-gray-600"
+              type="email"
+              placeholder="codelikepro@gmail.com"
+              name=""
+              id="email"
+            /></div>
+          </div>
+          <div className="flex gap-2 mb-8 flex-col ">
+            <div className="flex items-center justify-between">
+              <label
+                className="uppercase font-black text-[12px]  font-['IBM_Plex_Mono'] text-[#c6cedc]"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <p className="font-['IBM_Plex_Mono'] border-b border-transparent  hover:border-b-[#3dd8fb]  cursor-pointer text-center uppercase text-[10px] text-[#3dd8fb]">
+                Forgot password?
+              </p>
+            </div>
+            <div className="flex w-full items-center bg-slate-900 focus-within:border-[#3dd8fb] rounded-md border border-gray-600">
+              <input
+                className="bg-slate-900 w-[95%]  px-3 text-[#c6cedc] placeholder:font-['inter'] placeholder:text-gray-700 rounded-md mb-1 py-2 outline-none "
+                type={showPass ? "text" : "password"}
+                name=""
+                id="password"
+                placeholder="Password"
+              />
+              <span className="mr-3" onClick={toggleShowPass}>
+                {showPass ? (
+                  <FaEyeSlash className="text-white" />
+                ) : (
+                  <FaEye className="text-white" />
+                )}
+              </span>
+            </div>
+
+            <div className="w-full cursor-pointer mt-5  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]">
+              <p className="text-center font-['IBM_Plex_Mono'] uppercase text-[#c6cedc] ">Login</p>
+            </div>
+            <div className="mt-5   mb-5">
+              <p className="text-gray-400 font-['IBM_Plex_Mono'] tracking-tight text-center text-xs">
+                OR AUTHENTICATE WITH{" "}
+              </p>
+            </div>
+
+            <div className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
+              <span>
+                <FaGoogle className="text-white" />
+              </span>
+              <p className="text-white">oogle</p>
+            </div>
+
+            <p className="text-center font-['IBM_Plex_Mono'] tracking-tight text-sm text-gray-400">
+              Already have an account?{" "}
+              <span
+                onClick={() => {
+                navigate("/signup");
+                }}
+                className="text-[#31d8f5] cursor-pointer hover:text-[#01a5c2] text-sm"
+              >
+                Signup
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
