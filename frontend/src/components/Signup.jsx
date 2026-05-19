@@ -6,15 +6,16 @@ import { FaCode } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import {  useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
-  
+  const user = useSelector((store) => store.user);
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -28,6 +29,12 @@ const Signup = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   const handleSignup = async () => {
     try {
       const name = nameRef.current.value;
@@ -37,13 +44,15 @@ const Signup = () => {
       const response = await axios.post(
         BASE_URL + "/signup",
         {
-          name,
-          emailId,
-          password,
-          role,
+          name: name,
+          emailId: emailId,
+          password: password,
+          role: role,
         },
         { withCredentials: true },
       );
+
+      console.log(response?.data?.user);
 
       dispatch(addUser(response?.data?.user));
 
@@ -53,7 +62,11 @@ const Signup = () => {
     }
   };
 
-  
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="md:grid md:grid-cols-2 ">
