@@ -19,8 +19,11 @@ const Signup = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  
   const [showPass, setshowPass] = useState(false);
   const [role, setRole] = useState("student");
+  const [error, setError] = useState();
 
   const toggleShowPass = () => {
     setshowPass(!showPass);
@@ -28,12 +31,14 @@ const Signup = () => {
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
+  
+  
 
   useEffect(() => {
     if (user) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [user]);
 
   const handleSignup = async () => {
     try {
@@ -58,15 +63,11 @@ const Signup = () => {
 
       navigate("/");
     } catch (error) {
-      console.log(error?.response?.data?.message);
+      setError(error?.response?.data?.message || "Something went wrong");
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  
 
   return (
     <div className="md:grid md:grid-cols-2 ">
@@ -218,9 +219,12 @@ const Signup = () => {
               </span>
             </div>
 
+
+            {error && <p className="text-red-600 mt-1 mb-1 text-md ">{error}</p>}
+
             <div
               htmlFor="signup"
-              className="w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]"
+              className={`w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]`}
             >
               <p
                 onClick={handleSignup}

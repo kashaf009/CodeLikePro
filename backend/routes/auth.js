@@ -107,7 +107,7 @@ authRouter.post("/login", async (req, res) => {
     const verifiedUser =await user.findOne({emailId});
 
     if (!verifiedUser) {
-      return res.status(404).json({ message: "User Not Found" });
+      return res.status(404).json({ message: "Invalid Credentials" });
     }
 
     const VerifyPass =await bcrypt.compare(password, verifiedUser.password);
@@ -118,6 +118,13 @@ authRouter.post("/login", async (req, res) => {
 
     const token = getToken(verifiedUser._id);
 
+    const safeinfo = {
+      id:verifiedUser._id,
+      name:verifiedUser.name,
+      emailId:verifiedUser.emailId,
+      role:verifiedUser.role,
+    };
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
@@ -125,7 +132,7 @@ authRouter.post("/login", async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.status(200).json({ message: "login Successfull" });
+    return res.status(200).json({ message: "login Successfull", user:safeinfo });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
