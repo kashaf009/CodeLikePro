@@ -12,9 +12,11 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { ImSpinner2 } from "react-icons/im";
 
 const Signup = () => {
   const user = useSelector((store) => store.user);
+  const [loading, setLoading] = useState(false)
 
   const dispatch = useDispatch();
 
@@ -42,6 +44,7 @@ const Signup = () => {
 
   const handleSignup = async () => {
     try {
+      setLoading(true)
       const name = nameRef.current.value;
       const emailId = emailRef.current.value;
       const password = passwordRef.current.value;
@@ -64,6 +67,9 @@ const Signup = () => {
       navigate("/");
     } catch (error) {
       setError(error?.response?.data?.message || "Something went wrong");
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -224,14 +230,21 @@ const Signup = () => {
 
             <div
               htmlFor="signup"
-              className={`w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]`}
+              className={`w-full cursor-pointer  py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)]  ${loading ? "pointer-events-none opacity-50" : "cursor-pointer"} `}
             >
               <p
-                onClick={handleSignup}
+                onClick={!loading ? handleSignup : null}
                 id="signup"
-                className="text-center font-['IBM_Plex_Mono'] uppercase  text-gray-200  font-semibold text-md"
+                className={`text-center font-['IBM_Plex_Mono'] uppercase  text-gray-200  font-semibold text-md  ${loading ? "pointer-events-none opacity-50" : "cursor-pointer"}`}
               >
-                Signup{" "}
+                {loading ? (
+                  <>
+                    <ImSpinner2 className="animate-spin mx-auto text-md  justify-center " />
+              
+                  </>
+                ) : (
+                  "Signup"
+                )}
               </p>
             </div>
 

@@ -8,14 +8,14 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { ImSpinner2 } from "react-icons/im";
 
 const Login = () => {
-
   const user = useSelector((store) => store.user);
   const [showPass, setshowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  
-  console.log(user);
+
   const dispatch = useDispatch();
   const [error, setError] = useState();
 
@@ -31,6 +31,7 @@ const Login = () => {
     const password = passwordRef.current.value;
 
     try {
+      setLoading(true);
       const response = await axios.post(
         BASE_URL + "/login",
         {
@@ -47,6 +48,8 @@ const Login = () => {
       //
     } catch (error) {
       setError(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,7 +65,6 @@ const Login = () => {
           className="w-12 mx-auto   mb-5 mt-12 rounded-md  brightness-200"
           src="icon.png"
           alt=""
-          srcset=""
         />
         <h1 className="text-5xl mb-2 text-center font-extrabold text-[#dfe9f6]">
           Welcome Back,
@@ -125,14 +127,21 @@ const Login = () => {
 
             <div
               htmlFor="login"
-              className={`w-full cursor-pointer   py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)] ${error ? "mt-2" : "mt-5"}`}
+              className={`w-full cursor-pointer   py-2 px-4 rounded-md hover:opacity-90 bg-[rgb(54,170,248)] ${error ? "mt-2" : "mt-5"}  ${loading ? "pointer-events-none opacity-50" : "cursor-pointer"}`}
             >
               <p
-                onClick={handleLogin}
+                onClick={!loading ? handleLogin : null}
                 id="login"
-                className="text-center font-['IBM_Plex_Mono']  uppercase text-[#c6cedc] "
+                className={`text-center font-['IBM_Plex_Mono']  uppercase text-[#c6cedc] ${loading ? "pointer-events-none opacity-50" : "cursor-pointer"}`}
               >
-                Login
+                {loading ? (
+                  <>
+                    <ImSpinner2 className="animate-spin mx-auto justify-center " />
+              
+                  </>
+                ) : (
+                  "Login"
+                )}
               </p>
             </div>
             <div className="mt-5   mb-5">
