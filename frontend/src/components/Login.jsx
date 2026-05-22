@@ -43,7 +43,7 @@ const Login = () => {
 
       console.log(response.data);
       dispatch(addUser(response?.data?.user));
-      navigate("/");
+      return navigate("/");
 
       //
     } catch (error) {

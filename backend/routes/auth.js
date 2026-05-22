@@ -65,6 +65,7 @@ authRouter.post("/signup", async (req, res) => {
       emailId,
       password: hashPass,
       role,
+
     });
 
     const token = await getToken(User._id);
@@ -82,6 +83,7 @@ authRouter.post("/signup", async (req, res) => {
       name: User.name,
       emailId: User.emailId,
       role: User.role,
+      photoUrl:User.photoUrl
     };
 
     return res
@@ -92,6 +94,8 @@ authRouter.post("/signup", async (req, res) => {
   }
 });
 
+
+// login
 authRouter.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
@@ -123,6 +127,7 @@ authRouter.post("/login", async (req, res) => {
       name:verifiedUser.name,
       emailId:verifiedUser.emailId,
       role:verifiedUser.role,
+      photoUrl:verifiedUser.photoUrl
     };
 
     res.cookie("token", token, {
@@ -138,6 +143,9 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
+
+
+// logout
 authRouter.get("/logout", async (req, res) => {
   try {
     res.clearCookie("token", {
