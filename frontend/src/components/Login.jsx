@@ -102,7 +102,7 @@ const Login = () => {
               >
                 Password
               </label>
-              <p className="font-['IBM_Plex_Mono'] border-b border-transparent  hover:border-b-[#3dd8fb]  cursor-pointer text-center uppercase text-[10px] text-[#3dd8fb]">
+              <p onClick={()=>{navigate("/resetpassword")}} className="font-['IBM_Plex_Mono'] border-b border-transparent  hover:border-b-[#3dd8fb]  cursor-pointer text-center uppercase text-[10px] text-[#3dd8fb]">
                 Forgot password?
               </p>
             </div>
