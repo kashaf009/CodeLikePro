@@ -36,8 +36,10 @@ const sendEmail = async (email, otp) => {
     });
 
     console.log("Email Sent to:", email);
+    return true;
   } catch (err) {
     console.error("Error while sending mail:", err);
+    return false
   }
 };
 

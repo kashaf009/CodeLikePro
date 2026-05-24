@@ -1,6 +1,6 @@
 import express from "express";
-import user from "../models/userModel";
-import { sendEmail } from "../config/sendmail";
+import user from "../models/userModel.js";
+import { sendEmail } from "../config/sendmail.js";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
