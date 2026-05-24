@@ -8,7 +8,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js"
-    
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -18,6 +17,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.1",
+    "nodemailer": "^8.0.8",
     "nodemon": "^3.1.14",
     "validator": "^13.15.35"
   }

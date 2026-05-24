@@ -16,8 +16,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 8
-      
+      minlength: 8,
     },
     descprition: {
       type: String,
@@ -36,15 +35,24 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png",
     },
-    enrolledCourse:{
-      type:mongoose.Schema.Types.ObjectId,
+    enrolledCourse: {
+      type: mongoose.Schema.Types.ObjectId,
       // ref:course
-    }
+    },
+    otp: {
+      type: String,
+    },
+    otpExpire: {
+      type: Date,
+    },
+    isOtpVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );
 
+const user = mongoose.model("user", userSchema);
 
-const user= mongoose.model("user", userSchema)
-
-export default user
+export default user;

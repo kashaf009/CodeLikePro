@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "@fontsource/inter";
 import "@fontsource/space-grotesk";
 import "@fontsource/jetbrains-mono";
@@ -8,6 +7,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
 import { TbPasswordMobilePhone } from "react-icons/tb";
+import { useState } from "react";
 
 const ForgotPass = () => {
     const navigate = useNavigate()

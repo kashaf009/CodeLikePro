@@ -5,6 +5,7 @@ import authRouter from "./routes/auth.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import profileRoute from "./routes/profile.js";
+import otpRouter from "./routes/ForgetPass.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/", authRouter);
 app.use("/", profileRoute)
+app.use("/", otpRouter)
 
 app.listen(port, () => {
   console.log("Server started successfully ");
