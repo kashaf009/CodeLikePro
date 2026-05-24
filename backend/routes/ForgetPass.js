@@ -1,6 +1,8 @@
 import express from "express";
 import user from "../models/userModel";
 import { sendEmail } from "../config/sendmail";
+import bcrypt from "bcrypt";
+import validator from "validator";
 
 const otpRouter = express.Router();
 
@@ -8,14 +10,14 @@ otpRouter.post("/sendotp", async (req, res) => {
   try {
     const { toEmailId } = req.body;
     // verify email
-    const verifedUser = await user.findOne({ emailId: toEmailId });
+    const verifiedUser = await user.findOne({ emailId: toEmailId });
 
-    if (!verifedUser) {
+    if (!verifiedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // generate otp
-    const otp = Math.floor(1000 + Math.random() * 9000);
+    const otp = String(Math.floor(1000 + Math.random() * 9000));
 
     // send otp
 
@@ -27,13 +29,13 @@ otpRouter.post("/sendotp", async (req, res) => {
     }
 
     // store otp in user model
-    verifedUser.otp = otp;
+    verifiedUser.otp = otp;
 
-    verifedUser.otpExpire = Date.now() + 5 * 60 * 1000;
+    verifiedUser.otpExpire = Date.now() + 5 * 60 * 1000;
 
-    verifedUser.isOtpVerified = false;
+    verifiedUser.isOtpVerified = false;
 
-    await verifedUser.save();
+    await verifiedUser.save();
 
     // send res
     return res.status(200).json({
@@ -44,7 +46,7 @@ otpRouter.post("/sendotp", async (req, res) => {
   }
 });
 
-// verify otp
+// ###### verify otp
 
 otpRouter.post("/verifyotp", async (req, res) => {
   try {
@@ -53,16 +55,22 @@ otpRouter.post("/verifyotp", async (req, res) => {
 
     // verify email
 
-    const verifedUser = await user.findOne({ emailId: toEmailId });
+    const verifiedUser = await user.findOne({ emailId: toEmailId });
 
     // verify otp
 
-    if (!verifedUser) {
+    if (!verifiedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    if (!verifiedUser.otp) {
+      return res.status(400).json({
+        message: "No OTP found",
+      });
+    }
+
     // CHECK EXPIRY
-    if (Date.now() > verifedUser.otpExpire) {
+    if (Date.now() > verifiedUser.otpExpire) {
       return res.status(400).json({
         success: false,
         message: "OTP expired",
@@ -70,17 +78,17 @@ otpRouter.post("/verifyotp", async (req, res) => {
     }
 
     // verify otp
-    if (verifedUser.otp !== otp) {
+    if (String(verifiedUser.otp) !== String(otp)) {
       return res.status(401).json({ message: "invalid OTP" });
     }
 
     // if all correct
 
-    verifedUser.isOtpVerified = true;
-    verifedUser.otp = null;
-    verifedUser.otpExpire = null;
+    verifiedUser.isOtpVerified = true;
+    verifiedUser.otp = null;
+    verifiedUser.otpExpire = null;
 
-    await verifedUser.save();
+    await verifiedUser.save();
 
     return res.status(200).json({ message: "Verification Successful" });
   } catch (error) {
@@ -88,7 +96,39 @@ otpRouter.post("/verifyotp", async (req, res) => {
   }
 });
 
+// ##### reset password
 
+otpRouter.patch("/resetpassword", async (req, res) => {
+  try {
+    const { toEmailId, newPassword } = req.body;
 
+    const verifiedUser = await user.findOne({ emailId: toEmailId });
+    if (!verifiedUser) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    if (!verifiedUser.isOtpVerified) {
+      return res.status(401).json({ message: "invalid otp " });
+    }
+
+    const isStrongPassword = validator.isStrongPassword(newPassword);
+    if (!isStrongPassword) {
+      return res.status(400).json({ message: "Enter strong password" });
+    }
+
+    const hassPassword = await bcrypt.hash(newPassword, 10);
+
+    verifiedUser.password = hassPassword;
+    verifiedUser.isOtpVerified = false;
+    verifiedUser.otp = null;
+    verifiedUser.otpExpire = null;
+
+    await verifiedUser.save();
+
+    return res.status(200).json({ message: "Password reset Successful" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
 
 export default otpRouter;
