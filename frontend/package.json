@@ -24,7 +24,8 @@
     "react-router-dom": "^7.15.0",
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.1.0",
-    "tailwindcss": "^4.3.0"
+    "tailwindcss": "^4.3.0",
+    "validator": "^13.15.35"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
