@@ -15,7 +15,7 @@ import { ImSpinner2 } from "react-icons/im";
 const ForgotPass = () => {
   const toEmailIdRef = useRef(null);
   const otpRef = useRef(null);
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
   const newPasswordRef = useRef(null);
   const conPasswordRef = useRef(null);
 
@@ -23,14 +23,12 @@ const ForgotPass = () => {
   const [State, setState] = useState(1);
   const [Error, setError] = useState(null);
 
-  const handleSendEmail =async () => {
-    setloading(true)
+  const handleSendEmail = async () => {
+    setloading(true);
     try {
-      
-
       const toEmailId = toEmailIdRef.current.value.trim().toLowerCase();
       if (!toEmailId) {
-        setError("Enter Email")
+        setError("Enter Email");
         return;
       }
 
@@ -42,22 +40,55 @@ const ForgotPass = () => {
         { withCredentials: true },
       );
 
-
       console.log("Email send successfully ");
-      setState(2)
+      setState(2);
 
       return;
-      
-
-
-
     } catch (error) {
       setError(error?.response?.data?.message || "Something went wrong");
-    }
-    finally{
-      setloading(false)
+    } finally {
+      setloading(false);
     }
   };
+
+  const handleVerifyOTP = async () => {
+    const toEmailId = toEmailIdRef.current.value.trim().toLowerCase();
+    const otp = otpRef.current.value.trim();
+    loading(true);
+    try {
+      if (!toEmailId) {
+        setError("Enter email first");
+        setState(1)
+        return;
+      }
+
+      if (!otp) {
+        setError("Enter otp");
+        return;
+      }
+
+      await axios.post(
+        BASE_URL + "/verifyotp",
+        {
+          toEmailId,
+          otp,
+        },
+        { withCredentials: true },
+      );
+
+      console.log("OTP verification successfull ");
+      setState(3);
+
+      return;
+    } catch (error) {
+      setError(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      loading(false);
+    }
+  };
+
+
+  
 
   return (
     <div className="min-h-screen w-full  flex  bg-[linear-gradient(180deg,#051424_0%,#020817_100%)] justify-center items-center">
@@ -81,16 +112,21 @@ const ForgotPass = () => {
               id="email"
               placeholder="Code123@gmail.com"
             />
-            {Error && (
-              <p className="mb-2 text-red-500">{Error}</p>
-            )}
+            {Error && <p className="mb-2 text-red-500">{Error}</p>}
 
             <div
               onClick={handleSendEmail}
-              
               className={`bg-sky-700 hover:bg-sky-500 transition-all py-2 mb-5 rounded-md px-2 placeholder:text-md disabled:${loading}`}
             >
-              <p  className={`font-['ibm_plex_mono']   text-center disabled:${loading} `}>{loading? <ImSpinner2 className="animate-spin mx-auto text-md  justify-center " /> : "Send Email"}</p>
+              <p
+                className={`font-['ibm_plex_mono']   text-center disabled:${loading} `}
+              >
+                {loading ? (
+                  <ImSpinner2 className="animate-spin mx-auto text-md  justify-center " />
+                ) : (
+                  "Send Email"
+                )}
+              </p>
             </div>
 
             <div
@@ -132,14 +168,22 @@ const ForgotPass = () => {
             />
 
             {Error && (
-              <p className="mb-2 text-red-500">{"Something went wrong"}</p>
+              <p className="mb-2 text-red-500">{Error}</p>
             )}
 
             <div
-              onClick={() => setState(3)}
+              onClick={handleVerifyOTP}
               className="bg-sky-700 hover:bg-sky-500 transition-all py-2 mb-5 rounded-md px-2 placeholder:text-md"
             >
-              <p className="font-['ibm_plex_mono'] text-center ">Verify</p>
+             <p
+                className={`font-['ibm_plex_mono']   text-center disabled:${loading} `}
+              >
+                {loading ? (
+                  <ImSpinner2 className="animate-spin mx-auto text-md  justify-center " />
+                ) : (
+                  "Verify"
+                )}
+              </p>
             </div>
 
             <div
@@ -193,12 +237,18 @@ const ForgotPass = () => {
               placeholder="* * * *"
             />
             {Error && (
-              <p className="mb-2 text-red-500">{"Something went wrong"}</p>
+              <p className="mb-2 text-red-500">{Error}</p>
             )}
 
             <div className="bg-sky-700 hover:bg-sky-500 transition-all py-2 mb-4 rounded-md px-2 placeholder:text-md">
-              <p className="font-['ibm_plex_mono'] text-center ">
-                Change Password
+              <p
+                className={`font-['ibm_plex_mono']   text-center disabled:${loading} `}
+              >
+                {loading ? (
+                  <ImSpinner2 className="animate-spin mx-auto text-md  justify-center " />
+                ) : (
+                  "Change password"
+                )}
               </p>
             </div>
 
