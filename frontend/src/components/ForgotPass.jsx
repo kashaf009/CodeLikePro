@@ -12,6 +12,7 @@ import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { ImSpinner2 } from "react-icons/im";
 import validator from "validator";
+import { MdOutlineVerified } from "react-icons/md";
 
 const ForgotPass = () => {
   const toEmailIdRef = useRef(null);
@@ -19,21 +20,19 @@ const ForgotPass = () => {
   const [loading, setloading] = useState(false);
   const newPasswordRef = useRef(null);
   const conPasswordRef = useRef(null);
-  const [toEmailId, settoEmailId] = useState(null)
+  const [toEmailId, settoEmailId] = useState(null);
+  const [PassResetSuccessful, setPassResetSuccessful] = useState(false)
 
   const navigate = useNavigate();
   const [State, setState] = useState(1);
   const [Error, setError] = useState(null);
 
-  
-
   const handleSendEmail = async () => {
-    setError(null)
+    setError(null);
     setloading(true);
     try {
-     settoEmailId(toEmailIdRef.current.value.trim().toLowerCase());
-     console.log(toEmailId);
-     
+      settoEmailId(toEmailIdRef.current.value.trim().toLowerCase());
+      console.log(toEmailId);
 
       if (!toEmailId) {
         setError("Enter Email");
@@ -72,13 +71,15 @@ const ForgotPass = () => {
       setError("Enter otp");
       return;
     }
+
+    if (otp.length !== 4) {
+      setError("enter valid otp ,otp must be of 4 digit");
+    }
     try {
       console.log(toEmailId);
       console.log(otp);
-      
-      
-      setloading(true);
 
+      setloading(true);
 
       await axios.post(
         BASE_URL + "/verifyotp",
@@ -94,44 +95,67 @@ const ForgotPass = () => {
 
       return;
     } catch (error) {
-      setError(error?.response?.data?.message ||  error.message || "Something went wrong");
+      setError(
+        error?.response?.data?.message ||
+          error.message ||
+          "Something went wrong",
+      );
     } finally {
       setloading(false);
     }
   };
 
-  // const handleChangePass = async () => {
-  //   const toEmailId = toEmailIdRef.current.value.trim().toLowerCase();
-  //   const newPassword = newPasswordRef.current.value.trim();
-  //   const conPassword = conPasswordRef.current.value.trim();
+  const handleResetPass = async () => {
+    setError(null);
 
-  //   if (!newPassword) {
-  //     setError("Enter new password");
-  //     return;
-  //   }
+    const newPassword = newPasswordRef.current.value.trim();
+    const conPassword = conPasswordRef.current.value.trim();
 
-  //   if (!validator.isStrongPassword(newPassword)) {
-  //     setError("Enter Strong Password");
-  //     return;
-  //   }
+    if (!newPassword) {
+      setError("Enter new password");
+      return;
+    }
 
-  //   if (!conPassword) {
-  //     setError("Confirm new password");
-  //     return;
-  //   }
+    if (!validator.isStrongPassword(newPassword)) {
+      setError("Enter Strong Password");
+      return;
+    }
 
-  //   if (newPassword !== conPassword) {
-  //     setError("Password did'nt matched, try again");
-  //     return;
-  //   }
+    if (!conPassword) {
+      setError("Confirm new password");
+      return;
+    }
 
-  //   loading(true);
-  //   try {
-  //     await axios.patch(BASE_URL + "/resetpassword", {}, {});
-  //   } catch (error) {
-  //     setError(error?.response?.data?.message || "something went wrong");
-  //   }
-  // };
+    if (newPassword !== conPassword) {
+      setError("Password did'nt matched, try again");
+      return;
+    }
+
+    setloading(true);
+    try {
+      await axios.patch(
+        BASE_URL + "/resetpassword",
+        {
+          toEmailId,
+          newPassword,
+        },
+        { withCredentials: true },
+      );
+
+      console.log("password reset successful");
+      setPassResetSuccessful(true)
+      setState(4)
+      
+    } catch (error) {
+      setError(
+        error?.response?.data?.message ||
+          error.message ||
+          "something went wrong",
+      );
+    } finally {
+      setloading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen w-full  flex  bg-[linear-gradient(180deg,#051424_0%,#020817_100%)] justify-center items-center">
@@ -149,7 +173,7 @@ const ForgotPass = () => {
             <input
               type="email"
               ref={toEmailIdRef}
-              onChange={()=>setError(null)}
+              onChange={() => setError(null)}
               required
               className={`bg-slate-700 py-2 border   border-gray-500 rounded-md  text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 ${Error ? "mb-2" : "mb-5"}`}
               name=""
@@ -204,7 +228,7 @@ const ForgotPass = () => {
             <input
               type="text"
               ref={otpRef}
-              onChange={()=>setError(null)}
+              onChange={() => setError(null)}
               required
               className="bg-slate-700 py-2 border   border-gray-500 rounded-md mb-5 text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
               name=""
@@ -216,7 +240,7 @@ const ForgotPass = () => {
 
             <div
               onClick={handleVerifyOTP}
-              className="bg-sky-700 hover:bg-sky-500 transition-all py-2 mb-5 rounded-md px-2 placeholder:text-md"
+              className={`bg-sky-700 hover:bg-sky-500 disabled:${loading} transition-all py-2 mb-5 rounded-md px-2 placeholder:text-md`}
             >
               <p
                 className={`font-['ibm_plex_mono']   text-center disabled:${loading} `}
@@ -259,7 +283,7 @@ const ForgotPass = () => {
             </label>
             <input
               type="password"
-              onChange={()=>setError(null)}
+              onChange={() => setError(null)}
               ref={newPasswordRef}
               required
               className="bg-slate-700 py-2 border   border-gray-500 rounded-md mb-5 text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
@@ -273,7 +297,7 @@ const ForgotPass = () => {
             </label>
             <input
               type="password"
-              onChange={()=>setError(null)}
+              onChange={() => setError(null)}
               ref={conPasswordRef}
               required
               className="bg-slate-700 py-2 border   border-gray-500 rounded-md mb-5 text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
@@ -283,7 +307,10 @@ const ForgotPass = () => {
             />
             {Error && <p className="mb-2 text-red-500">{Error}</p>}
 
-            <div className="bg-sky-700 hover:bg-sky-500 transition-all py-2 mb-4 rounded-md px-2 placeholder:text-md">
+            <div
+              onClick={handleResetPass}
+              className={`bg-sky-700 disabled:${loading} hover:bg-sky-500 transition-all py-2 mb-4 rounded-md px-2 placeholder:text-md`}
+            >
               <p
                 className={`font-['ibm_plex_mono']   text-center disabled:${loading} `}
               >
@@ -309,6 +336,39 @@ const ForgotPass = () => {
           </div>
         </div>
       )}
+
+      {/* state 4  */}
+
+      {PassResetSuccessful &&  State == 4 && (
+        <div className="bg-slate-900 w-[40%] border border-gray-500 rounded-xl text-white h-[50%]">
+          <MdOutlineVerified className="w-30 mt-8 text-green-500 mb-2 h-30 mx-auto" />
+          <h1 className="text-center mb-8 text-xl font-['ibm_plex_mono'] ">
+           Password Reset Successful
+          </h1>
+
+          <div className=" px-15 flex  flex-col">
+            
+            
+            
+
+            <div
+              onClick={() => {
+                navigate("/login");
+              }}
+              className="py-2 flex bg-sky-500  mb-8 gap-1 hover:gap-3 text-black transition-all items-center justify-center rounded-md px-2  placeholder:text-md"
+            >
+              <IoIosArrowBack className="h-6 w-6  " />
+              <p className="font-['ibm_plex_mono'] text-center ">
+                Back to Login
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      
+
     </div>
   );
 };
