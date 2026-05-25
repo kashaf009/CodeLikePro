@@ -13,6 +13,7 @@ import { BASE_URL } from "../utils/constants";
 import { ImSpinner2 } from "react-icons/im";
 import validator from "validator";
 import { MdOutlineVerified } from "react-icons/md";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ForgotPass = () => {
   const toEmailIdRef = useRef(null);
@@ -21,10 +22,15 @@ const ForgotPass = () => {
   const newPasswordRef = useRef(null);
   const conPasswordRef = useRef(null);
   const [toEmailId, settoEmailId] = useState(null);
-  const [PassResetSuccessful, setPassResetSuccessful] = useState(false)
+  const [PassResetSuccessful, setPassResetSuccessful] = useState(false);
+  const [showPass, setshowPass] = useState(false);
+
+  const toggleShowPass = () => {
+    setshowPass(!showPass);
+  };
 
   const navigate = useNavigate();
-  const [State, setState] = useState(1);
+  const [State, setState] = useState(3);
   const [Error, setError] = useState(null);
 
   const handleSendEmail = async () => {
@@ -143,9 +149,8 @@ const ForgotPass = () => {
       );
 
       console.log("password reset successful");
-      setPassResetSuccessful(true)
-      setState(4)
-      
+      setPassResetSuccessful(true);
+      setState(4);
     } catch (error) {
       setError(
         error?.response?.data?.message ||
@@ -281,30 +286,48 @@ const ForgotPass = () => {
             <label htmlFor="OTP" className="font-['ibm_plex_mono'] mb-2 ">
               New Password
             </label>
-            <input
-              type="password"
-              onChange={() => setError(null)}
-              ref={newPasswordRef}
-              required
-              className="bg-slate-700 py-2 border   border-gray-500 rounded-md mb-5 text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
-              name=""
-              id="OTP"
-              placeholder="* * * *"
-            />
+            <div className="flex items-center border bg-slate-700 rounded-md mb-3 border-gray-500">
+              <input
+                type={`${showPass ? "text" : "password"}`}
+                onChange={() => setError(null)}
+                ref={newPasswordRef}
+                required
+                className="bg-slate-700 py-2  w-[95%]  outline-none  text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
+                name=""
+                id="OTP"
+                placeholder="* * * *"
+              />
+              <span className="mr-3" onClick={toggleShowPass}>
+                {showPass ? (
+                  <FaEyeSlash className="text-white" />
+                ) : (
+                  <FaEye className="text-white" />
+                )}
+              </span>
+            </div>
 
             <label htmlFor="OTP" className="font-['ibm_plex_mono'] mb-2 ">
               Confirm Password
             </label>
-            <input
-              type="password"
-              onChange={() => setError(null)}
-              ref={conPasswordRef}
-              required
-              className="bg-slate-700 py-2 border   border-gray-500 rounded-md mb-5 text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
-              name=""
-              id="OTP"
-              placeholder="* * * *"
-            />
+            <div className={`flex items-center border bg-slate-700 rounded-md  border-gray-500 ${Error? "mb-2":"mb-5"}`}>
+              <input
+                type={`${showPass ? "text" : "password"}`}
+                onChange={() => setError(null)}
+                ref={conPasswordRef}
+                required
+                className="py-2  w-[95%]  outline-none   text-white  px-2 placeholder:text-md placeholder:text-gray-200  placeholder:opacity-50 "
+                name=""
+                id="OTP"
+                placeholder="* * * *"
+              />
+              <span className="mr-3" onClick={toggleShowPass}>
+                {showPass ? (
+                  <FaEyeSlash className="text-white" />
+                ) : (
+                  <FaEye className="text-white" />
+                )}
+              </span>
+            </div>
             {Error && <p className="mb-2 text-red-500">{Error}</p>}
 
             <div
@@ -326,7 +349,7 @@ const ForgotPass = () => {
               onClick={() => {
                 navigate("/login");
               }}
-              className="py-2 flex gap-1 hover:gap-3 hover:text-sky-500 transition-all items-center justify-center rounded-md px-2 placeholder:text-md"
+              className="py-2 flex gap-1 hover:gap-3 hover:text-sky-500 transition-all items-center justify-center  mb-3 rounded-md px-2 placeholder:text-md"
             >
               <IoIosArrowBack className="h-6 w-6 " />
               <p className="font-['ibm_plex_mono'] text-center ">
@@ -339,18 +362,14 @@ const ForgotPass = () => {
 
       {/* state 4  */}
 
-      {PassResetSuccessful &&  State == 4 && (
+      {PassResetSuccessful && State == 4 && (
         <div className="bg-slate-900 w-[40%] border border-gray-500 rounded-xl text-white h-[50%]">
           <MdOutlineVerified className="w-30 mt-8 text-green-500 mb-2 h-30 mx-auto" />
           <h1 className="text-center mb-8 text-xl font-['ibm_plex_mono'] ">
-           Password Reset Successful
+            Password Reset Successful
           </h1>
 
           <div className=" px-15 flex  flex-col">
-            
-            
-            
-
             <div
               onClick={() => {
                 navigate("/login");
@@ -365,10 +384,6 @@ const ForgotPass = () => {
           </div>
         </div>
       )}
-
-
-      
-
     </div>
   );
 };
