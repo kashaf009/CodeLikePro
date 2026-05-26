@@ -30,7 +30,7 @@ const ForgotPass = () => {
   };
 
   const navigate = useNavigate();
-  const [State, setState] = useState(3);
+  const [State, setState] = useState(1);
   const [Error, setError] = useState(null);
 
   const handleSendEmail = async () => {
