@@ -159,23 +159,23 @@ authRouter.get("/logout", async (req, res) => {
 
 authRouter.post("/googleSignin", async (req, res) => {
   try {
-    const { name, emailId, password, role } = req.body;
+    const { name, emailId, photoUrl, role } = req.body;
 
-    const checkEmail = user.findOne({ emailId });
+    const verifiedUser = await user.findOne({ emailId });
 
-    if (!checkEmail) {
-      const newUser = new user({
+    if (!verifiedUser) {
+      verifiedUser = new user({
         name,
         emailId,
-        password,
         role,
+        photoUrl
       });
 
-      await newUser.save();
+      await verifiedUser.save()
 
     }
 
-    const token = await getToken(newUser._id);
+    const token = await getToken(verifiedUser._id);
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
@@ -184,11 +184,11 @@ authRouter.post("/googleSignin", async (req, res) => {
     });
 
     const safeinfo = {
-      id: checkEmail._id || newUser._id,
-      name: checkEmail.name || newUser.name ,
-      emailId: checkEmail.emailId || newUser.emailId,
-      role: checkEmail.role || newUser.role,
-      photoUrl: checkEmail.photoUrl || newUser.photoUrl,
+      id: verifiedUser._id ,
+      name: verifiedUser.name ,
+      emailId: verifiedUser.emailId, 
+      role: verifiedUser.role ,
+      photoUrl: verifiedUser.photoUrl 
     };
 
 
