@@ -13,6 +13,8 @@ import { BASE_URL } from "../utils/constants";
 import { addUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner2 } from "react-icons/im";
+import { signInWithGoogle } from "../utils/firebase";
+import { log } from "firebase/firestore/pipelines";
 
 const Signup = () => {
   const user = useSelector((store) => store.user);
@@ -43,6 +45,7 @@ const Signup = () => {
   }, [user]);
 
   const handleSignup = async () => {
+    setError(null)
     try {
       setLoading(true)
       const name = nameRef.current.value;
@@ -66,13 +69,40 @@ const Signup = () => {
 
       navigate("/");
     } catch (error) {
-      setError(error?.response?.data?.message || "Something went wrong");
+      setError(error?.response?.data?.message || error.message || "Something went wrong");
     }
     finally{
       setLoading(false)
     }
   };
 
+  const handleGoogleSignup= async ()=>{
+    setError(null)
+    try {
+      setLoading(true)
+      const result = await signInWithGoogle()
+      const user = result.user
+      console.log(user);
+      let name = user.displayName
+      let emailId = user.email
+      let password = null
+
+      
+
+
+
+      
+      // 
+    } catch (error) {
+      setError(error?.response?.data?.message || error.message || "Something went wrong");
+      
+      // 
+    }
+    finally{
+      setLoading(false)
+    }
+
+  }
   
 
   return (
@@ -156,6 +186,7 @@ const Signup = () => {
               ref={nameRef}
               className="w-full mt-2 border rounded-md outline-[#31d8f5] border-gray-600 text-[#dfe9f6] py-2 px-4"
               id="name"
+              onChange={()=>setError(null)}
               type="text"
             />
           </div>
@@ -170,6 +201,7 @@ const Signup = () => {
               ref={emailRef}
               className="w-full mt-2 border rounded-md outline-[#31d8f5] border-gray-600 text-[#dfe9f6] py-2 px-4"
               id="email"
+              onChange={()=>setError(null)}
               type="email"
             />
           </div>
@@ -188,6 +220,7 @@ const Signup = () => {
                 ref={passwordRef}
                 className="w-[95%] outline-none"
                 id="password"
+                onChange={()=>setError(null)}
                 type={showPass ? "text" : "password"}
               />
               <span onClick={toggleShowPass}>
@@ -209,6 +242,7 @@ const Signup = () => {
             <div className=" mb-8 flex items-center justify-center gap-5 mt-3">
               <span
                 onClick={() => setRole("student")}
+               
                 className={`text-[#cdd3de] font-['IBM_Plex_Mono'] tracking-tight border py-1 px-3 md:py-2 md:px-6 rounded-md cursor-pointer
 
       ${role === "student" ? "border-[#31d8f5]" : "border-gray-600"}`}
@@ -254,7 +288,7 @@ const Signup = () => {
               </p>
             </div>
 
-            <div className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
+            <div onClick={handleGoogleSignup} className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
               <span>
                 <FaGoogle className="text-white" />
               </span>
