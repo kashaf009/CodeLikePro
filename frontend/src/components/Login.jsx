@@ -9,6 +9,7 @@ import { BASE_URL } from "../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { ImSpinner2 } from "react-icons/im";
+import { signInWithGoogle } from "../utils/firebase.js";
 
 const Login = () => {
   const user = useSelector((store) => store.user);
@@ -53,6 +54,39 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSignin = async () => {
+    setError(null);
+
+    try {
+      setLoading(true);
+      const result = await signInWithGoogle();
+      const user = result.user;
+      console.log(user);
+      let name = user.displayName;
+      let emailId = user.email;
+      let role = user.role
+      
+      
+
+      const response = await axios.post(
+        BASE_URL + "/googleSignin",
+        { name, emailId,role },
+        { withCredentials: true },
+      );
+
+      if (!response) {
+        setError("Please try to signup first")
+        return
+      }
+      dispatch(addUser(response?.data?.user));
+      console.log(response?.data?.user);
+
+      navigate("/");
+    } catch (error) {
+      setError(error?.response?.data?.message || "Something went wrong");
+    }
+  };
+
   useEffect(() => {
     if (user) {
       navigate("/");
@@ -89,6 +123,7 @@ const Login = () => {
                 className="bg-slate-900 px-3 w-full outline-none text-[#c6cedc] placeholder:font-['inter'] placeholder:text-gray-600 rounded-md py-2 border  border-gray-600"
                 type="email"
                 placeholder="codelikepro@gmail.com"
+                onChange={()=>setError(null)}
                 name=""
                 id="email"
               />
@@ -102,7 +137,12 @@ const Login = () => {
               >
                 Password
               </label>
-              <p onClick={()=>{navigate("/resetpassword")}} className="font-['IBM_Plex_Mono'] border-b border-transparent  hover:border-b-[#3dd8fb]  cursor-pointer text-center uppercase text-[10px] text-[#3dd8fb]">
+              <p
+                onClick={() => {
+                  navigate("/resetpassword");
+                }}
+                className="font-['IBM_Plex_Mono'] border-b border-transparent  hover:border-b-[#3dd8fb]  cursor-pointer text-center uppercase text-[10px] text-[#3dd8fb]"
+              >
                 Forgot password?
               </p>
             </div>
@@ -112,6 +152,7 @@ const Login = () => {
                 className="bg-slate-900 w-[95%]  px-3 text-[#c6cedc] placeholder:font-['inter'] placeholder:text-gray-700 rounded-md mb-1 py-2 outline-none "
                 type={showPass ? "text" : "password"}
                 name=""
+                onChange={()=>setError(null)}
                 id="password"
                 placeholder="Password"
               />
@@ -137,7 +178,6 @@ const Login = () => {
                 {loading ? (
                   <>
                     <ImSpinner2 className="animate-spin mx-auto justify-center " />
-              
                   </>
                 ) : (
                   "Login"
@@ -150,7 +190,7 @@ const Login = () => {
               </p>
             </div>
 
-            <div className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
+            <div onClick={handleGoogleSignin} className="flex cursor-pointer justify-center mb-5 border hover:bg-slate-900 border-gray-600 py-2 rounded-md items-center ">
               <span>
                 <FaGoogle className="text-white" />
               </span>
