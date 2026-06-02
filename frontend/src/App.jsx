@@ -23,7 +23,7 @@ const App = () => {
         withCredentials: true,
       });
       // console.log(res.data.user);
-      dispatch(addUser(res.data.user));
+      dispatch(addUser(res?.data?.user));
 
       //
     } catch (error) {

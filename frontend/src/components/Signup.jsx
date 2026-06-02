@@ -85,10 +85,13 @@ const Signup = () => {
       console.log(user);
       let name = user.displayName
       let emailId = user.email
-      let photoUrl = user.photoURL
+      // let photoUrl = user.photoURL
+      
 
-      const response = await axios.post(BASE_URL + "/googleSignin" , {name,emailId,photoUrl,role})
+      const response = await axios.post(BASE_URL + "/googleSignin" , {name,emailId,role}, {withCredentials:true})
         dispatch(addUser(response?.data?.user));
+        console.log(response?.data?.user);
+        
         navigate("/");
       
       // 

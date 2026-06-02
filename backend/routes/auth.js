@@ -159,7 +159,7 @@ authRouter.get("/logout", async (req, res) => {
 
 authRouter.post("/googleSignin", async (req, res) => {
   try {
-    const { name, emailId, photoUrl, role } = req.body;
+    const { name, emailId, role } = req.body;
 
     const verifiedUser = await user.findOne({ emailId });
 
@@ -168,7 +168,7 @@ authRouter.post("/googleSignin", async (req, res) => {
         name,
         emailId,
         role,
-        photoUrl
+        
       });
 
       await verifiedUser.save()
