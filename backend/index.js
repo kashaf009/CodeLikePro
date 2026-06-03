@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import profileRoute from "./routes/profile.js";
 import otpRouter from "./routes/ForgetPass.js";
-import uploadRouter from "./routes/upload.js";
+
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use("/", authRouter);
 app.use("/", profileRoute)
 app.use("/", otpRouter)
-app.use("/", uploadRouter)
+
 
 app.listen(port, () => {
   console.log("Server started successfully ");
