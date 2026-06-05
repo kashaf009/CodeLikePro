@@ -14,7 +14,7 @@ import { addUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ImSpinner2 } from "react-icons/im";
 import { signInWithGoogle } from "../utils/firebase";
-import { log } from "firebase/firestore/pipelines";
+
 
 const Signup = () => {
   const user = useSelector((store) => store.user);
