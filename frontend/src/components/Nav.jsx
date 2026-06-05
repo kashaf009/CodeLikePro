@@ -84,7 +84,7 @@ const Nav = () => {
       <div
         className={`absolute rounded-md bg-slate-900 border flex  flex-col border-gray-700 py-1 px-3 text-white  top-16 right-2 ${showOpt ? "block " : "hidden"}`}
       >
-        <p className="font-['inter'] text-sm cursor-pointer transition-all hover:text-[rgb(54,170,248)] ">
+        <p onClick={()=>navigate("/profile")}  className="font-['inter'] text-sm cursor-pointer transition-all hover:text-[rgb(54,170,248)] ">
           Profile
         </p>
         <p className="font-['inter'] text-sm cursor-pointer transition-all hover:text-[rgb(54,170,248)]">
@@ -130,8 +130,8 @@ const Nav = () => {
             )}
 
             {user && (
-              <div className="bg-[rgb(54,170,248)] w-50 rounded-md py-1 px-2 md:px-3 font-['ibm_plex_mono'] font-black cursor-pointer transition-all text-[#191919] md:text-md text-[14px] delay-100 tracking-tight">
-                <p className="text-center">Profile</p>
+              <div  className="bg-[rgb(54,170,248)] w-50 rounded-md py-1 px-2 md:px-3 font-['ibm_plex_mono'] font-black cursor-pointer transition-all text-[#191919] md:text-md text-[14px] delay-100 tracking-tight">
+                <p  className="text-center">Profile</p>
               </div>
             )}
 

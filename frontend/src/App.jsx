@@ -8,12 +8,13 @@ import { addUser } from "./utils/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import ForgotPass from "./components/ForgotPass.jsx";
 import { useEffect } from "react";
+import Profile from "./components/Profile.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
- 
+
   const fetchUser = async () => {
     if (user) {
       return;
@@ -34,23 +35,22 @@ const App = () => {
     }
   };
   useEffect(() => {
-    if(!user){
-    fetchUser();
+    if (!user) {
+      fetchUser();
     }
   }, []);
   return (
     <>
-    <Routes>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/signup" element={<Signup/>}/>  
-      <Route path="/login" element={<Login/>}/>
-       <Route path="/resetpassword" element={<ForgotPass/>}/>
-
-     
-    </Routes>
-
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/resetpassword" element={<ForgotPass />} />
+       
+        <Route path="/profile" element={<Profile/>} />
+      </Routes>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
