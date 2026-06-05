@@ -33,7 +33,7 @@ const Home = () => {
           </p>
 
           <div className="flex gap-5 mt-15">
-            <div className="bg-[#01cbf8] py-2 hover:bg-[#4ddeff] cursor-pointer px-5 rounded-md ">
+            <div className="bg-[#01cbf8] py-2 hover:bg-[#4ddeff] cursor-pointer px-7 rounded-md ">
               <p className="font-['space_grotesk'] flex gap-3  text-md  text-black font-bold ">
                 Explore 
               </p>
