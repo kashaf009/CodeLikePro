@@ -16,6 +16,7 @@ profileRoute.get("/profile", isAuth, async (req, res) => {
       emailId: user.emailId,
       role: user.role,
       photoUrl: user.photoUrl,
+      descprition:user.descprition
     };
 
     res.status(200).json({ user: safeinfo });
@@ -26,12 +27,15 @@ profileRoute.get("/profile", isAuth, async (req, res) => {
 
 profileRoute.post(
   "/updateProfile",
-  upload.single("photoUrl"),
+  upload.single("photo"),
   isAuth,
   async (req, res) => {
     try {
       const userId = req.user._id;
       const { name, descprition } = req.body;
+
+      //  console.log("NAME =", name);
+      // console.log("DESC =", descprition);
 
       const updateData = {};
 
@@ -54,7 +58,7 @@ profileRoute.post(
           fs.unlinkSync(req.file.path);
         }
       }
-      const User = await user.findByIdAndUpdate(userId,updateData);
+      const User = await user.findByIdAndUpdate(userId,updateData, {new : true} );
 
       const safeinfo = {
       id: User._id,
@@ -62,6 +66,7 @@ profileRoute.post(
       emailId: User.emailId,
       role: User.role,
       photoUrl: User.photoUrl,
+      descprition:User.descprition
     };
 
       if (!User) {

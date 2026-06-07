@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ForgotPass from "./components/ForgotPass.jsx";
 import { useEffect } from "react";
 import Profile from "./components/Profile.jsx";
+import EditProfile from "./components/EditProfile.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
@@ -48,6 +49,7 @@ const App = () => {
         <Route path="/resetpassword" element={<ForgotPass />} />
        
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/editprofile" element={<EditProfile/>} />
       </Routes>
     </>
   );
