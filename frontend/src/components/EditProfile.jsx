@@ -8,11 +8,14 @@ import "@fontsource/space-grotesk";
 import "@fontsource/jetbrains-mono";
 import "@fontsource/ibm-plex-mono";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { ImSpinner2 } from "react-icons/im";
+import { MdEdit } from "react-icons/md";
 
 const EditProfile = () => {
+    
   const user = useSelector((store) => store.user);
+    
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
   const [name, setName] = useState(user?.name);
@@ -42,7 +45,7 @@ const EditProfile = () => {
       if (
         (name === user?.name &&
           descprition === user?.descprition &&
-          photo === user.photoUrl) ||
+          photo === user.photoUrl) &&
         newPhoto === null
       ) {
         seterror("cannot update same values or empty values");
@@ -80,6 +83,12 @@ const EditProfile = () => {
     }
   };
 
+
+  const handlebacktologin=()=>{
+    navigate("/profile")
+     localStorage.setItem("reloadOnce", "true");
+  }
+
   useEffect(() => {
     if (!user) navigate("/profile");
   }, []);
@@ -88,8 +97,8 @@ const EditProfile = () => {
     <div className="flex justify-center  min-h-screen bg-slate-950 items-center">
       {state == 1 && (
         <section className="px-15 pt-8 rounded-xl border border-gray-400 bg-slate-900 w-[40%] ">
-          <h1 className="text-center  text-cyan-300  uppercase mb-10   text-xl  font-black firsttracking-tighter font-['IBM_Plex_Mono']">
-            Edit Profile
+          <h1 className="text-center    text-white  uppercase mb-10   text-xl  font-black firsttracking-tighter font-['IBM_Plex_Mono']">
+          Edit Profile 
           </h1>
           <div>
             <img
@@ -182,7 +191,7 @@ const EditProfile = () => {
           </div>
 
           <div
-            onClick={() => navigate("/profile")}
+            onClick={handlebacktologin }
             className="text-center py-1 cursor-pointer mb-10 w-[70%] mx-auto rounded-md  bg-cyan-300 font-['IBM_Plex_Mono'] text-md"
           >
             <p className="text-black flex hover:gap-4 items-center transition-all justify-center gap-2">
@@ -194,6 +203,13 @@ const EditProfile = () => {
           </div>
         </section>
       )}
+
+
+       <div onClick={()=>navigate("/profile")} className="flex gap-1 cursor-pointer hover:left-9 absolute hover:gap-2 transition-all items-center top-15 left-10 ">
+               <IoIosArrowBack className="w-5 h-5  text-white"/>
+
+              <h1 className="flex gap-1 hover:text-cyan-200  border-b items-center text-xl font-['IBM_Plex_Mono']  text-white">Back to profile</h1>
+              </div> 
     </div>
   );
 };

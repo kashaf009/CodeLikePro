@@ -3,13 +3,33 @@ import "@fontsource/inter";
 import "@fontsource/space-grotesk";
 import "@fontsource/jetbrains-mono";
 import "@fontsource/ibm-plex-mono";
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { IoIosArrowBack } from "react-icons/io";
+
+
+
 
 
 const Profile = () => {
+
     const user = useSelector((store)=>store.user)
     const navigate = useNavigate()
     // console.log(user);
+
+    useEffect(() => {
+
+  if (localStorage.getItem("reloadOnce")) {
+
+    localStorage.removeItem("reloadOnce");
+
+    window.location.reload();
+
+  }
+
+}, []);
+
+   
 
     
     
@@ -95,7 +115,14 @@ const Profile = () => {
 
         </section>
 
+       
+            <div onClick={()=>navigate("/")} className="flex gap-1 cursor-pointer hover:left-9 absolute hover:gap-2 transition-all items-center top-15 left-10 ">
+               <IoIosArrowBack className="w-5 h-5  text-white"/>
+
+              <h1 className="flex gap-1 hover:text-cyan-200  border-b items-center text-2xl font-['IBM_Plex_Mono']  text-white">Back</h1>
+              </div> 
     </div>
+    
   )
 }
 
