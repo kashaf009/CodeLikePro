@@ -10,7 +10,7 @@ import "@fontsource/ibm-plex-mono";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { ImSpinner2 } from "react-icons/im";
-import { MdEdit } from "react-icons/md";
+
 
 const EditProfile = () => {
     
