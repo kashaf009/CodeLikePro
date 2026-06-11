@@ -162,6 +162,34 @@ courseRoute.patch(
 );
 
 
+// delete course api
+
+courseRoute.delete("/deleteCourse/:courseId", isAuth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { courseId } = req.params;
+
+    const course = await courseModel.findOneAndDelete({
+      _id: courseId,
+      creator: userId,
+    });
+
+    if (!course) {
+      return res
+        .status(404)
+        .json({
+          message: "course not found or you are not creator of this course",
+        });
+    }
+
+    return res.status(200).json({ message: "course deleted successfully" });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: `deleteCourse Error ${error.message}` });
+  }
+});
+
 
 
 export default courseRoute;
