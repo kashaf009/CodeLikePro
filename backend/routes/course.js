@@ -83,7 +83,7 @@ courseRoute.get("/getMyCourses", isAuth, async (req, res) => {
   }
 });
 
-// edit course api
+// edit/update course api
 
 courseRoute.patch(
   "/editCourse/:courseId",
@@ -190,6 +190,27 @@ courseRoute.delete("/deleteCourse/:courseId", isAuth, async (req, res) => {
   }
 });
 
+// get course by id api
+
+courseRoute.get("/getCourse/:courseId", isAuth, async (req, res) => {
+  try {
+    const { courseId } = req.params;
+
+    const course = await courseModel
+      .findById(courseId)
+      .populate("creator", "name emailId photoUrl");
+
+    if (!course) {
+      return res.status(404).json({ message: "course not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "course fetched successfully", data: course });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: `getCourse Error ${error.message}` })}});   
 
 
 export default courseRoute;
