@@ -16,7 +16,11 @@ const courseSchema = new mongoose.Schema({
     },
     category:{
         type:String,
-        require:true
+        require:true,
+        enum:{
+            values:["web development","mobile development","data science","artificial intelligence","cloud computing","cyber security","agentic ai","other","machine learning","data analysis"],
+            message: "{VALUE} is not supported",
+        }
     },
     level:{
         type:String,
@@ -24,6 +28,11 @@ const courseSchema = new mongoose.Schema({
             values:["beginner","intermediate","advanced"],
              message: "{VALUE} is not supported",
         }
+    },
+    creator:{
+        type:mongoose.Schema.Types.ObjectId,
+        require:true,
+        ref:"user"
     },
     enrolled:{
         type:mongoose.Schema.Types.ObjectId,
