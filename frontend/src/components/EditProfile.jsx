@@ -117,7 +117,7 @@ const EditProfile = () => {
               Name
             </label>
             <input
-              placeholder={user?.name}
+              value={user?.name}
               className="w-full mt-2 cursor-pointer border rounded-md outline-none border-gray-600 text-[#dfe9f6] py-2 px-4"
               id="text"
               onClick={() => seterror(null)}
@@ -157,7 +157,7 @@ const EditProfile = () => {
                 id="bio"
                 onClick={() => seterror(null)}
                 onChange={(e) => setdescprition(e.target.value)}
-                placeholder={user?.descprition ? user?.descprition : "bio"}
+                value={user?.descprition ? user?.descprition : "bio"}
               />
             </div>
           }
