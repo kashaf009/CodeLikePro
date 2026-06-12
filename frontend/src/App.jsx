@@ -12,6 +12,7 @@ import Profile from "./components/Profile.jsx";
 import EditProfile from "./components/EditProfile.jsx";
 import CreatorDashboard from "./components/dashboard/CreatorDashboard.jsx";
 import CreatorCourses from "./components/dashboard/CreatorCourses.jsx";
+import CreateCourse from "./components/dashboard/CreateCourse.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
@@ -49,15 +50,25 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/resetpassword" element={<ForgotPass />} />
-       
-        <Route path="/profile" element={<Profile/>} />
-        <Route path="/editprofile" element={<EditProfile/>} />
+
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/editprofile" element={<EditProfile />} />
         {user?.role === "educator" ? (
           <Route path="/dashboard" element={<CreatorDashboard />} />
-        ) : <Route path="/" element={<Home />} /> }
+        ) : (
+          <Route path="/" element={<Home />} />
+        )}
         {user?.role === "educator" ? (
           <Route path="/dashboard/courses" element={<CreatorCourses />} />
-        ) : <Route path="/" element={<Home />} /> }
+        ) : (
+          <Route path="/" element={<Home />} />
+        )}
+
+        {user?.role === "educator" ? (
+          <Route path="/dashboard/create-course" element={<CreateCourse />} />
+        ) : (
+          <Route path="/" element={<Home />} />
+        )}
       </Routes>
     </>
   );
