@@ -57,6 +57,11 @@ const Nav = () => {
         </div>
       </div>
       <div className="text-[#c2c8d9] flex gap-5">
+        {user?.role === "educator" && (
+          <div onClick={()=>navigate("/dashboard")} className="bg-slate-900 border border-gray-700 md:block hidden rounded-md py-1 px-2 md:px-3 font-['ibm_plex_mono'] font-black transition-all hover:bg-slate-700 cursor-pointer text-[#191919] md:text-md text-[14px] delay-100 tracking-tight">
+            <p className="text-center  text-[#c2c8d9]" >Dashboard</p>
+          </div>
+        )}
         {user && (
           <div
             onClick={handleLogout}
@@ -90,11 +95,7 @@ const Nav = () => {
         <p className="font-['inter'] text-sm cursor-pointer transition-all hover:text-[rgb(54,170,248)]">
           Change password
         </p>
-        {user?.role === "educator" && (
-          <p className="font-['inter'] text-sm cursor-pointer transition-all hover:text-[rgb(54,170,248)]">
-            Dashboard
-          </p>
-        )}
+        
       </div>
 
       <div
@@ -140,6 +141,12 @@ const Nav = () => {
                 <p className="text-center">Change password</p>
               </div>
             )}
+
+            {user?.role === "educator" && (
+          <div className="bg-[rgb(54,170,248)] w-50 rounded-md py-1 px-2 md:px-3 font-['ibm_plex_mono'] font-black cursor-pointer transition-all text-[#191919] md:text-md text-[14px] delay-100 tracking-tight">
+            <p className="text-center" >Dashboard</p>
+          </div>
+        )}
 
             {user && (
               <div

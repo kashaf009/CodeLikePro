@@ -10,6 +10,8 @@ import ForgotPass from "./components/ForgotPass.jsx";
 import { useEffect } from "react";
 import Profile from "./components/Profile.jsx";
 import EditProfile from "./components/EditProfile.jsx";
+import CreatorDashboard from "./components/dashboard/CreatorDashboard.jsx";
+import CreatorCourses from "./components/dashboard/CreatorCourses.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
@@ -50,6 +52,12 @@ const App = () => {
        
         <Route path="/profile" element={<Profile/>} />
         <Route path="/editprofile" element={<EditProfile/>} />
+        {user?.role === "educator" ? (
+          <Route path="/dashboard" element={<CreatorDashboard />} />
+        ) : <Route path="/" element={<Home />} /> }
+        {user?.role === "educator" ? (
+          <Route path="/dashboard/courses" element={<CreatorCourses />} />
+        ) : <Route path="/" element={<Home />} /> }
       </Routes>
     </>
   );
