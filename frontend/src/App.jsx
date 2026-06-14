@@ -1,76 +1,73 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import Home from "./components/Home.jsx";
 import Signup from "./components/Signup.jsx";
 import Login from "./components/Login.jsx";
-import axios from "axios";
-import { BASE_URL } from "./utils/constants.js";
-import { addUser } from "./utils/userSlice.js";
-import { useDispatch, useSelector } from "react-redux";
-import ForgotPass from "./components/ForgotPass.jsx";
-import { useEffect } from "react";
 import Profile from "./components/Profile.jsx";
 import EditProfile from "./components/EditProfile.jsx";
+import ForgotPass from "./components/ForgotPass.jsx";
+
 import CreatorDashboard from "./components/dashboard/CreatorDashboard.jsx";
 import CreatorCourses from "./components/dashboard/CreatorCourses.jsx";
 import CreateCourse from "./components/dashboard/CreateCourse.jsx";
 
+import useFetchUser from "./hooks/UsefetchUser.jsx";
+import useFetchCourse from "./hooks/usefetchCourse.jsx";
+
 const App = () => {
   const user = useSelector((store) => store.user);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const fetchUser = async () => {
-    if (user) {
-      return;
-    }
-    try {
-      const res = await axios.get(BASE_URL + "/profile", {
-        withCredentials: true,
-      });
-      // console.log(res.data.user);
-      dispatch(addUser(res?.data?.user));
+  useFetchUser();
+  useFetchCourse();
 
-      //
-    } catch (error) {
-      if (error.response?.status === 401) {
-        navigate("/signup");
-      }
-      console.log(error.message);
-    }
-  };
-  useEffect(() => {
-    if (!user) {
-      fetchUser();
-    }
-  }, []);
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/resetpassword" element={<ForgotPass />} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/resetpassword" element={<ForgotPass />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/editprofile" element={<EditProfile />} />
 
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/editprofile" element={<EditProfile />} />
-        {user?.role === "educator" ? (
-          <Route path="/dashboard" element={<CreatorDashboard />} />
-        ) : (
-          <Route path="/" element={<Home />} />
-        )}
-        {user?.role === "educator" ? (
-          <Route path="/dashboard/courses" element={<CreatorCourses />} />
-        ) : (
-          <Route path="/" element={<Home />} />
-        )}
+      {/* Educator Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          user?.role === "educator" ? (
+            <CreatorDashboard />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
 
-        {user?.role === "educator" ? (
-          <Route path="/dashboard/create-course" element={<CreateCourse />} />
-        ) : (
-          <Route path="/" element={<Home />} />
-        )}
-      </Routes>
-    </>
+      <Route
+        path="/dashboard/courses"
+        element={
+          user?.role === "educator" ? (
+            <CreatorCourses />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/dashboard/create-course"
+        element={
+          user?.role === "educator" ? (
+            <CreateCourse />
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
+
+      {/* Catch-all Route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 };
 

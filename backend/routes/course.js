@@ -47,7 +47,7 @@ courseRoute.post("/createCourse", isAuth, async (req, res) => {
 
 // get all published courses api
 
-courseRoute.get("/getAllCourses", isAuth, async (req, res) => {
+courseRoute.get("/Courses", isAuth, async (req, res) => {
   try {
     const courses = await courseModel
       .find({ ispublished: true })
@@ -65,7 +65,7 @@ courseRoute.get("/getAllCourses", isAuth, async (req, res) => {
 
 //  get creator courses api
 
-courseRoute.get("/getMyCourses", isAuth, async (req, res) => {
+courseRoute.get("/MyCourses", isAuth, async (req, res) => {
   try {
     const userId = req.user._id;
 
@@ -79,7 +79,7 @@ courseRoute.get("/getMyCourses", isAuth, async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `getMyCourses Error ${error.message}` });
+      .json({ message: `MyCourses Error ${error.message}` });
   }
 });
 
@@ -192,7 +192,7 @@ courseRoute.delete("/deleteCourse/:courseId", isAuth, async (req, res) => {
 
 // get course by id api
 
-courseRoute.get("/getCourse/:courseId", isAuth, async (req, res) => {
+courseRoute.get("/Course/:courseId", isAuth, async (req, res) => {
   try {
     const { courseId } = req.params;
 

@@ -3,14 +3,10 @@ import userReducer from "./userSlice";
 import courseReducer from "./courseSlice";
 
 const store = configureStore({
-    reducer:{
-        user:userReducer,
-        course:courseReducer
-    }
+  reducer: {
+    user: userReducer,
+    course: courseReducer,
+  },
+});
 
-
-
-})
-
-
-export default store
+export default store;

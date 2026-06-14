@@ -1,8 +1,31 @@
 import { AiOutlinePlus } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
 
 const CreatorCourses = () => {
     const navigate = useNavigate();
+
+    const getCourses = async () => {
+        // api call to get courses for the creator
+        const res = await axios.get(BASE_URL + "/MyCourses", {
+            withCredentials: true,
+        });
+        console.log(res?.data?.data);  
+    }
+
+
+    useEffect(() => {
+        // fetch courses for the creator
+        getCourses();
+    }, [])  
+
+
+
+
+
+
   return (
     <div className="p-4 px-30 pt-15 bg-slate-900 min-h-screen text-white">
 

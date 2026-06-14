@@ -8,6 +8,7 @@ const CreatorDashboard = () => {
   const navigate = useNavigate();
   return (
     user && (
+     
       <div className="p-4 px-30 pt-15 bg-slate-900 min-h-screen text-white">
         <h1 className="text-3xl font-bold mb-1">Welcome back, {user.name}!</h1>
         <p className="text-gray-300 mb-8">
@@ -33,25 +34,29 @@ const CreatorDashboard = () => {
             <p className="text-gray-300 text-2xl mb-2 font-bold">
               Earnings : $ NA
             </p>
-             <div onClick={()=>navigate("/dashboard/courses")} className="absolute bg-slate-900 cursor-pointer hover:bg-slate-800 gap-3 rounded-md border border-gray-600    hover:border-gray-400 flex items-center py-2 px-3 top-44 right-35">
-                <div><AiOutlineProduct className="text-xl" /></div>
-                <p className="text-center text-xl  text-white font-bold">Your Content</p>
+            <div
+              onClick={() => navigate("/dashboard/courses")}
+              className="absolute bg-slate-900 cursor-pointer hover:bg-slate-800 gap-3 rounded-md border border-gray-600    hover:border-gray-400 flex items-center py-2 px-3 top-44 right-35"
+            >
+              <div>
+                <AiOutlineProduct className="text-xl" />
+              </div>
+              <p className="text-center text-xl  text-white font-bold">
+                Your Content
+              </p>
             </div>
 
-             <div onClick={()=>navigate("/")} className="absolute hover:text-cyan-200 cursor-pointer top-16 left-10">
-                <IoChevronBack className="text-3xl" />
-                
+            <div
+              onClick={() => navigate("/")}
+              className="absolute hover:text-cyan-200 cursor-pointer top-16 left-10"
+            >
+              <IoChevronBack className="text-3xl" />
             </div>
-
-
-            
           </div>
-
-           
-
-
         </div>
+        
       </div>
+     
     )
   );
 };

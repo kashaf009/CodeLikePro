@@ -6,7 +6,7 @@ const courseSlice = createSlice({
     initialState: [],
     reducers: {
         addCourses:(state,action)=>{
-            return [...state, ...action.payload];
+             return action.payload;
         }
 
 }})
