@@ -2,6 +2,9 @@ import express from "express";
 import isAuth from "../middleware/isAuth.js";
 import courseModel from "../models/courseModel.js";
 import upload from "../middleware/multer.js";
+import mongoose from "mongoose"
+import uploadOnCloudinary from "../utils/cloudinaryUpload.js";
+import fs from "fs";
 
 const courseRoute = express.Router();
 
@@ -97,6 +100,12 @@ courseRoute.patch(
         req.body;
       const updateData = {};
 
+      if (!mongoose.Types.ObjectId.isValid(courseId)) {
+        return res.status(400).json({
+          message: "Invalid course id",
+        });
+      }
+
       if (title) {
         if (title.length < 4 || title.length > 80) {
           return res
@@ -110,7 +119,7 @@ courseRoute.patch(
         updateData.category = category;
       }
 
-      if (ispublished) {
+      if (ispublished !== undefined) {
         updateData.ispublished = ispublished;
       }
 
@@ -118,7 +127,7 @@ courseRoute.patch(
         updateData.level = level;
       }
 
-      if (price) {
+      if (price !== undefined) {
         updateData.price = price;
       }
 
@@ -143,11 +152,9 @@ courseRoute.patch(
       );
 
       if (!course) {
-        return res
-          .status(404)
-          .json({
-            message: "course not found or you are not creator of this course",
-          });
+        return res.status(404).json({
+          message: "course not found or you are not creator of this course",
+        });
       }
 
       return res
@@ -160,7 +167,6 @@ courseRoute.patch(
     }
   },
 );
-
 
 // delete course api
 
@@ -175,11 +181,9 @@ courseRoute.delete("/deleteCourse/:courseId", isAuth, async (req, res) => {
     });
 
     if (!course) {
-      return res
-        .status(404)
-        .json({
-          message: "course not found or you are not creator of this course",
-        });
+      return res.status(404).json({
+        message: "course not found or you are not creator of this course",
+      });
     }
 
     return res.status(200).json({ message: "course deleted successfully" });
@@ -210,7 +214,8 @@ courseRoute.get("/Course/:courseId", isAuth, async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: `getCourse Error ${error.message}` })}});   
-
+      .json({ message: `getCourse Error ${error.message}` });
+  }
+});
 
 export default courseRoute;

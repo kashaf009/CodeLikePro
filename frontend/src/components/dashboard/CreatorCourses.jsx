@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../utils/constants";
 import { FiEdit } from "react-icons/fi";
+import { IoChevronBack } from "react-icons/io5";
 
 const CreatorCourses = () => {
   const navigate = useNavigate();
@@ -24,7 +25,9 @@ const CreatorCourses = () => {
   }, []);
 
   return (
-    <div className="p-4 px-30 pt-15 bg-slate-900 min-h-screen text-white">
+    <div className="p-4 relative px-30 pt-15 bg-slate-900 min-h-screen text-white">
+      <IoChevronBack onClick={()=>navigate("/dashboard")} className="absolute hover:text-cyan-500 cursor-pointer top-16 w-8 h-8 left-8" />
+
       <div
         onClick={() => navigate("/dashboard/create-course")}
         className="absolute text-white text-xl flex items-center cursor-pointer hover:bg-blue-700 gap-2 bg-blue-900 px-3 rounded-md py-1  top-16 right-31"
@@ -61,11 +64,14 @@ const CreatorCourses = () => {
               <td
                 className={`border border-gray-700 z-10 text-center text-black  px-4 py-2 ${course.ispublished == true ? "text-green-500" : "text-red-400"}`}
               >
-            {course.ispublished == true ? "published" : "draft"}
+                {course.ispublished == true ? "published" : "draft"}
               </td>
               <td className="border  border-gray-700 px-4 py-2">
                 <div className="w-full flex">
-                  <FiEdit onClick={()=>navigate("")} className="mx-auto hover:text-blue-300 cursor-pointer " />
+                  <FiEdit
+                    onClick={() => navigate(`/dashboard/create-course/edit/${course._id}`)}
+                    className="mx-auto hover:text-blue-300 cursor-pointer "
+                  />
                 </div>
               </td>
             </tr>
