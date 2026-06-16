@@ -52,7 +52,7 @@ const CreatorCourses = () => {
                 <img
                   src={course?.thumbnail}
                   alt="Course Thumbnail"
-                  className="w-full px-3 py-2 h-full object-cover"
+                  className=" w-full h-full px-3 py-2  object-cover"
                 />
               </td>
               <td className="border  border-gray-700 pl-10 pr-5  text-2xl font-bold py-2">
@@ -65,7 +65,7 @@ const CreatorCourses = () => {
               </td>
               <td className="border  border-gray-700 px-4 py-2">
                 <div className="w-full flex">
-                  <FiEdit className="mx-auto" />
+                  <FiEdit onClick={()=>navigate("")} className="mx-auto hover:text-blue-300 cursor-pointer " />
                 </div>
               </td>
             </tr>
