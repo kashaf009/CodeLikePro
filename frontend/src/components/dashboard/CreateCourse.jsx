@@ -104,7 +104,7 @@ const CreateCourse = () => {
             <button
               onClick={handleCreateCourse}
               type="submit"
-              className="bg-blue-900 cursor-pointer font-['ibm_plex_mono'] hover:bg-blue-700 px-4 py-2 rounded-md text-white"
+              className="bg-cyan-600 cursor-pointer font-['ibm_plex_mono'] hover:bg-cyan-700 px-4 py-2 rounded-md text-white"
             >
               {loading ? (
                 <>

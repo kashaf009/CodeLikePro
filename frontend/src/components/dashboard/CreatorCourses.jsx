@@ -30,7 +30,7 @@ const CreatorCourses = () => {
 
       <div
         onClick={() => navigate("/dashboard/create-course")}
-        className="absolute text-white text-xl flex items-center cursor-pointer hover:bg-blue-700 gap-2 bg-blue-900 px-3 rounded-md py-1  top-16 right-31"
+        className="absolute text-white text-xl flex items-center cursor-pointer hover:bg-cyan-700 gap-2 bg-cyan-600 px-3 rounded-md py-1  top-16 right-31"
       >
         <div>
           <AiOutlinePlus className="text-md" />
