@@ -25,7 +25,7 @@ const CreatorCourses = () => {
   }, []);
 
   return (
-    <div className="p-4 relative px-30 pt-15 bg-slate-900 min-h-screen text-white">
+    <div className="p-4 relative px-30 pb-30 pt-15 bg-slate-900 min-h-screen text-white">
       <IoChevronBack onClick={()=>navigate("/dashboard")} className="absolute hover:text-cyan-500 cursor-pointer top-16 w-8 h-8 left-8" />
 
       <div

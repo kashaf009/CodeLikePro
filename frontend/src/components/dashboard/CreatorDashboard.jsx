@@ -1,63 +1,267 @@
 import { useSelector } from "react-redux";
-import { AiOutlineProduct } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { IoChevronBack } from "react-icons/io5";
+
+import {
+  MdDashboard,
+  MdOutlineAnalytics,
+  MdSettings,
+  MdNotificationsNone,
+} from "react-icons/md";
+
+import {
+  AiOutlineProduct,
+  AiOutlineUsergroupAdd,
+  AiOutlineDollarCircle,
+} from "react-icons/ai";
+
+import {
+  FiSearch,
+  FiPlusCircle,
+  FiTrendingUp,
+} from "react-icons/fi";
 
 const CreatorDashboard = () => {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
+
+  if (!user) return null;
+
+  const stats = [
+    {
+      title: "Courses",
+      value: "12",
+      icon: <AiOutlineProduct />,
+    },
+    {
+      title: "Students",
+      value: "1,245",
+      icon: <AiOutlineUsergroupAdd />,
+    },
+    {
+      title: "Revenue",
+      value: "$12.5K",
+      icon: <AiOutlineDollarCircle />,
+    },
+    {
+      title: "Growth",
+      value: "+18%",
+      icon: <FiTrendingUp />,
+    },
+  ];
+
   return (
-    user && (
-     
-      <div className="p-4 px-30 pt-15 bg-slate-900 min-h-screen text-white">
-        <h1 className="text-3xl font-bold mb-1">Welcome back, {user.name}!</h1>
-        <p className="text-gray-300 mb-8">
-          Here's what's happening with your content and audience.
-        </p>
-        <div className="w-ful border border-gray-700 bg-slate-800 flex rounded-xl p-5 mb-5">
-          <div className="w-[30%] relative mt-10 mb-10 flex justify-center items-center h-full">
-            <img
-              src={user?.photoUrl}
-              alt="profile"
-              className=" h-50 w-50 rounded-full border border-gray-600"
+    <div className="min-h-screen bg-[#0F172A] text-white flex">
+
+      {/* Sidebar */}
+      <aside className="w-72 bg-[#111827] border-r border-slate-800 p-6 flex flex-col">
+
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          Creator Studio
+        </h1>
+
+        <div className="mt-12 space-y-2">
+
+          <button className="flex items-center gap-3 w-full p-4 rounded-xl bg-cyan-500/10 text-cyan-400">
+            <MdDashboard size={22} />
+            Dashboard
+          </button>
+
+          <button
+            onClick={() => navigate("/dashboard/courses")}
+            className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition"
+          >
+            <AiOutlineProduct size={22} />
+            Courses
+          </button>
+
+          <button className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition">
+            <AiOutlineUsergroupAdd size={22} />
+            Students
+          </button>
+
+          <button className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition">
+            <MdOutlineAnalytics size={22} />
+            Analytics
+          </button>
+
+          <button className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition">
+            <MdSettings size={22} />
+            Settings
+          </button>
+
+        </div>
+      </aside>
+
+      {/* Main */}
+      <main className="flex-1 p-8">
+
+        {/* Top Navbar */}
+        <div className="flex justify-between items-center mb-10">
+
+          <div className="relative w-[450px]">
+
+            <FiSearch className="absolute left-4 top-4 text-gray-400" />
+
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-12 py-3 outline-none focus:border-cyan-500"
             />
+
           </div>
-          <div className="ml-10 mt-10">
-            <h2 className="text-5xl  mb-5   font-bold"> {user.name}</h2>
-            <p className="text-gray-300 mb-2 text-2xl font-bold">
-              {" "}
-              Courses : 0
-            </p>
-            <p className="text-gray-300 text-2xl mb-2 font-bold">
-              Students : 0
-            </p>
-            <p className="text-gray-300 text-2xl mb-2 font-bold">
-              Earnings : $ NA
-            </p>
+
+          <div className="flex items-center gap-5">
+
+            <button className="relative bg-slate-900 p-3 rounded-xl">
+              <MdNotificationsNone size={25} />
+              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+
+            <img
+              src={user.photoUrl}
+              alt=""
+              className="w-12 h-12 rounded-full border-2 border-cyan-500"
+            />
+
+          </div>
+
+        </div>
+
+        {/* Welcome Section */}
+        <div className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-3xl p-8 mb-8">
+
+          <h1 className="text-4xl font-bold">
+            Welcome Back, {user.name} 👋
+          </h1>
+
+          <p className="text-slate-300 mt-3 text-lg">
+            Manage courses, track students, monitor revenue
+            and grow your creator business.
+          </p>
+
+        </div>
+
+        {/* Stats */}
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 mb-8">
+
+          {stats.map((item, index) => (
             <div
-              onClick={() => navigate("/dashboard/courses")}
-              className="absolute bg-slate-900 cursor-pointer hover:bg-slate-800 gap-3 rounded-md border border-gray-600    hover:border-gray-400 flex items-center py-2 px-3 top-44 right-35"
+              key={index}
+              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500 transition-all duration-300"
             >
-              <div>
-                <AiOutlineProduct className="text-xl" />
+              <div className="flex justify-between items-center">
+
+                <div>
+                  <p className="text-gray-400">
+                    {item.title}
+                  </p>
+
+                  <h2 className="text-3xl font-bold mt-2">
+                    {item.value}
+                  </h2>
+                </div>
+
+                <div className="text-4xl text-cyan-400">
+                  {item.icon}
+                </div>
+
               </div>
-              <p className="text-center text-xl  text-white font-bold">
-                Your Content
-              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Analytics + Actions */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+
+          {/* Chart Area */}
+          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6">
+
+            <h2 className="text-xl font-semibold mb-6">
+              Revenue Analytics
+            </h2>
+
+            <div className="h-[300px] rounded-xl bg-slate-800 flex items-center justify-center">
+              Chart Component Here
             </div>
 
-            <div
-              onClick={() => navigate("/")}
-              className="absolute hover:text-cyan-200 cursor-pointer top-16 left-10"
-            >
-              <IoChevronBack className="text-3xl" />
+          </div>
+
+          {/* Actions */}
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+
+            <h2 className="text-xl font-semibold mb-6">
+              Quick Actions
+            </h2>
+
+            <div className="space-y-4">
+
+              <button
+                onClick={() =>
+                  navigate("/dashboard/create-course")
+                }
+                className="w-full bg-cyan-500 hover:bg-cyan-600 py-4 rounded-xl font-semibold flex justify-center items-center gap-2"
+              >
+                <FiPlusCircle />
+                Create Course
+              </button>
+
+              <button
+                onClick={() =>
+                  navigate("/dashboard/courses")
+                }
+                className="w-full bg-slate-800 hover:bg-slate-700 py-4 rounded-xl"
+              >
+                Manage Courses
+              </button>
+
+              <button className="w-full bg-slate-800 hover:bg-slate-700 py-4 rounded-xl">
+                View Students
+              </button>
+
             </div>
+
           </div>
         </div>
-        
-      </div>
-     
-    )
+
+        {/* Recent Activity */}
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
+
+          <h2 className="text-xl font-semibold mb-6">
+            Recent Activity
+          </h2>
+
+          <div className="overflow-x-auto">
+
+            <table className="w-full">
+              <thead>
+                <tr className="text-left border-b border-slate-800">
+                  <th className="pb-4">Student</th>
+                  <th className="pb-4">Course</th>
+                  <th className="pb-4">Date</th>
+                  <th className="pb-4">Status</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr className="border-b border-slate-800">
+                  <td className="py-4">No Activity Yet</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>
+                    <span className="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">
+                      Pending
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
   );
 };
 

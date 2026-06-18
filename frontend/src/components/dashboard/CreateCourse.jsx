@@ -50,7 +50,7 @@ const CreateCourse = () => {
   };
 
   return (
-    <div className="p-4 px-30 relative  pt-30 bg-slate-950 min-h-screen text-white">
+    <div className="p-4 px-30 relative pt-30 bg-slate-950 min-h-screen text-white">
       <IoChevronBack onClick={()=>navigate("/dashboard/courses")} className="absolute hover:text-cyan-500 cursor-pointer top-37 w-8 h-8 left-60" />
       {state == 1 && (
         <div className="pt-10 px-10 pb-15 rounded-2xl flex mx-auto w-[50%] bg-slate-800 flex-col  mt-5">
