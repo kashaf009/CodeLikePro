@@ -7,6 +7,7 @@ import code from "../assets/code.png";
 import { BsPeopleFill } from "react-icons/bs";
 import { LuBotMessageSquare } from "react-icons/lu";
 import { IoCubeOutline } from "react-icons/io5";
+import { MdArrowForwardIos } from "react-icons/md";
 
 
 const Home = () => {
@@ -134,6 +135,23 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* explore course section */}
+<section className="bg-slate-950  pl-40 min-h-screen w-full">
+
+  <h1 className="text-[#dfe9f6] text-4xl mb-3 pt-25 font-bold">Top-Rated Bootcamps</h1>
+   <div className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">View All program <span><MdArrowForwardIos /></span></div>
+  <p className="text-md font-['space_grotesk'] text-gray-400">Intensive tracks designed to take you from a junior to a high-earning specialist in 12 weeks.</p>
+
+  
+
+
+   
+</section>
+
+
+
+
     </div>
   );
 };
