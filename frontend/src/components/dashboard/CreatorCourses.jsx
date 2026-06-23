@@ -64,7 +64,7 @@ const CreatorCourses = () => {
               <td
                 className={`border border-gray-700 z-10 text-center text-black  px-4 py-2 ${course.ispublished == true ? "text-green-500" : "text-red-400"}`}
               >
-                {course.ispublished == true ? "published" : "draft"}
+                {course.ispublished == true ? "Published" : "Draft"}
               </td>
               <td className="border  border-gray-700 px-4 py-2">
                 <div className="w-full flex">

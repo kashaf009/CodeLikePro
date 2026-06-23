@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../utils/constants.js";
+import { MdArrowBackIos } from "react-icons/md";
 
 const EditCourse = () => {
+  const navigate=useNavigate()
   const { courseId } = useParams();
   const [CourseInfo, setCourseInfo] = useState("");
 
@@ -17,6 +19,7 @@ const EditCourse = () => {
   const [NewThumbnail, setNewThumbnail] = useState(null);
 
   const handlePhotoChange = (e) => {
+    
     const file = e.target.files[0];
 
     if (file) {
@@ -97,11 +100,13 @@ const EditCourse = () => {
 
   return (
     CourseInfo && (
-      <div className="max-w-5xl mx-auto mb-20 mt-20 bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      <div className="max-w-5xl  mx-auto mb-20 mt-20 bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
+      <div onClick={()=>navigate("/dashboard/courses")} className="absolute text-2xl top-27 left-45 hover:text-gray-300 text-white cursor-pointer"> <MdArrowBackIos/></div>
+
         <div className="px-8 py-6 border-b border-slate-700">
-          <h1 className="text-3xl font-bold text-white">Edit Course</h1>
-          <p className="text-slate-400 mt-1">
+          <h1 className="text-3xl pl-3 font-bold text-white">Edit Course</h1>
+          <p className="text-slate-400 mt-1 pl-3">
             Update your course details and thumbnail
           </p>
         </div>

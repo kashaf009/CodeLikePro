@@ -9,8 +9,31 @@ import { LuBotMessageSquare } from "react-icons/lu";
 import { IoCubeOutline } from "react-icons/io5";
 import { MdArrowForwardIos } from "react-icons/md";
 
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addCourses } from "../utils/courseSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const courses = useSelector((store) => store.course);
+
+  const fetchCourse = async () => {
+    const res = await axios.get(BASE_URL + "/Courses", {
+      withCredentials: true,
+    });
+
+    console.log(res?.data?.data);
+    dispatch(addCourses(res?.data?.data));
+  };
+
+  
+
+  useEffect(() => {
+    fetchCourse();
+  }, []);
+
   return (
     <div className="bg-slate-900 min-h-screen">
       <Nav className="z-30" />
@@ -78,26 +101,25 @@ const Home = () => {
               <LuBotMessageSquare className="text-3xl " />
             </div>
             <div>
-            <h2 className="text-3xl font-bold mb-4">AI-Powered Feedback</h2>
-            <p className="text-gray-300 w-[70%]">
-              Get instant, granular code reviews as you type. Our proprietary
-              LLM engine analyzes your logic, security patterns, and efficiency
-              based on industry best practices.
-            </p>
+              <h2 className="text-3xl font-bold mb-4">AI-Powered Feedback</h2>
+              <p className="text-gray-300 w-[70%]">
+                Get instant, granular code reviews as you type. Our proprietary
+                LLM engine analyzes your logic, security patterns, and
+                efficiency based on industry best practices.
+              </p>
             </div>
           </div>
           <div className="text-white h-80 flex flex-col gap-5 rounded-xl border hover:border-[#ebc4ff] border-gray-700 bg-slate-800 px-8 py-5">
-
             <div className="w-12 h-12 mt-5 flex rounded-md border border-gray-600 justify-center items-center bg-slate-700">
               <IoCubeOutline className="text-3xl " />
             </div>
             <div>
-            <h2 className="text-3xl font-bold mb-4">Real-World Scale</h2>
-            <p className="text-gray-300 ">
-              No "Todo List" apps here. Build microservices, blockchain
-              explorers, and real-time trading engines using high-concurrency
-              systems.
-            </p>
+              <h2 className="text-3xl font-bold mb-4">Real-World Scale</h2>
+              <p className="text-gray-300 ">
+                No "Todo List" apps here. Build microservices, blockchain
+                explorers, and real-time trading engines using high-concurrency
+                systems.
+              </p>
             </div>
           </div>
         </div>
@@ -137,21 +159,22 @@ const Home = () => {
       </section>
 
       {/* explore course section */}
-<section className="bg-slate-950  pl-40 min-h-screen w-full">
-
-  <h1 className="text-[#dfe9f6] text-4xl mb-3 pt-25 font-bold">Top-Rated Bootcamps</h1>
-   <div className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">View All program <span><MdArrowForwardIos /></span></div>
-  <p className="text-md font-['space_grotesk'] text-gray-400">Intensive tracks designed to take you from a junior to a high-earning specialist in 12 weeks.</p>
-
-  
-
-
-   
-</section>
-
-
-
-
+      { courses && 
+      <section className="bg-slate-950  pl-40 min-h-screen w-full">
+        <h1 className="text-[#dfe9f6] text-4xl mb-3 pt-25 font-bold">
+          Top-Rated Bootcamps
+        </h1>
+        <div className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">
+          View All program{" "}
+          <span>
+            <MdArrowForwardIos />
+          </span>
+        </div>
+        <p className="text-md font-['space_grotesk'] text-gray-400">
+          Intensive tracks designed to take you from a junior to a high-earning
+          specialist in 12 weeks.
+        </p>
+      </section>}
     </div>
   );
 };

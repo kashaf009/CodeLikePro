@@ -6,6 +6,7 @@ import {
   MdOutlineAnalytics,
   MdSettings,
   MdNotificationsNone,
+  MdArrowBackIos,
 } from "react-icons/md";
 
 import {
@@ -52,10 +53,12 @@ const CreatorDashboard = () => {
   return (
     <div className="min-h-screen bg-[#0F172A] text-white flex">
 
+      <div onClick={()=>navigate("/")} className="absolute text-xl top-7.5  left-7 hover:text-cyan-400 text-cyan-600 cursor-pointer"> <MdArrowBackIos/></div>
+
       {/* Sidebar */}
       <aside className="w-72 bg-[#111827] border-r border-slate-800 p-6 flex flex-col">
 
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+        <h1 className="text-2xl pl-8 font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Creator Studio
         </h1>
 
