@@ -7,7 +7,7 @@ const courseSchema = new mongoose.Schema({
         type:String,
         require:true
     },
-    descprition:{
+    description:{
         type:String,
     },
     price:{

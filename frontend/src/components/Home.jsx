@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCourses } from "../utils/courseSlice";
 
+
 const Home = () => {
   const dispatch = useDispatch();
   const courses = useSelector((store) => store.course);
@@ -172,19 +173,46 @@ const Home = () => {
             Intensive tracks designed to take you from a junior to a
             high-earning specialist in 12 weeks.
           </p>
-          <div className="grid mt-20  grid-cols-3 gap-5 ">
+          <div className="grid mt-20 mb-20 grid-cols-3 gap-5 ">
             {courses.map((course) => {
               return (
-                <section key={course?.id} className="bg-slate-800 rounded-md min-h-110">
-                  <img className="rounded-t-md w-full object-cover " src={course?.thumbnail} alt="" srcset="" />
+                <section
+                  key={course?.id}
+                  className="bg-slate-800 border-b hover:border-b-[#eef5fe] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
+                >
+                  <img
+                    className="rounded-t-md w-full h-60 object-cover "
+                    src={course?.thumbnail}
+                    alt=""
+                    srcset=""
+                  />
 
-                  <div className="flex items-center mb-3 gap-15 pt-5 justify-between px-8">
-                    <p className=" text-[#dfe9f6] font-['space_grotesk'] font-bold text-3xl">{course?.title}</p>
-                  <p className="text-cyan-500  text-xl ">$ {course?.price}</p></div>
-                 <div className="flex mx-10 items-center gap-4">
-                  <p className="text-white border text-sm  bg-slate-900 rounded-3xl inline border-gray-600 py-1 px-3 ">{course?.category}</p>
-                <p className="text-white border  bg-slate-900 text-sm  rounded-3xl inline border-gray-600 py-1 px-3 ">{course?.level}</p>
-                 </div>
+                  <div className="flex items-center mb-2 gap-10 pt-5 justify-between px-6">
+                    <p className=" text-[#eef5fe] font-['space_grotesk'] font-bold text-3xl">
+                      {course?.title}
+                    </p>
+                    <p className="text-cyan-500  text-xl ">$ {course?.price}</p>
+                  </div>
+                  <div className="mx-6 mb-4 ">
+                    <p className="text-sm   text-[#c2c8d9] line-clamp-2">
+                      {course?.description}
+                    </p>
+                  </div>
+                  <div className="flex mx-8 items-center gap-4">
+                    <p className="text-gray-400 border text-xs  bg-slate-900 rounded-3xl inline border-gray-600 py-1 px-3 ">
+                      {course?.category}
+                    </p>
+                    <p className="text-gray-400 border  bg-slate-900 text-xs  rounded-3xl inline border-gray-600 py-1 px-3 ">
+                      {course?.level}
+                    </p>
+                  </div>
+
+                  <div className="mx-8 flex mb-3 items-center gap-2 mt-4">
+                   
+                    <img className="w-5 h-5 rounded-full" src={course?.creator?.photoUrl} alt="" />
+                    <p className="text-sm text-gray-400">{course?.creator?.name}</p>
+
+                  </div>
                 </section>
               );
             })}
