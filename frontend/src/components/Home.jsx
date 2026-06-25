@@ -28,8 +28,6 @@ const Home = () => {
     dispatch(addCourses(res?.data?.data));
   };
 
-  
-
   useEffect(() => {
     fetchCourse();
   }, []);
@@ -159,22 +157,40 @@ const Home = () => {
       </section>
 
       {/* explore course section */}
-      { courses && 
-      <section className="bg-slate-950  pl-40 min-h-screen w-full">
-        <h1 className="text-[#dfe9f6] text-4xl mb-3 pt-25 font-bold">
-          Top-Rated Bootcamps
-        </h1>
-        <div className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">
-          View All program{" "}
-          <span>
-            <MdArrowForwardIos />
-          </span>
-        </div>
-        <p className="text-md font-['space_grotesk'] text-gray-400">
-          Intensive tracks designed to take you from a junior to a high-earning
-          specialist in 12 weeks.
-        </p>
-      </section>}
+      {courses && (
+        <section className="bg-slate-950  pl-40 min-h-screen w-full">
+          <h1 className="text-[#dfe9f6] text-4xl mb-3 pt-25 font-bold">
+            Top-Rated Bootcamps
+          </h1>
+          <div className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">
+            View All program{" "}
+            <span>
+              <MdArrowForwardIos />
+            </span>
+          </div>
+          <p className="text-md font-['space_grotesk'] text-gray-400">
+            Intensive tracks designed to take you from a junior to a
+            high-earning specialist in 12 weeks.
+          </p>
+          <div className="grid mt-20  grid-cols-3 gap-5 ">
+            {courses.map((course) => {
+              return (
+                <section key={course?.id} className="bg-slate-800 rounded-md min-h-110">
+                  <img className="rounded-t-md w-full object-cover " src={course?.thumbnail} alt="" srcset="" />
+
+                  <div className="flex items-center mb-3 gap-15 pt-5 justify-between px-8">
+                    <p className=" text-[#dfe9f6] font-['space_grotesk'] font-bold text-3xl">{course?.title}</p>
+                  <p className="text-cyan-500  text-xl ">$ {course?.price}</p></div>
+                 <div className="flex mx-10 items-center gap-4">
+                  <p className="text-white border text-sm  bg-slate-900 rounded-3xl inline border-gray-600 py-1 px-3 ">{course?.category}</p>
+                <p className="text-white border  bg-slate-900 text-sm  rounded-3xl inline border-gray-600 py-1 px-3 ">{course?.level}</p>
+                 </div>
+                </section>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
   );
 };
