@@ -1,81 +1,144 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {} from "react-router-dom";
+import Nav from "./Nav";
 
 const Bootcaamps = () => {
   const courses = useSelector((store) => store.course);
+  const [price, setPrice] = useState(100);
   return (
-    <div className=" py-10">
-      <p className="text-4xl px-20 text-gray-200 mb-10  ">Bootcamps</p>
+    <div className="">
+      <Nav />
+
+      <p className="text-4xl pt-25 px-10 text-gray-200 mb-10  ">Bootcamps</p>
 
       <div className="grid pr-10 grid-cols-[18%_82%] gap-2 ">
         {/* left side */}
         <div className="text-white mx-3 px-7  rounded-xl h-150 border border-gray-400 flex flex-col gap-3">
-            <p className="pt-5 text-xl ">Filter</p>
-            {/* category ["web development","mobile development","data science","artificial intelligence","cloud computing","cyber security","agentic ai","other","machine learning","data analysis"] */}
+          <p className="pt-5 text-xl ">Filter</p>
+          {/* category ["web development","mobile development","data science","artificial intelligence","cloud computing","cyber security","agentic ai","other","machine learning","data analysis"] */}
 
+          <div className="flex pt-5 gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Web development</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="web development"
+              id=""
+            />
+          </div>
 
-            <div className="flex pt-5 gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Web development</p>
-            <input className="text-white" type="checkbox" name="web development" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Mobile development</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Mobile development"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Mobile development</p>
-            <input className="text-white" type="checkbox" name="Mobile development" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Cloud Computing</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Cloud Computing"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Cloud Computing</p>
-            <input className="text-white" type="checkbox" name="Cloud Computing" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Data Science</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Data Science"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Data Science</p>
-            <input className="text-white" type="checkbox" name="Data Science" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Artificial intelligence</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Artificial intelligence"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Artificial intelligence</p>
-            <input className="text-white" type="checkbox" name="Artificial intelligence" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Cyber security</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Cyber security"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Cyber security</p>
-            <input className="text-white" type="checkbox" name="Cyber security" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Agentic ai</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Agentic ai"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Agentic ai</p>
-            <input className="text-white" type="checkbox" name="Agentic ai" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">Machine learning</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="web development"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >Machine learning</p>
-            <input className="text-white" type="checkbox" name="web development" id="" />
-            </div>
+          <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans">data analysis</p>
+            <input
+              className="text-white"
+              type="checkbox"
+              name="Machine learning"
+              id=""
+            />
+          </div>
 
-            <div className="flex gap-3 w-40 justify-between">
-            <p className="text-sm font-sans" >data analysis</p>
-            <input className="text-white" type="checkbox" name="Machine learning" id="" />
-            </div>
+          <div>
+            <label className="text-white text-md block mt-5 mb-2">Level</label>
 
+            <select className="w-full bg-slate-700 border border-slate-600 rounded-lg px-2 text-white">
+              <option>All</option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
 
-            
-            <div>
-              <label className="text-white text-md block mt-5 mb-2">Level</label>
+          <div>
+        
+            <p className="mb-2 mt-5 text-white">
+              Price: <span className="font-bold">${price}</span>
+            </p>
+            <input
+              className="w-full"
+              type="range"
+              name=""
+              min={0}
+              max={5000}
+              step={100}
+              id=""
+              value={price}
 
-              <select
-              
-                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-2 text-white"
-              >
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-              </select>
-            </div>
+            onChange={(e) => setPrice(Number(e.target.value))}
 
-
+       
+            />
+          </div>
         </div>
 
         {/* right side */}
@@ -113,10 +176,13 @@ const Bootcaamps = () => {
                   </p>
                 </div>
 
-                
                 <div className="px-10 mt-5 flex items-center justify-between mb-5">
-                  <div className="px-5 py-1 cursor-pointer tracking-wide rounded-md bg-cyan-500 text-md">Enroll</div>
-                  <div className="text-sm cursor-pointer text-cyan-500 ">View →</div>
+                  <div className="px-5 py-1 cursor-pointer tracking-wide rounded-md bg-cyan-500 text-md">
+                    Enroll
+                  </div>
+                  <div className="text-sm cursor-pointer text-cyan-500 ">
+                    View →
+                  </div>
                 </div>
               </section>
             );
