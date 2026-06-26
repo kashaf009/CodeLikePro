@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeUser } from "../utils/userSlice";
 import { IoMenu } from "react-icons/io5";
 
@@ -39,7 +39,7 @@ const Nav = () => {
   };
 
   return (
-    <div className="fixed md:px-25 px-10 flex items-center justify-between top-0 bg-[linear-gradient(180deg,#051424_0%,#020817_100%)]  h-18 border-b-slate-800 border w-full ">
+    <div className="fixed md:px-25 px-10 flex items-center justify-between top-0 bg-[linear-gradient(180deg,#051424_0%,#020817_100%)] z-20  h-18 border-b-slate-800 border w-full ">
       <div className="flex gap-10 items-center">
         <div className="font-['space_grotesk'] flex items-center gap-2 text-2xl  md:text-3xl text-[#cddefe] tracking-tight font-black">
           <span>
@@ -51,9 +51,9 @@ const Nav = () => {
           <p className="font-['ibm_plex_mono'] hover:text-[#eaf1fc] cursor-pointer transition-all delay-100 hidden md:block font-black text-[13px] text-[#c2c8d9] tracking-tight ">
             Curriculum
           </p>
-          <p className="font-['ibm_plex_mono'] font-black cursor-pointer transition-all hover:text-[#eaf1fc] hidden md:block text-[13px] text-[#c2c8d9] delay-100 tracking-tight ">
+         <Link to={"/bootcamps"}> <p  className="font-['ibm_plex_mono'] font-black cursor-pointer transition-all hover:text-[#eaf1fc] hidden md:block text-[13px] text-[#c2c8d9] delay-100 tracking-tight ">
             Bootcamps
-          </p>
+          </p></Link>
         </div>
       </div>
       <div className="text-[#c2c8d9] flex gap-5">

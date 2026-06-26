@@ -55,7 +55,7 @@ const CreatorCourses = () => {
                 <img
                   src={course?.thumbnail}
                   alt="Course Thumbnail"
-                  className=" w-full h-full px-3 py-2  object-cover"
+                  className=" w-full h-40 px-3 py-2  object-cover"
                 />
               </td>
               <td className="border  border-gray-700 pl-10 pr-5  text-2xl font-bold py-2">

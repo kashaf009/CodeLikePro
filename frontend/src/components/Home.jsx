@@ -14,9 +14,11 @@ import { BASE_URL } from "../utils/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCourses } from "../utils/courseSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const Home = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const courses = useSelector((store) => store.course);
 
@@ -35,7 +37,7 @@ const Home = () => {
 
   return (
     <div className="bg-slate-900 min-h-screen">
-      <Nav className="z-30" />
+      <Nav />
 
       <section className="w-full bg-slate-950 min-h-screen  mt-18 grid grid-cols-2  ">
         <div className="text-white pl-40 pt-50">
@@ -159,11 +161,11 @@ const Home = () => {
 
       {/* explore course section */}
       {courses && (
-        <section className="bg-slate-950  pl-40 min-h-screen w-full">
+        <section className="bg-slate-950 pr-30  pl-30 min-h-screen w-full">
           <h1 className="text-[#dfe9f6] text-4xl mb-3 pt-25 font-bold">
             Top-Rated Bootcamps
           </h1>
-          <div className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">
+          <div onClick={()=>navigate("/bootcamps")} className="absolute flex items-center gap-1 right-30 font-['space_grotesk'] cursor-pointer border border-transparent hover:border-b-cyan-400 transition-all hover:text-cyan-400 text-md text-cyan-500 ">
             View All program{" "}
             <span>
               <MdArrowForwardIos />
@@ -173,12 +175,12 @@ const Home = () => {
             Intensive tracks designed to take you from a junior to a
             high-earning specialist in 12 weeks.
           </p>
-          <div className="grid mt-20 mb-20 grid-cols-3 gap-5 ">
-            {courses.map((course) => {
+          <div className="grid mt-20 z-2  mb-20 grid-cols-3 gap-5 ">
+            {courses.slice(0,6).map((course) => {
               return (
                 <section
                   key={course?.id}
-                  className="bg-slate-800 border-b hover:border-b-[#eef5fe] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
+                  className="bg-slate-800  border-b flex flex-col justify-between hover:border-b-[#4f84c9] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
                 >
                   <img
                     className="rounded-t-md w-full h-60 object-cover "
@@ -187,11 +189,11 @@ const Home = () => {
                     srcset=""
                   />
 
-                  <div className="flex items-center mb-2 gap-10 pt-5 justify-between px-6">
-                    <p className=" text-[#eef5fe] font-['space_grotesk'] font-bold text-3xl">
+                  <div className="flex items-center  mb-2 gap-5 pt-5 justify-between px-6">
+                    <p className=" text-[#eef5fe] line-clamp-2 font-['space_grotesk'] font-bold text-3xl">
                       {course?.title}
                     </p>
-                    <p className="text-cyan-500  text-xl ">$ {course?.price}</p>
+                    <p className="text-cyan-500 text-xl ">$ {course?.price}</p>
                   </div>
                   <div className="mx-6 mb-4 ">
                     <p className="text-sm   text-[#c2c8d9] line-clamp-2">
