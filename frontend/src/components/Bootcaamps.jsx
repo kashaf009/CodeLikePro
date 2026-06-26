@@ -8,8 +8,77 @@ const Bootcaamps = () => {
     <div className=" py-10">
       <p className="text-4xl px-20 text-gray-200 mb-10  ">Bootcamps</p>
 
-      <div className="grid pr-10 grid-cols-[18%_82%] ">
-        <div className="text-white">kashaf</div>
+      <div className="grid pr-10 grid-cols-[18%_82%] gap-2 ">
+        {/* left side */}
+        <div className="text-white mx-3 px-7  rounded-xl h-150 border border-gray-400 flex flex-col gap-3">
+            <p className="pt-5 text-xl ">Filter</p>
+            {/* category ["web development","mobile development","data science","artificial intelligence","cloud computing","cyber security","agentic ai","other","machine learning","data analysis"] */}
+
+
+            <div className="flex pt-5 gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Web development</p>
+            <input className="text-white" type="checkbox" name="web development" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Mobile development</p>
+            <input className="text-white" type="checkbox" name="Mobile development" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Cloud Computing</p>
+            <input className="text-white" type="checkbox" name="Cloud Computing" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Data Science</p>
+            <input className="text-white" type="checkbox" name="Data Science" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Artificial intelligence</p>
+            <input className="text-white" type="checkbox" name="Artificial intelligence" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Cyber security</p>
+            <input className="text-white" type="checkbox" name="Cyber security" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Agentic ai</p>
+            <input className="text-white" type="checkbox" name="Agentic ai" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >Machine learning</p>
+            <input className="text-white" type="checkbox" name="web development" id="" />
+            </div>
+
+            <div className="flex gap-3 w-40 justify-between">
+            <p className="text-sm font-sans" >data analysis</p>
+            <input className="text-white" type="checkbox" name="Machine learning" id="" />
+            </div>
+
+
+            
+            <div>
+              <label className="text-white text-md block mt-5 mb-2">Level</label>
+
+              <select
+              
+                className="w-full bg-slate-700 border border-slate-600 rounded-lg px-2 text-white"
+              >
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+              </select>
+            </div>
+
+
+        </div>
+
+        {/* right side */}
         <div className="text-white grid grid-cols-3 gap-5">
           {courses.map((course) => {
             return (
