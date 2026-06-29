@@ -57,6 +57,14 @@ Built using the **MERN Stack** with a clean and responsive frontend powered by *
 - Clean User Experience
 - Tailwind CSS Styling
 
+## APIs
+
+- /getcreatorcourse
+- /getpublishedcourse
+- /createcourse
+- /editcourse
+- /deletecourse
+
 ---
 # 🚀 Upcoming Features
 
