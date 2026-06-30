@@ -4,8 +4,13 @@ import {} from "react-router-dom";
 import Nav from "./Nav";
 
 const Bootcaamps = () => {
+
   const courses = useSelector((store) => store.course);
   const [price, setPrice] = useState(100);
+  const [SelectedCategory, setSelectedCategory] = useState([])
+  const [SelectedLevel, setSelectedLevel] = useState([])
+  const [PriceRange, setPriceRange] = useState(5000)
+  
   return (
     <div className="">
       <Nav />
