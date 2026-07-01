@@ -5,10 +5,10 @@ import Nav from "./Nav";
 
 const Bootcaamps = () => {
   const courses = useSelector((store) => store.course);
-  const [price, setPrice] = useState(100);
+
   const [Category, setCategory] = useState([]);
   const [FilteredCourses, setFilteredCourses] = useState([]);
-  // const [SelectedLevel, setSelectedLevel] = useState([])
+  const [SelectedLevel, setSelectedLevel] = useState("");
   // const [PriceRange, setPriceRange] = useState(5000)
 
   const toggleCategory = (e) => {
@@ -20,25 +20,25 @@ const Bootcaamps = () => {
   };
 
   const ApplyFilter = () => {
-   let CourseCopy = courses?.slice();
+    let CourseCopy = courses?.slice();
 
     if (Category.length > 0) {
       CourseCopy = CourseCopy.filter((c) => Category.includes(c.category));
-    } 
-    setFilteredCourses(CourseCopy)
+    }
+
+    if (SelectedLevel !== "") {
+      CourseCopy = CourseCopy.filter((c) => c.level === SelectedLevel);
+    }
+    setFilteredCourses(CourseCopy);
   };
 
   useEffect(() => {
-
-    setFilteredCourses(courses)
-    
-  }, [courses])
+    setFilteredCourses(courses);
+  }, [courses]);
 
   useEffect(() => {
-    ApplyFilter()
-  }, [Category])
-  
-  
+    ApplyFilter();
+  }, [Category, SelectedLevel, courses]);
 
   return (
     <div className="">
@@ -48,7 +48,7 @@ const Bootcaamps = () => {
 
       <div className="grid pr-10 grid-cols-[18%_82%] gap-2 ">
         {/* left side */}
-        <div className="text-white mx-3 px-7  rounded-xl h-150 border border-gray-400 flex flex-col gap-3">
+        <div className="text-white mx-3 px-7 sticky top-24 rounded-xl h-120 border border-gray-400 flex flex-col gap-3">
           <p className="pt-5 text-xl ">Filter</p>
           {/* category ["web development","mobile development","data science","artificial intelligence","cloud computing","cyber security","agentic ai","other","machine learning","data analysis"] */}
 
@@ -71,7 +71,6 @@ const Bootcaamps = () => {
               type="checkbox"
               value={"mobile development"}
               onChange={toggleCategory}
-              
               id=""
             />
           </div>
@@ -81,7 +80,6 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-
               onChange={toggleCategory}
               value={"cloud computing"}
               id=""
@@ -94,7 +92,7 @@ const Bootcaamps = () => {
               className="text-white"
               type="checkbox"
               value={"data science"}
-               onChange={toggleCategory}
+              onChange={toggleCategory}
               id=""
             />
           </div>
@@ -105,7 +103,7 @@ const Bootcaamps = () => {
               className="text-white"
               type="checkbox"
               value={"artificial intelligence"}
-               onChange={toggleCategory}
+              onChange={toggleCategory}
               id=""
             />
           </div>
@@ -116,7 +114,7 @@ const Bootcaamps = () => {
               className="text-white"
               type="checkbox"
               value={"cyber security"}
-               onChange={toggleCategory}
+              onChange={toggleCategory}
               id=""
             />
           </div>
@@ -127,7 +125,7 @@ const Bootcaamps = () => {
               className="text-white"
               type="checkbox"
               value={"agentic ai"}
-               onChange={toggleCategory}
+              onChange={toggleCategory}
               id=""
             />
           </div>
@@ -138,7 +136,7 @@ const Bootcaamps = () => {
               className="text-white"
               type="checkbox"
               value={"machine learning"}
-               onChange={toggleCategory}
+              onChange={toggleCategory}
               id=""
             />
           </div>
@@ -149,87 +147,85 @@ const Bootcaamps = () => {
               className="text-white"
               type="checkbox"
               value={"data analysis"}
-               onChange={toggleCategory}
+              onChange={toggleCategory}
               id=""
             />
           </div>
 
           <div>
-            <label className="text-white text-md block mt-5 mb-2">Level</label>
+            <label className="text-white text-md block mt-5 mb-3">Level</label>
 
-            <select className="w-full bg-slate-700 border border-slate-600 rounded-lg px-2 text-white">
-              <option>All</option>
-              <option>Beginner</option>
-              <option>Intermediate</option>
-              <option>Advanced</option>
+            <select
+              className="w-full bg-slate-700 border border-slate-600 rounded-lg px-2 text-white"
+              onChange={(e) => setSelectedLevel(e.target.value)}
+            >
+              <option value={""}>All</option>
+              <option value={"Begineer"}>Beginner</option>
+              <option value={"Intermediate"}>Intermediate</option>
+              <option value={"Advanced"}>Advanced</option>
             </select>
-          </div>
-
-          <div>
-            <p className="mb-2 mt-5 text-white">
-              Price: <span className="font-bold">${price}</span>
-            </p>
-            <input
-              className="w-full"
-              type="range"
-              name=""
-              min={0}
-              max={5000}
-              step={100}
-              id=""
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-            />
           </div>
         </div>
 
         {/* right side */}
-        <div className="text-white grid grid-cols-3 gap-5">
-          {FilteredCourses.map((course) => {
-            return (
-              <section
-                key={course?.id}
-                className="bg-slate-800 mb-10 border-b flex flex-col justify-between hover:border-b-[#4f84c9] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
-              >
-                <img
-                  className="rounded-t-md w-full h-60 object-cover "
-                  src={course?.thumbnail}
-                  alt=""
-                  srcset=""
-                />
+        {FilteredCourses.length > 0 ? (
+          <div className="text-white  grid grid-cols-3 gap-5">
+            {FilteredCourses.map((course) => {
+              return (
+                <section
+                  key={course?.id}
+                  className="bg-slate-800 mb-10 border-b flex flex-col justify-between hover:border-b-[#4f84c9] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
+                >
+                  <img
+                    className="rounded-t-md w-full h-60 object-cover "
+                    src={course?.thumbnail}
+                    alt=""
+                    srcset=""
+                  />
 
-                <div className="flex items-center  mb-2 gap-5 pt-5 justify-between px-5">
-                  <p className=" text-[#eef5fe] line-clamp-2 font-['space_grotesk'] font-bold text-3xl">
-                    {course?.title}
-                  </p>
-                  <p className="text-cyan-500 text-xl ">$ {course?.price}</p>
-                </div>
-                <div className="mx-6 mb-4 ">
-                  <p className="text-sm   text-[#c2c8d9] line-clamp-2">
-                    {course?.description}
-                  </p>
-                </div>
-                <div className="flex mx-8 items-center gap-4">
-                  <p className="text-gray-400 border text-xs  bg-slate-900 rounded-3xl inline border-gray-600 py-1 px-3 ">
-                    {course?.category}
-                  </p>
-                  <p className="text-gray-400 border  bg-slate-900 text-xs  rounded-3xl inline border-gray-600 py-1 px-3 ">
-                    {course?.level}
-                  </p>
-                </div>
+                  <div className="flex items-center  mb-2 gap-5 pt-5 justify-between px-5">
+                    <p className=" text-[#eef5fe] line-clamp-2 font-['space_grotesk'] font-bold text-3xl">
+                      {course?.title}
+                    </p>
+                    <p className="text-cyan-500 text-xl ">$ {course?.price}</p>
+                  </div>
+                  <div className="mx-6 mb-4 ">
+                    <p className="text-sm   text-[#c2c8d9] line-clamp-2">
+                      {course?.description}
+                    </p>
+                  </div>
+                  <div className="flex mx-8 items-center gap-4">
+                    <p className="text-gray-400 border text-xs  bg-slate-900 rounded-3xl inline border-gray-600 py-1 px-3 ">
+                      {course?.category}
+                    </p>
+                    <p className="text-gray-400 border  bg-slate-900 text-xs  rounded-3xl inline border-gray-600 py-1 px-3 ">
+                      {course?.level}
+                    </p>
+                  </div>
 
-                <div className="px-10 mt-5 flex items-center justify-between mb-5">
-                  <div className="px-5 py-1 cursor-pointer tracking-wide rounded-md bg-cyan-500 text-md">
-                    Enroll
+                  <div className="px-10 mt-5 flex items-center justify-between mb-5">
+                    <div className="px-5 py-1 cursor-pointer tracking-wide rounded-md bg-cyan-500 text-md">
+                      Enroll
+                    </div>
+                    <div className="text-sm cursor-pointer text-cyan-500 ">
+                      View →
+                    </div>
                   </div>
-                  <div className="text-sm cursor-pointer text-cyan-500 ">
-                    View →
-                  </div>
-                </div>
-              </section>
-            );
-          })}
-        </div>
+                </section>
+              );
+            })}
+          </div>
+        ) : (
+          <div className=" flex flex-col h-[50vh] justify-center text-center">
+            <h2 className="text-3xl font-bold text-gray-300">
+              No Courses Found
+            </h2>
+
+            <p className="mt-3 text-gray-500">
+              Try changing the category or level filter.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
