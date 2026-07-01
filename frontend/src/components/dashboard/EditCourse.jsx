@@ -163,7 +163,7 @@ const EditCourse = () => {
               <input
                 type="text"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => setCategory(e.target.value.trim().toLowerCase())}
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white"
               />
             </div>

@@ -1,16 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {} from "react-router-dom";
+
 import Nav from "./Nav";
 
 const Bootcaamps = () => {
-
   const courses = useSelector((store) => store.course);
   const [price, setPrice] = useState(100);
-  const [SelectedCategory, setSelectedCategory] = useState([])
-  const [SelectedLevel, setSelectedLevel] = useState([])
-  const [PriceRange, setPriceRange] = useState(5000)
+  const [Category, setCategory] = useState([]);
+  const [FilteredCourses, setFilteredCourses] = useState([]);
+  // const [SelectedLevel, setSelectedLevel] = useState([])
+  // const [PriceRange, setPriceRange] = useState(5000)
+
+  const toggleCategory = (e) => {
+    if (Category.includes(e.target.value)) {
+      setCategory((prev) => prev.filter((c) => c !== e.target.value));
+    } else {
+      setCategory((prev) => [...prev, e.target.value]);
+    }
+  };
+
+  const ApplyFilter = () => {
+   let CourseCopy = courses?.slice();
+
+    if (Category.length > 0) {
+      CourseCopy = CourseCopy.filter((c) => Category.includes(c.category));
+    } 
+    setFilteredCourses(CourseCopy)
+  };
+
+  useEffect(() => {
+
+    setFilteredCourses(courses)
+    
+  }, [courses])
+
+  useEffect(() => {
+    ApplyFilter()
+  }, [Category])
   
+  
+
   return (
     <div className="">
       <Nav />
@@ -28,7 +57,9 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
+              value={"web development"}
               name="web development"
+              onChange={toggleCategory}
               id=""
             />
           </div>
@@ -38,7 +69,9 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Mobile development"
+              value={"mobile development"}
+              onChange={toggleCategory}
+              
               id=""
             />
           </div>
@@ -48,7 +81,9 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Cloud Computing"
+
+              onChange={toggleCategory}
+              value={"cloud computing"}
               id=""
             />
           </div>
@@ -58,7 +93,8 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Data Science"
+              value={"data science"}
+               onChange={toggleCategory}
               id=""
             />
           </div>
@@ -68,7 +104,8 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Artificial intelligence"
+              value={"artificial intelligence"}
+               onChange={toggleCategory}
               id=""
             />
           </div>
@@ -78,7 +115,8 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Cyber security"
+              value={"cyber security"}
+               onChange={toggleCategory}
               id=""
             />
           </div>
@@ -88,7 +126,8 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Agentic ai"
+              value={"agentic ai"}
+               onChange={toggleCategory}
               id=""
             />
           </div>
@@ -98,7 +137,8 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="web development"
+              value={"machine learning"}
+               onChange={toggleCategory}
               id=""
             />
           </div>
@@ -108,7 +148,8 @@ const Bootcaamps = () => {
             <input
               className="text-white"
               type="checkbox"
-              name="Machine learning"
+              value={"data analysis"}
+               onChange={toggleCategory}
               id=""
             />
           </div>
@@ -125,7 +166,6 @@ const Bootcaamps = () => {
           </div>
 
           <div>
-        
             <p className="mb-2 mt-5 text-white">
               Price: <span className="font-bold">${price}</span>
             </p>
@@ -138,17 +178,14 @@ const Bootcaamps = () => {
               step={100}
               id=""
               value={price}
-
-            onChange={(e) => setPrice(Number(e.target.value))}
-
-       
+              onChange={(e) => setPrice(Number(e.target.value))}
             />
           </div>
         </div>
 
         {/* right side */}
         <div className="text-white grid grid-cols-3 gap-5">
-          {courses.map((course) => {
+          {FilteredCourses.map((course) => {
             return (
               <section
                 key={course?.id}
