@@ -44,9 +44,18 @@ const Bootcaamps = () => {
     <div className="">
       <Nav />
 
-      <p className="text-4xl pt-25 px-10 text-gray-200 mb-10  ">Bootcamps</p>
+      <div className=" pt-25 px-10 text-gray-200 mb-10 ">
+        <h1 className="text-[3rem] font-bold text-white tracking-tight">
+          Explore Bootcamps
+        </h1>
 
-      <div className="grid pr-10 grid-cols-[18%_82%] gap-2 ">
+        <p className="mt-3 text-gray-400 text-lg max-w-2xl">
+          Discover industry-ready bootcamps designed to help you master
+          in-demand skills and accelerate your career.
+        </p>
+      </div>
+
+      <div className="grid pr-15 grid-cols-[18%_82%] gap-5  ">
         {/* left side */}
         <div className="text-white mx-3 px-7 sticky top-24 rounded-xl h-120 border border-gray-400 flex flex-col gap-3">
           <p className="pt-5 text-xl ">Filter</p>
@@ -184,7 +193,7 @@ const Bootcaamps = () => {
                   />
 
                   <div className="flex items-center  mb-2 gap-5 pt-5 justify-between px-5">
-                    <p className=" text-[#eef5fe] line-clamp-2 font-['space_grotesk'] font-bold text-3xl">
+                    <p className=" text-[#eef5fe] line-clamp-2 font-['space_grotesk'] font-bold text-2xl">
                       {course?.title}
                     </p>
                     <p className="text-cyan-500 text-xl ">$ {course?.price}</p>
@@ -194,7 +203,7 @@ const Bootcaamps = () => {
                       {course?.description}
                     </p>
                   </div>
-                  <div className="flex mx-8 items-center gap-4">
+                  <div className="flex mx-5 items-center gap-4">
                     <p className="text-gray-400 border text-xs  bg-slate-900 rounded-3xl inline border-gray-600 py-1 px-3 ">
                       {course?.category}
                     </p>
@@ -203,8 +212,8 @@ const Bootcaamps = () => {
                     </p>
                   </div>
 
-                  <div className="px-10 mt-5 flex items-center justify-between mb-5">
-                    <div className="px-5 py-1 cursor-pointer tracking-wide rounded-md bg-cyan-500 text-md">
+                  <div className="px-7 mt-5 flex items-center justify-between mb-5">
+                    <div className="px-10 py-1 cursor-pointer tracking-wide rounded-md bg-cyan-500 text-md">
                       Enroll
                     </div>
                     <div className="text-sm cursor-pointer text-cyan-500 ">
