@@ -15,7 +15,7 @@ import CreateCourse from "./components/dashboard/CreateCourse.jsx";
 import useFetchUser from "./hooks/UsefetchUser.jsx";
 import useFetchCourse from "./hooks/usefetchCourse.jsx";
 import EditCourse from "./components/dashboard/EditCourse.jsx";
-import Bootcaamps from "./components/Bootcaamps.jsx";
+import Bootcamps from "./components/Bootcamps.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
@@ -32,7 +32,7 @@ const App = () => {
       <Route path="/resetpassword" element={<ForgotPass />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/editprofile" element={<EditProfile />} />
-      <Route path="/bootcamps" element={<Bootcaamps/>} />
+      <Route path="/bootcamps" element={<Bootcamps/>} />
 
       {/* Educator Routes */}
       <Route

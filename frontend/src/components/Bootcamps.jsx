@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import Nav from "./Nav";
 
-const Bootcaamps = () => {
+const Bootcamps = () => {
   const courses = useSelector((store) => store.course);
 
   const [Category, setCategory] = useState([]);
@@ -240,4 +240,4 @@ const Bootcaamps = () => {
   );
 };
 
-export default Bootcaamps;
+export default Bootcamps;
