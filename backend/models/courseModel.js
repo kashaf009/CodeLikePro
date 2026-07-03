@@ -48,7 +48,7 @@ const courseSchema = new mongoose.Schema({
     },
     lectures:{
         type:mongoose.Schema.Types.ObjectId,
-        // ref:"lecture"
+        ref:"lecture"
     },
 
 
