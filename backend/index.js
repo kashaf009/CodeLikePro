@@ -7,6 +7,7 @@ import cors from "cors";
 import profileRoute from "./routes/profile.js";
 import otpRouter from "./routes/ForgetPass.js";
 import courseRoute from "./routes/course.js";
+import lectureRoute from "./routes/lecture.js";
 
 
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/", authRouter);
 app.use("/", profileRoute)
 app.use("/", otpRouter)
 app.use("/", courseRoute)
+app.use("/", lectureRoute)
 
 
 app.listen(port, () => {

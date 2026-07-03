@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
     },
     enrolledCourse: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:course
+      // ref:courseModel
     },
     otp: {
       type: String,
