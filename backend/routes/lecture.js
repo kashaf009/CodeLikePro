@@ -33,4 +33,26 @@ lectureRoute.post("/createLecture/:courseId", isAuth, async (req, res) => {
   }
 });
 
+
+lectureRoute.get("/getCourseLectures/:courseId", isAuth, async (req,res) => {
+    try {
+        const {courseId} = req.params;
+        
+        const course = courseModel.findById(courseId)
+        if(!course){
+            return res.status(400).json({message:"Course Not found"})
+        }
+        course.populate("lecture")
+
+        await course.save()
+
+        res.status(200).json({message:"courseLecture fetched successfully", course:course})
+
+        
+    } catch (error) {
+         res.status(500).json({ message: `Failed to get lecture ${error.message}` });
+        
+    }
+})
+
 export default lectureRoute;
