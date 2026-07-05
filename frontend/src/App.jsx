@@ -16,6 +16,7 @@ import useFetchUser from "./hooks/UsefetchUser.jsx";
 import useFetchCourse from "./hooks/usefetchCourse.jsx";
 import EditCourse from "./components/dashboard/EditCourse.jsx";
 import Bootcamps from "./components/Bootcamps.jsx";
+import CreateLecture from "./components/dashboard/CreateLecture.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
@@ -78,6 +79,19 @@ const App = () => {
           )
         }
       />
+
+      {/* /createLecture/:courseId */}
+         <Route
+        path="/dashboard/create-course/edit/createLecture/:courseId"
+        element={
+          user?.role === "educator" ? (
+            <CreateLecture/>
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      />
+
 
       {/* Catch-all Route */}
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../utils/constants.js";
-import { MdArrowBackIos } from "react-icons/md";
+import { MdArrowBackIos, MdOutlineDeleteForever } from "react-icons/md";
+import { IoIosAdd } from "react-icons/io";
 
 const EditCourse = () => {
   const navigate=useNavigate()
@@ -94,6 +95,16 @@ const EditCourse = () => {
     }
   };
 
+  // const handleAddLecture = async()=>{
+  //   try {
+  //     const response = await axios.post(BASE_URL +"/")
+  //     // 
+  //   } catch (error) {
+  //     // 
+  //   }
+
+  // }
+
   useEffect(() => {
     getCourseDetail();
   }, []);
@@ -109,6 +120,8 @@ const EditCourse = () => {
           <p className="text-slate-400 mt-1 pl-3">
             Update your course details and thumbnail
           </p>
+
+           <div className="absolute right-65 top-30 bg-red-400 items-center gap-1 flex px-3 hover:bg-red-500 cursor-pointer transition-all rounded-md py-1"> < MdOutlineDeleteForever className="w-5 h-5" /> <p className="text-md font-medium">Delete</p></div>
         </div>
 
         <div className="p-8 grid lg:grid-cols-2 gap-10">
@@ -142,6 +155,11 @@ const EditCourse = () => {
             <p className="text-slate-400 text-sm mt-2">
               Click the image to upload a new thumbnail.
             </p>
+
+            
+
+            <div onClick={()=>navigate(`/dashboard/create-course/edit/createLecture/${courseId}`)} className="w-full py-1 mt-8 rounded-md hover:bg-blue-500 justify-center cursor-pointer flex items-center gap-1  bg-blue-400"><IoIosAdd className="w-5 h-5 text-bold" /><p className="text-center font-medium">Add Lecture</p></div>
+            
           </div>
 
           {/* Right Side - Form */}
