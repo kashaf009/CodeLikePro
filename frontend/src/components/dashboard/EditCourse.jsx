@@ -4,14 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../../utils/constants.js";
 import { MdArrowBackIos, MdOutlineDeleteForever } from "react-icons/md";
 import { IoIosAdd } from "react-icons/io";
+import { ImSpinner2 } from "react-icons/im";
 
 const EditCourse = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const { courseId } = useParams();
   const [CourseInfo, setCourseInfo] = useState("");
 
   const [title, setTitle] = useState(CourseInfo?.title || "");
   const [category, setCategory] = useState(null);
+  const [loading, setloading] = useState(false);
   const [level, setLevel] = useState(null);
   const [price, setPrice] = useState(null);
   const [description, setDescription] = useState(null);
@@ -20,7 +22,6 @@ const EditCourse = () => {
   const [NewThumbnail, setNewThumbnail] = useState(null);
 
   const handlePhotoChange = (e) => {
-    
     const file = e.target.files[0];
 
     if (file) {
@@ -62,6 +63,7 @@ const EditCourse = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setloading(true)
 
     try {
       const formData = new FormData();
@@ -93,17 +95,26 @@ const EditCourse = () => {
 
       alert(error?.response?.data?.message);
     }
+    finally{
+      setloading(false)
+    }
   };
 
-  // const handleAddLecture = async()=>{
-  //   try {
-  //     const response = await axios.post(BASE_URL +"/")
-  //     // 
-  //   } catch (error) {
-  //     // 
-  //   }
+  const HandleDeleteCourse = async () => {
+    setloading(true)
+    try {
+      const res = await axios.delete(BASE_URL + `/deleteCourse/${courseId}`, {
+        withCredentials: true,
+      });
 
-  // }
+      console.log(res?.data);
+    } catch (error) {
+      alert(error?.response?.data?.message);
+    }
+    finally{
+      setloading(false)
+    }
+  };
 
   useEffect(() => {
     getCourseDetail();
@@ -113,7 +124,13 @@ const EditCourse = () => {
     CourseInfo && (
       <div className="max-w-5xl  mx-auto mb-20 mt-20 bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
         {/* Header */}
-      <div onClick={()=>navigate("/dashboard/courses")} className="absolute text-2xl top-27 left-45 hover:text-gray-300 text-white cursor-pointer"> <MdArrowBackIos/></div>
+        <div
+          onClick={() => navigate("/dashboard/courses")}
+          className="absolute text-2xl top-27 left-45 hover:text-gray-300 text-white cursor-pointer"
+        >
+          {" "}
+          <MdArrowBackIos />
+        </div>
 
         <div className="px-8 py-6 border-b border-slate-700">
           <h1 className="text-3xl pl-3 font-bold text-white">Edit Course</h1>
@@ -121,7 +138,14 @@ const EditCourse = () => {
             Update your course details and thumbnail
           </p>
 
-           <div className="absolute right-65 top-30 bg-red-400 items-center gap-1 flex px-3 hover:bg-red-500 cursor-pointer transition-all rounded-md py-1"> < MdOutlineDeleteForever className="w-5 h-5" /> <p className="text-md font-medium">Delete</p></div>
+          <div
+            onClick={HandleDeleteCourse}
+            className="absolute right-65 top-30 bg-red-400 w-25 items-center gap-1 flex px-3 hover:bg-red-500 cursor-pointer transition-all justify-center rounded-md py-1"
+          >
+           
+            <MdOutlineDeleteForever className={loading ? `hidden` :`w-5 inline h-5`} />{" "}
+            <p className="text-md  font-medium">{loading ?<ImSpinner2 className="animate-spin   py-1  text-2xl "/>:"Delete"}</p>
+          </div>
         </div>
 
         <div className="p-8 grid lg:grid-cols-2 gap-10">
@@ -156,10 +180,17 @@ const EditCourse = () => {
               Click the image to upload a new thumbnail.
             </p>
 
-            
-
-            <div onClick={()=>navigate(`/dashboard/create-course/edit/createLecture/${courseId}`)} className="w-full py-1 mt-8 rounded-md hover:bg-blue-500 justify-center cursor-pointer flex items-center gap-1  bg-blue-400"><IoIosAdd className="w-5 h-5 text-bold" /><p className="text-center font-medium">Add Lecture</p></div>
-            
+            <div
+              onClick={() =>
+                navigate(
+                  `/dashboard/create-course/edit/createLecture/${courseId}`,
+                )
+              }
+              className="w-full py-1 mt-8 rounded-md hover:bg-blue-500 justify-center cursor-pointer flex items-center gap-1  bg-blue-400"
+            >
+              <IoIosAdd className="w-5 h-5 text-bold" />
+              <p className="text-center font-medium">Add Lecture</p>
+            </div>
           </div>
 
           {/* Right Side - Form */}
@@ -181,7 +212,9 @@ const EditCourse = () => {
               <input
                 type="text"
                 value={category}
-                onChange={(e) => setCategory(e.target.value.trim().toLowerCase())}
+                onChange={(e) =>
+                  setCategory(e.target.value.trim().toLowerCase())
+                }
                 className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white"
               />
             </div>
