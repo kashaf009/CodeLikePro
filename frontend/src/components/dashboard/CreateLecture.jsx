@@ -1,6 +1,41 @@
-import React from "react";
+import axios from "axios";
+import { BASE_URL } from "../../utils/constants";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { ImSpinner2 } from "react-icons/im";
+
 
 const CreateLecture = () => {
+  const {courseId} = useParams();
+  const [lectureTitle, setlectureTitle] = useState("");
+  const [loading, setloading] = useState(false)
+  const [error, seterror] = useState(null)
+  
+
+  const HandleAddLecture = async () => {
+    if(!lectureTitle){
+     seterror("Please enter leacture title")
+     return; 
+    }
+    seterror("");
+    setloading(true)
+    try {
+      const res = await axios.post(
+        BASE_URL + `/createLecture/${courseId}`,
+        { lectureTitle:lectureTitle },
+        { withCredentials: true },
+      );
+
+      console.log(res?.data);
+      
+    } catch (error) {
+      console.log(error?.response?.data?.message);
+    }
+    finally{
+      setloading(false)
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900 px-4">
       <div className="w-full max-w-xl rounded-2xl bg-slate-800 p-8 shadow-xl">
@@ -18,14 +53,20 @@ const CreateLecture = () => {
 
           <input
             id="lectureTitle"
+            onChange={(e) => setlectureTitle(e.target.value)}
             type="text"
             placeholder="Enter lecture title"
             className="w-full rounded-lg border border-gray-200 text-white px-4 py-3 outline-none placeholder:text-gray-400 transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
           />
         </div>
+        {error && <p className="text-red-500 mb-2 mt-2">{error}</p>}
 
-        <button className="w-full rounded-lg bg-blue-600 py-3 text-white font-semibold transition hover:bg-blue-700">
-          Add Lecture
+        <button
+          onClick={HandleAddLecture}
+          disabled={loading}
+          className="w-full rounded-lg bg-blue-600 py-3 text-white font-semibold transition hover:bg-blue-700"
+        >
+          {loading ? <ImSpinner2 className="animate-spin mx-auto text-2xl "/> :"Add Lecture"}
         </button>
       </div>
     </div>

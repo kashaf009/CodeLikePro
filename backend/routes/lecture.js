@@ -11,15 +11,19 @@ lectureRoute.post("/createLecture/:courseId", isAuth, async (req, res) => {
     const { lectureTitle } = req.body;
 
     if (!lectureTitle || !courseId) {
-      return req.status(400).json({ message: "lectureTitle is required" });
+      return res.status(400).json({ message: "lectureTitle is required" });
     }
 
     const newLecture = await lecture.create({ lectureTitle });
     const course = await courseModel.findById(courseId);
+
+    if(!course){
+      return res.status(404).json({message:"course not found"})
+    }
     if (course) {
       course.lectures.push(newLecture._id);
     }
-    course.populate("lecture");
+    course.populate("lectures");
     await course.save();
     return res.status(200).json({
       message: "leacture created successfully",
@@ -42,7 +46,7 @@ lectureRoute.get("/getCourseLectures/:courseId", isAuth, async (req,res) => {
         if(!course){
             return res.status(400).json({message:"Course Not found"})
         }
-        course.populate("lecture")
+        course.populate("lectures")
 
         await course.save()
 

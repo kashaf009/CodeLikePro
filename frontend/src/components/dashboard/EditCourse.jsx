@@ -129,6 +129,7 @@ const EditCourse = () => {
             ? `max-w-5xl  mx-auto mb-20 mt-20 bg-slate-800 rounded-2xl shadow-xl overflow-hidden`
             : ` bg-slate-950`
         }
+      
       >
         {/* Header */}
         <div
@@ -283,6 +284,7 @@ const EditCourse = () => {
 
                   <span className="text-white">Publish Course</span>
                 </div>
+                
 
                 <button
                   type="submit"
