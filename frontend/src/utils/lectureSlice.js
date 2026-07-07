@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const lectureSlice = createSlice({
-    name: "course",
+    name: "lecture",
     initialState:{
-        lectureDate:[]
+        lectureData:[]
     },
     reducers: {
         addLecture:(state,action)=>{
-             state.lectureDate = action.payload
+             state.lectureData = action.payload
         }
 
 }})

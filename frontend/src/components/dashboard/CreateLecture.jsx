@@ -3,13 +3,18 @@ import { BASE_URL } from "../../utils/constants";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { ImSpinner2 } from "react-icons/im";
+import { useDispatch, useSelector } from "react-redux";
+import { addLecture } from "../../utils/lectureSlice";
 
 
 const CreateLecture = () => {
+  const dispatch = useDispatch()
   const {courseId} = useParams();
   const [lectureTitle, setlectureTitle] = useState("");
   const [loading, setloading] = useState(false)
   const [error, seterror] = useState(null)
+  const {lectureData} = useSelector(store => store.lecture)
+  console.log(lectureData);
   
 
   const HandleAddLecture = async () => {
@@ -26,7 +31,10 @@ const CreateLecture = () => {
         { withCredentials: true },
       );
 
+      
+
       console.log(res?.data);
+      dispatch(addLecture([...lectureData,res?.data?.lecture]))
       
     } catch (error) {
       console.log(error?.response?.data?.message);
