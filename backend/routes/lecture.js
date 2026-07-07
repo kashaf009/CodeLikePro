@@ -17,8 +17,8 @@ lectureRoute.post("/createLecture/:courseId", isAuth, async (req, res) => {
     const newLecture = await lecture.create({ lectureTitle });
     const course = await courseModel.findById(courseId);
 
-    if(!course){
-      return res.status(404).json({message:"course not found"})
+    if (!course) {
+      return res.status(404).json({ message: "course not found" });
     }
     if (course) {
       course.lectures.push(newLecture._id);
@@ -37,26 +37,22 @@ lectureRoute.post("/createLecture/:courseId", isAuth, async (req, res) => {
   }
 });
 
+lectureRoute.get("/getCourseLectures/:courseId", isAuth, async (req, res) => {
+  try {
+    const { courseId } = req.params;
 
-lectureRoute.get("/getCourseLectures/:courseId", isAuth, async (req,res) => {
-    try {
-        const {courseId} = req.params;
-        
-        const course = courseModel.findById(courseId)
-        if(!course){
-            return res.status(400).json({message:"Course Not found"})
-        }
-        course.populate("lectures")
-
-        await course.save()
-
-        res.status(200).json({message:"courseLecture fetched successfully", course:course})
-
-        
-    } catch (error) {
-         res.status(500).json({ message: `Failed to get lecture ${error.message}` });
-        
+    const course =await courseModel.findById(courseId);
+    if (!course) {
+      return res.status(400).json({ message: "Course Not found" });
     }
-})
+    await course.populate("lectures");
+
+    res
+      .status(200)
+      .json({ message: "courseLecture fetched successfully", course: course });
+  } catch (error) {
+    res.status(500).json({ message: `Failed to get lecture ${error.message}` });
+  }
+});
 
 export default lectureRoute;
