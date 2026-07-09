@@ -2,6 +2,8 @@ import express from "express";
 import isAuth from "../middleware/isAuth.js";
 import lecture from "../models/LectureModel.js";
 import courseModel from "../models/courseModel.js";
+import uploadOnCloudinary from "../utils/cloudinaryUpload.js";
+import fs from "fs";
 
 const lectureRoute = express.Router();
 
@@ -41,7 +43,7 @@ lectureRoute.get("/getCourseLectures/:courseId", isAuth, async (req, res) => {
   try {
     const { courseId } = req.params;
 
-    const course =await courseModel.findById(courseId);
+    const course = await courseModel.findById(courseId);
     if (!course) {
       return res.status(400).json({ message: "Course Not found" });
     }
@@ -54,5 +56,52 @@ lectureRoute.get("/getCourseLectures/:courseId", isAuth, async (req, res) => {
     res.status(500).json({ message: `Failed to get lecture ${error.message}` });
   }
 });
+
+// edit lecture
+
+lectureRoute.patch(
+  "/editLecture/:lectureId",
+  upload.single("video"),
+  isAuth,
+  async (req, res) => {
+    try {
+      const { lectureId } = req.params;
+      const { lectureTitle, isPreviewFree } = req.body;
+
+      const lectureinfo = lecture.findById(lectureId);
+
+      if (!lectureinfo) {
+        return res.status(400).json({ message: "lecture not found" });
+      }
+
+      if (lectureTitle) {
+        if (lectureTitle.length < 4 || lectureTitle.length > 60) {
+          return res
+            .status(400)
+            .json({ message: "title must be more then 4 and less then 80" });
+        }
+        lectureinfo.lectureTitle = lectureTitle;
+      }
+      if (isPreviewFree != undefined) {
+        lectureinfo.isPreviewFree = isPreviewFree;
+      }
+
+      if (req.file) {
+        const uplodedFile = await uploadOnCloudinary(req?.file?.path);
+        lectureinfo.videoUrl = uplodedFile.secure_url;
+
+        if (fs.existsSync(req.file.path)) {
+          fs.unlinkSync(req.file.path);
+        }
+      }
+
+
+      await lectureinfo.save()
+      res.status(200).json({message:"lecture Updated successfuly" , data:lectureinfo})
+    } catch (error) {
+      res.status(500).json({message:`edit course error ${error.message}`})
+    }
+  },
+);
 
 export default lectureRoute;
