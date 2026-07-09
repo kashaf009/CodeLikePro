@@ -5,7 +5,7 @@ import cloudinary from "../config/cloudinary.js"
 const uploadOnCloudinary = async (filepath) => {
     try {
         const result =await cloudinary.uploader.upload(filepath,{
-            resource_type:"image"
+            resource_type:"auto"
         });
 
         return result

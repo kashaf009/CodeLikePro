@@ -4,6 +4,7 @@ import lecture from "../models/LectureModel.js";
 import courseModel from "../models/courseModel.js";
 import uploadOnCloudinary from "../utils/cloudinaryUpload.js";
 import fs from "fs";
+import upload from "../middleware/multer.js";
 
 const lectureRoute = express.Router();
 
@@ -68,7 +69,7 @@ lectureRoute.patch(
       const { lectureId } = req.params;
       const { lectureTitle, isPreviewFree } = req.body;
 
-      const lectureinfo = lecture.findById(lectureId);
+      const lectureinfo =await lecture.findById(lectureId);
 
       if (!lectureinfo) {
         return res.status(400).json({ message: "lecture not found" });
