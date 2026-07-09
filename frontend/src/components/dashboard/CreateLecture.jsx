@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addLecture } from "../../utils/lectureSlice";
 import { IoIosAdd, IoIosArrowRoundBack } from "react-icons/io";
 import { CiVideoOn } from "react-icons/ci";
+import { TbEdit } from "react-icons/tb";
 
 const CreateLecture = () => {
   const navigate = useNavigate();
@@ -16,7 +17,9 @@ const CreateLecture = () => {
   const [loading, setloading] = useState(false);
   const [error, seterror] = useState(null);
   const { lectureData } = useSelector((store) => store.lecture);
+ 
 
+  
   const HandleAddLecture = async () => {
     if (!lectureTitle) {
       seterror("Please enter leacture title");
@@ -58,7 +61,7 @@ const CreateLecture = () => {
     fetchCourseData();
   }, []);
 
-  return (
+  return ( lectureData &&
     <div className="min-h-screen flex  justify-center bg-slate-900 px-4">
       <div className="w-full max-w-2xl mb-20 min-h-screen mt-20 rounded-2xl bg-slate-800 px-8 pt-10 shadow-xl">
         <h2 className="mb-6 text-center text-white text-3xl font-bold ">
@@ -117,12 +120,18 @@ const CreateLecture = () => {
           {lectureData.map((lec, index) => {
             return (
               <div
-                className="w-full px-3 items-center gap-2 flex mb-3 py-2 rounded-md bg-gray-200 "
+                className="w-full px-3 pr-3 justify-between items-center gap-2 flex mb-3 py-2 rounded-md bg-gray-200 "
                 key={lec._id}
               >
-                <p className="text-md mr-2 text-gray-500">{index + 1}</p>
-                <CiVideoOn className="w-4 h-4" />
-                <p className="text-sm font-medium">{lec.lectureTitle}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-md mr-2 text-gray-500">{index + 1}</p>
+                  <CiVideoOn className="w-4 h-4" />
+                  <p className="text-sm font-medium">{lec.lectureTitle}</p>
+                </div>
+
+                <div>
+                  <TbEdit onClick={()=>navigate(`/dashboard/create-course/edit/${courseId}/${lec._id}`)} className="hover:text-blue-500 cursor-pointer" />
+                </div>
               </div>
             );
           })}
