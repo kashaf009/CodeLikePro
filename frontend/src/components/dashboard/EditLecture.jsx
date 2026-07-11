@@ -8,6 +8,7 @@ import { addLecture } from "../../utils/lectureSlice";
 import {
   IoArrowBackOutline,
   IoCheckmarkDoneCircleOutline,
+  IoChevronBack,
 } from "react-icons/io5";
 
 const EditLecture = () => {
@@ -70,7 +71,11 @@ const EditLecture = () => {
   return (
     <div className="bg-slate-950 h-screen items-center flex justify-center">
       {state === 1 && (
+
+
         <div className="bg-slate-800  rounded-xl px-8 flex flex-col w-[50%]  ">
+
+          <IoChevronBack onClick={()=>navigate(`/dashboard/create-course/edit/createLecture/${courseId}`)} className="absolute hover:text-blue-500 cursor-pointer text-2xl text-white top-57 left-78" />
           <h1 className="text-center text-gray-200 pt-10 mb-4 font-bold text-2xl">
             Edit lecture
           </h1>
@@ -113,7 +118,7 @@ const EditLecture = () => {
           {Error && <p>{Error}</p>}
           <div
             onClick={handleEdit}
-            className="w-full mb-10 py-1 hover:bg-blue-600 rounded-md bg-blue-500"
+            className="w-full  cursor-pointer mb-10 py-1 hover:bg-blue-600 rounded-md bg-blue-500"
           >
             <p className="text-center text-md text-white font-medium ">
               {loading ? (
