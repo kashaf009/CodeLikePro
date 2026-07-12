@@ -18,6 +18,7 @@ import EditCourse from "./components/dashboard/EditCourse.jsx";
 import Bootcamps from "./components/Bootcamps.jsx";
 import CreateLecture from "./components/dashboard/CreateLecture.jsx";
 import EditLecture from "./components/dashboard/EditLecture.jsx";
+import ViewCourse from "./components/ViewCourse.jsx";
 
 const App = () => {
   const user = useSelector((store) => store.user);
@@ -35,6 +36,7 @@ const App = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/editprofile" element={<EditProfile />} />
       <Route path="/bootcamps" element={<Bootcamps/>} />
+       <Route path="/viewcourse/:courseId" element={<ViewCourse/>} />
 
       {/* Educator Routes */}
       <Route

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Nav from "./Nav";
+import { useNavigate } from "react-router-dom";
 
 const Bootcamps = () => {
   const courses = useSelector((store) => store.course);
+  const navigate =useNavigate()
 
   const [Category, setCategory] = useState([]);
   const [FilteredCourses, setFilteredCourses] = useState([]);
@@ -181,7 +183,7 @@ const Bootcamps = () => {
           <div className="text-white  grid grid-cols-3 gap-5">
             {FilteredCourses.map((course) => {
               return (
-                <section
+                <section onClick={()=>navigate(`/viewcourse/${course._id}`)}
                   key={course?.id}
                   className="bg-slate-800 mb-10 border-b flex flex-col justify-between hover:border-b-[#4f84c9] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
                 >

@@ -178,7 +178,7 @@ const Home = () => {
           <div className="grid mt-20 z-2  mb-20 grid-cols-3 gap-5 ">
             {courses.slice(0,6).map((course) => {
               return (
-                <section
+                <section onClick={()=>navigate(`/viewcourse/${course._id}`)}
                   key={course?.id}
                   className="bg-slate-800  border-b flex flex-col justify-between hover:border-b-[#4f84c9] border-transparent  rounded-md min-h-110  transform transition-all duration-300 hover:scale-101"
                 >
