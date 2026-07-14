@@ -54,7 +54,8 @@ courseRoute.get("/Courses", isAuth, async (req, res) => {
   try {
     const courses = await courseModel
       .find({ ispublished: true })
-      .populate("creator", "name emailId photoUrl");
+      .populate("creator", "name emailId photoUrl")
+      .populate("lectures");
 
     return res
       .status(200)
@@ -202,7 +203,8 @@ courseRoute.get("/Course/:courseId", isAuth, async (req, res) => {
 
     const course = await courseModel
       .findById(courseId)
-      .populate("creator", "name emailId photoUrl");
+      .populate("creator", "name emailId photoUrl").
+      populate("lectures");
 
     if (!course) {
       return res.status(404).json({ message: "course not found" });

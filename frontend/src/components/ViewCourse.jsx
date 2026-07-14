@@ -1,38 +1,52 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
+import { BASE_URL } from "../utils/constants";
+import axios from "axios";
+
 const ViewCourse = () => {
+  const courses = useSelector((store) => store.course);
+  console.log(courses);
+  const [SelectedCourse, setSelectedCourse] = useState("");
 
-  const courses = useSelector(store=>store.course)
+  const {lectures} = SelectedCourse;
 
-  const {courseId} = useParams()
+  const { courseId } = useParams();
 
-  const SelectedCourse = courses.find((course)=>course._id=== courseId);
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/Course/${courseId}`, {
+          withCredentials: true,
+        });
 
-  console.log(SelectedCourse.title);
-  
+        setSelectedCourse(res?.data?.data);
+        console.log(res?.data?.data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
 
-  
-
-
-
+    fetchCourse();
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-950 py-10 px-4">
-      <div className="max-w-6xl border border-gray-700 mx-auto bg-slate-900 text-white rounded-2xl mt-20 shadow-lg overflow-hidden md:flex">
+      <div className="max-w-6xl border border-gray-700 mx-auto gap-8  bg-slate-900 text-white rounded-2xl mt-20 shadow-lg overflow-hidden md:flex">
         {/* Left Side */}
-        <div className="">
-          <img className="w-full h-100"
+        <div key={SelectedCourse._id} className="">
+          <img
+            className="w-full m-5 rounded-xl h-100"
             src={SelectedCourse.thumbnail}
             alt={SelectedCourse.title}
-           
           />
         </div>
 
         {/* Right Side */}
         <div className="md:w-1/2 p-8 flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-200">
+            <h1 className="text-4xl mt-8 font-bold text-gray-200">
               {SelectedCourse.title}
             </h1>
 
@@ -50,15 +64,6 @@ const ViewCourse = () => {
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <a
-             
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 text-center cursor-pointer bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-lg transition"
-            >
-              ▶ Free Preview Lecture
-            </a>
-
             <button className="flex-1 bg-blue-700 cursor-pointer hover:bg-blue-800 text-white font-semibold py-3 rounded-lg transition">
               Enroll Now
             </button>
@@ -66,7 +71,10 @@ const ViewCourse = () => {
         </div>
       </div>
 
-     
+      <div className="max-w-6xl border border-gray-700 mx-auto gap-8  bg-slate-900 text-white rounded-2xl mt-2 shadow-lg overflow-hidden md:flex">
+
+        
+      </div>
     </div>
   );
 };

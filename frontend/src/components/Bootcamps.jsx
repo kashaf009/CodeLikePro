@@ -180,7 +180,7 @@ const Bootcamps = () => {
 
         {/* right side */}
         {FilteredCourses.length > 0 ? (
-          <div className="text-white  grid grid-cols-3 gap-5">
+          <div key={FilteredCourses._id} className="text-white  grid grid-cols-3 gap-5">
             {FilteredCourses.map((course) => {
               return (
                 <section onClick={()=>navigate(`/viewcourse/${course._id}`)}
