@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaPlay, FaLock } from "react-icons/fa";
 import { BASE_URL } from "../utils/constants";
 import { FaStar, FaUserGraduate } from "react-icons/fa";
-import { addUser } from "../utils/userSlice";
 
 const ViewCourse = () => {
-  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
   const [showAllLectures, setShowAllLectures] = useState(false);
@@ -26,14 +24,10 @@ const ViewCourse = () => {
   const { courseId } = useParams();
 
   const lectures = SelectedCourse?.lectures || [];
-  const enrolledIds = Array.isArray(user?.enrolledCourse)
-    ? user.enrolledCourse
-    : user?.enrolledCourse
-    ? [user.enrolledCourse]
-    : [];
   const isEnrolled = Boolean(
-    SelectedCourse?._id &&
-      enrolledIds.some((id) => id.toString() === SelectedCourse._id),
+    user?.enrolledCourse &&
+      SelectedCourse?._id &&
+      user?.enrolledCourse === SelectedCourse?._id,
   );
   const effectiveShowAllLectures = showAllLectures || isEnrolled;
 
@@ -64,12 +58,6 @@ const ViewCourse = () => {
       navigate("/login");
       return;
     }
-
-    if (isEnrolled) {
-      navigate(`/lecture/${courseId}`);
-      return;
-    }
-
     setShowPaymentModal(true);
     setPaymentError("");
     setPaymentAmount("");
@@ -94,14 +82,6 @@ const ViewCourse = () => {
       setPaymentSuccess("Payment successful. You are now enrolled!");
       setShowAllLectures(true);
       setShowPaymentModal(false);
-      dispatch(addUser({
-        ...user,
-        enrolledCourse: Array.isArray(user?.enrolledCourse)
-          ? [...user.enrolledCourse, courseId]
-          : user?.enrolledCourse
-          ? [...enrolledIds, courseId]
-          : [courseId],
-      }));
       navigate(`/lecture/${courseId}`);
     } catch (error) {
       setPaymentError(error?.response?.data?.message || "Payment failed");
@@ -163,11 +143,12 @@ const ViewCourse = () => {
             <p className="text-gray-400 mt-3">{SelectedCourse.description}</p>
           </div>
 
-              <button
+          <button
             onClick={handleEnrollClick}
-            className={`mt-8 py-3 rounded-lg font-semibold ${isEnrolled ? "bg-cyan-600 hover:bg-cyan-700" : "bg-blue-700 hover:bg-blue-800"}`}
+            disabled={isEnrolled}
+            className={`mt-8 py-3 rounded-lg font-semibold ${isEnrolled ? "bg-gray-600 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
           >
-            {isEnrolled ? "Continue to Lecture" : "Enroll Now"}
+            {isEnrolled ? "Enrolled" : "Enroll Now"}
           </button>
           {paymentSuccess && (
             <p className="mt-3 text-green-400">{paymentSuccess}</p>

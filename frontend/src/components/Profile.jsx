@@ -93,39 +93,21 @@ const Profile = () => {
             />
           </div>}
 
-          {user?.enrolledCourse && user.enrolledCourse.length > 0 && (
-            <div className=" mb-5 items-center ">
-              <label
-                className="text-[#cdd3de] uppercase  text-sm  font-black tracking-tighter font-['IBM_Plex_Mono']"
-                htmlFor="role"
-              >
-                Courses Enrolled
-              </label>
-              <textarea
-                value={user.enrolledCourse.join("\n")}
-                className="w-full mt-2 min-h-[120px] resize-none rounded-md border border-gray-600 bg-slate-900 text-[#dfe9f6] py-2 px-4"
-                id="role"
-                disabled
-              />
-            </div>
-          )}
-          {(!user?.enrolledCourse || user.enrolledCourse.length === 0) && (
-            <div className=" mb-5 items-center ">
-              <label
-                className="text-[#cdd3de] uppercase  text-sm  font-black tracking-tighter font-['IBM_Plex_Mono']"
-                htmlFor="role"
-              >
-                Courses Enrolled
-              </label>
-              <input
-                value="None"
-                className="w-full mt-2 border rounded-md outline-none border-gray-600 text-[#dfe9f6] py-2 px-4"
-                id="role"
-                type="text"
-                disabled
-              />
-            </div>
-          )}
+          { user?.enrolledCourse && <div className=" mb-5 items-center ">
+            <label
+              className="text-[#cdd3de] uppercase  text-sm  font-black tracking-tighter font-['IBM_Plex_Mono']"
+              htmlFor="role"
+            >
+              course enrolled
+            </label>
+            <input
+              value={user?.enrolledCourse.length}
+              className="w-full mt-2 border rounded-md outline-none border-gray-600 text-[#dfe9f6] py-2 px-4"
+              id="role"
+              type="text"
+              disabled
+            />
+          </div>}
 
           <div onClick={()=>navigate("/editprofile")} className="bg-[#4CD7F6] hover:bg-[#85e4f9] rounded-md mb-10 py-2 px-4">
             <p className=" text-center uppercase  text-md  font-black tracking-tighter font-['IBM_Plex_Mono']">Edit profile</p>

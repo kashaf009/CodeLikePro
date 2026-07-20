@@ -9,26 +9,15 @@ const profileRoute = express.Router();
 
 profileRoute.get("/profile", isAuth, async (req, res) => {
   try {
-    const userData = await user
-      .findById(req.user._id)
-      .populate("enrolledCourse", "title");
-
-    if (!userData) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
+    const user = req.user;
     const safeinfo = {
-      id: userData._id,
-      name: userData.name,
-      emailId: userData.emailId,
-      role: userData.role,
-      photoUrl: userData.photoUrl,
-      descprition: userData.descprition,
-      enrolledCourse: Array.isArray(userData.enrolledCourse)
-        ? userData.enrolledCourse.map((course) => course.title)
-        : userData.enrolledCourse
-        ? [userData.enrolledCourse.title]
-        : [],
+      id: user._id,
+      name: user.name,
+      emailId: user.emailId,
+      role: user.role,
+      photoUrl: user.photoUrl,
+      descprition: user.descprition,
+      enrolledCourse: user.enrolledCourse,
     };
 
     res.status(200).json({ user: safeinfo });

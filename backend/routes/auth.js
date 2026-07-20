@@ -83,6 +83,8 @@ authRouter.post("/signup", async (req, res) => {
       emailId: User.emailId,
       role: User.role,
       photoUrl: User.photoUrl,
+      enrolledCourse: [],
+      profileLoaded: false,
     };
 
     return res
@@ -126,6 +128,8 @@ authRouter.post("/login", async (req, res) => {
       emailId: verifiedUser.emailId,
       role: verifiedUser.role,
       photoUrl: verifiedUser.photoUrl,
+      enrolledCourse: [],
+      profileLoaded: false,
     };
 
     res.cookie("token", token, {
@@ -161,18 +165,16 @@ authRouter.post("/googleSignin", async (req, res) => {
   try {
     const { name, emailId, role } = req.body;
 
-    const verifiedUser = await user.findOne({ emailId });
+    let verifiedUser = await user.findOne({ emailId });
 
     if (!verifiedUser) {
       verifiedUser = new user({
         name,
         emailId,
         role,
-        
       });
 
-      await verifiedUser.save()
-
+      await verifiedUser.save();
     }
 
     const token = await getToken(verifiedUser._id);
@@ -184,11 +186,13 @@ authRouter.post("/googleSignin", async (req, res) => {
     });
 
     const safeinfo = {
-      id: verifiedUser._id ,
-      name: verifiedUser.name ,
-      emailId: verifiedUser.emailId, 
-      role: verifiedUser.role ,
-      photoUrl: verifiedUser.photoUrl 
+      id: verifiedUser._id,
+      name: verifiedUser.name,
+      emailId: verifiedUser.emailId,
+      role: verifiedUser.role,
+      photoUrl: verifiedUser.photoUrl,
+      enrolledCourse: [],
+      profileLoaded: false,
     };
 
 

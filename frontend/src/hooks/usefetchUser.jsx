@@ -11,9 +11,6 @@ const UsefetchUser = () => {
   const dispatch = useDispatch();
 
   const fetchUser = async () => {
-    if (user) {
-      return;
-    }
     try {
       const res = await axios.get(BASE_URL + "/profile", {
         withCredentials: true,
@@ -30,10 +27,10 @@ const UsefetchUser = () => {
     }
   };
   useEffect(() => {
-    if (!user) {
+    if (!user || user.profileLoaded !== true) {
       fetchUser();
     }
-  }, []);
+  }, [user]);
 
   
 }
