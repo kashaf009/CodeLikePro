@@ -16,7 +16,8 @@ profileRoute.get("/profile", isAuth, async (req, res) => {
       emailId: user.emailId,
       role: user.role,
       photoUrl: user.photoUrl,
-      descprition:user.descprition
+      descprition: user.descprition,
+      enrolledCourse: user.enrolledCourse,
     };
 
     res.status(200).json({ user: safeinfo });

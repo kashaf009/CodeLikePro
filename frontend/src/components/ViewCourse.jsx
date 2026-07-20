@@ -1,25 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaPlay, FaLock } from "react-icons/fa";
 import { BASE_URL } from "../utils/constants";
 import { FaStar, FaUserGraduate } from "react-icons/fa";
 
 const ViewCourse = () => {
-  const courses = useSelector((store) => store.course);
+  const user = useSelector((store) => store.user);
+  const navigate = useNavigate();
   const [showAllLectures, setShowAllLectures] = useState(false);
-  console.log(courses);
-
   const [SelectedCourse, setSelectedCourse] = useState({});
   const [selectedLecture, setSelectedLecture] = useState(null);
   const [playVideo, setPlayVideo] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState("");
+  const [paymentError, setPaymentError] = useState("");
+  const [paymentSuccess, setPaymentSuccess] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const videoRef = useRef(null);
 
   const { courseId } = useParams();
 
   const lectures = SelectedCourse?.lectures || [];
+  const isEnrolled = Boolean(
+    user?.enrolledCourse &&
+      SelectedCourse?._id &&
+      user?.enrolledCourse === SelectedCourse?._id,
+  );
+  const effectiveShowAllLectures = showAllLectures || isEnrolled;
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -42,6 +52,49 @@ const ViewCourse = () => {
 
     fetchCourse();
   }, [courseId]);
+
+  const handleEnrollClick = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    setShowPaymentModal(true);
+    setPaymentError("");
+    setPaymentAmount("");
+  };
+
+  const handlePaymentSubmit = async () => {
+    const amountNumber = Number(paymentAmount);
+
+    if (!paymentAmount || isNaN(amountNumber) || amountNumber <= 0) {
+      setPaymentError("Please enter a valid numeric amount");
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await axios.post(
+        `${BASE_URL}/enroll/${courseId}`,
+        { amount: amountNumber },
+        { withCredentials: true },
+      );
+
+      setPaymentSuccess("Payment successful. You are now enrolled!");
+      setShowAllLectures(true);
+      setShowPaymentModal(false);
+      navigate(``);
+    } catch (error) {
+      setPaymentError(error?.response?.data?.message || "Payment failed");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+    setPaymentError("");
+    setPaymentAmount("");
+  };
 
   const handlePlay = () => {
     setPlayVideo(true);
@@ -90,20 +143,73 @@ const ViewCourse = () => {
             <p className="text-gray-400 mt-3">{SelectedCourse.description}</p>
           </div>
 
-          <button className="mt-8 bg-blue-700 hover:bg-blue-800 py-3 rounded-lg font-semibold">
-            Enroll Now
+          <button
+            onClick={handleEnrollClick}
+            disabled={isEnrolled}
+            className={`mt-8 py-3 rounded-lg font-semibold ${isEnrolled ? "bg-gray-600 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
+          >
+            {isEnrolled ? "Enrolled" : "Enroll Now"}
           </button>
+          {paymentSuccess && (
+            <p className="mt-3 text-green-400">{paymentSuccess}</p>
+          )}
         </div>
       </div>
-
-      {/* Course Content */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
+          <div className="w-full max-w-md rounded-3xl bg-slate-900 p-6 text-white border border-gray-700 shadow-xl">
+            <div className="flex items-center justify-between mb-5">
+              <h2 className="text-2xl font-bold">Fake Payment</h2>
+              <button
+                onClick={handleCloseModal}
+                className="text-gray-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Enter any numeric amount to simulate checkout and enroll in this course.
+            </p>
+            <label className="block text-sm mb-2 text-gray-300">
+              Amount
+            </label>
+            <input
+              value={paymentAmount}
+              onChange={(e) => {
+                setPaymentAmount(e.target.value.replace(/[^0-9.]/g, ""));
+                setPaymentError("");
+              }}
+              className="w-full rounded-xl border border-gray-600 bg-slate-950 px-4 py-3 text-white outline-none"
+              placeholder="Enter amount"
+            />
+            {paymentError && (
+              <p className="text-red-500 mt-2">{paymentError}</p>
+            )}
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={handlePaymentSubmit}
+                disabled={isProcessing}
+                className="flex-1 rounded-xl bg-cyan-500 py-3 font-semibold text-slate-950 disabled:opacity-50"
+              >
+                {isProcessing ? "Processing..." : "Pay & Enroll"}
+              </button>
+              <button
+                onClick={handleCloseModal}
+                className="flex-1 rounded-xl border border-gray-600 bg-slate-800 py-3 text-white"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="max-w-6xl mx-auto mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Side */}
         <div className="bg-slate-900 border border-gray-700 rounded-2xl p-5">
           <h2 className="text-2xl font-bold text-white mb-5">Course Content</h2>
 
           <div className="space-y-3">
-            {(showAllLectures ? lectures : lectures.slice(0, 7)).map(
+            {(effectiveShowAllLectures ? lectures : lectures.slice(0, 7)).map(
               (lecture, index) => (
                 <div
                   key={lecture._id}
@@ -145,7 +251,7 @@ const ViewCourse = () => {
               ),
             )}
 
-            {lectures.length > 8 && !showAllLectures && (
+            {lectures.length > 8 && !effectiveShowAllLectures && (
               <button
                 className="w-full mt-3   cursor-not-allowed opacity-60 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition"
                 disabled={true}
@@ -174,7 +280,8 @@ const ViewCourse = () => {
                   controlsList="nodownload"
                   src={selectedLecture.videoUrl}
                   controls={playVideo}
-                  className="w-full h-[400px] rounded-xl object-cover"
+                  className="w-full rounded-xl object-cover"
+                  style={{ height: 400 }}
                 />
 
                 {!playVideo && (

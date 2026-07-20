@@ -1,6 +1,7 @@
 import express from "express";
 import isAuth from "../middleware/isAuth.js";
 import courseModel from "../models/courseModel.js";
+import user from "../models/userModel.js";
 import upload from "../middleware/multer.js";
 import mongoose from "mongoose"
 import uploadOnCloudinary from "../utils/cloudinaryUpload.js";
@@ -192,6 +193,40 @@ courseRoute.delete("/deleteCourse/:courseId", isAuth, async (req, res) => {
     return res
       .status(500)
       .json({ message: `deleteCourse Error ${error.message}` });
+  }
+});
+
+courseRoute.post("/enroll/:courseId", isAuth, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { courseId } = req.params;
+    const { amount } = req.body;
+
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      return res.status(400).json({ message: "Enter a valid numeric amount" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(courseId)) {
+      return res.status(400).json({ message: "Invalid course id" });
+    }
+
+    const course = await courseModel.findById(courseId);
+
+    if (!course) {
+      return res.status(404).json({ message: "course not found" });
+    }
+
+    if (course.enrolled && course.enrolled.toString() === userId.toString()) {
+      return res.status(200).json({ message: "Already enrolled" });
+    }
+
+    await user.findByIdAndUpdate(userId, { enrolledCourse: courseId });
+    course.enrolled = userId;
+    await course.save();
+
+    return res.status(200).json({ message: "Enrollment successful" });
+  } catch (error) {
+    return res.status(500).json({ message: `enroll course Error ${error.message}` });
   }
 });
 
