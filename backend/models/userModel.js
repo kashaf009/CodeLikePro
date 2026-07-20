@@ -35,10 +35,12 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_640.png",
     },
-    enrolledCourse: {
-      type: mongoose.Schema.Types.ObjectId,
-      // ref:courseModel
-    },
+    enrolledCourse: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "course",
+      },
+    ],
     otp: {
       type: String,
     },

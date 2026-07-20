@@ -55,10 +55,12 @@ const courseSchema = new mongoose.Schema(
       require: true,
       ref: "user",
     },
-    enrolled: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-    },
+    enrolled: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     thumbnail: {
       type: String,
       default:

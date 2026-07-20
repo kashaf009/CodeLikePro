@@ -18,6 +18,7 @@ import EditCourse from "./components/dashboard/EditCourse.jsx";
 import Bootcamps from "./components/Bootcamps.jsx";
 import CreateLecture from "./components/dashboard/CreateLecture.jsx";
 import EditLecture from "./components/dashboard/EditLecture.jsx";
+import Lecture from "./components/Lecture.jsx";
 import ViewCourse from "./components/ViewCourse.jsx";
 
 const App = () => {
@@ -95,7 +96,9 @@ const App = () => {
         }
       />
 
-        <Route
+      <Route path="/lecture/:courseId" element={<Lecture />} />
+
+      <Route
         path="/dashboard/create-course/edit/:courseId/:lectureId"
         element={
           user?.role === "educator" ? (

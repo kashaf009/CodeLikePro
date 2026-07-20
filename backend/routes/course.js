@@ -216,15 +216,40 @@ courseRoute.post("/enroll/:courseId", isAuth, async (req, res) => {
       return res.status(404).json({ message: "course not found" });
     }
 
-    if (course.enrolled && course.enrolled.toString() === userId.toString()) {
+    const alreadyEnrolled = Array.isArray(course.enrolled)
+      ? course.enrolled.some((id) => id.toString() === userId.toString())
+      : course.enrolled?.toString() === userId.toString();
+
+    if (alreadyEnrolled) {
       return res.status(200).json({ message: "Already enrolled" });
     }
 
-    await user.findByIdAndUpdate(userId, { enrolledCourse: courseId });
-    course.enrolled = userId;
+    const updatedUser = await user.findByIdAndUpdate(
+      userId,
+      { $addToSet: { enrolledCourse: courseId } },
+      { new: true },
+    );
+
+    course.enrolled = Array.isArray(course.enrolled) ? course.enrolled : [];
+    if (!course.enrolled.some((id) => id.toString() === userId.toString())) {
+      course.enrolled.push(userId);
+    }
     await course.save();
 
-    return res.status(200).json({ message: "Enrollment successful" });
+    const safeinfo = {
+      id: updatedUser._id,
+      name: updatedUser.name,
+      emailId: updatedUser.emailId,
+      role: updatedUser.role,
+      photoUrl: updatedUser.photoUrl,
+      descprition: updatedUser.descprition,
+      enrolledCourse: updatedUser.enrolledCourse,
+    };
+
+    return res.status(200).json({
+      message: "Enrollment successful",
+      user: safeinfo,
+    });
   } catch (error) {
     return res.status(500).json({ message: `enroll course Error ${error.message}` });
   }
