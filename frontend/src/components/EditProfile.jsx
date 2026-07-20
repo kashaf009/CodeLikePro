@@ -157,7 +157,8 @@ const EditProfile = () => {
                 id="bio"
                 onClick={() => seterror(null)}
                 onChange={(e) => setdescprition(e.target.value)}
-                value={descprition ? descprition : "bio"}
+                value={descprition }
+                placeholder="bio"
               />
             </div>
           }

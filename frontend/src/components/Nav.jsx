@@ -41,7 +41,7 @@ const Nav = () => {
   return (
     <div className="fixed md:px-25 px-10 flex items-center justify-between top-0 bg-[linear-gradient(180deg,#051424_0%,#020817_100%)] z-20  h-18 border-b-slate-800 border w-full ">
       <div className="flex gap-10 items-center">
-        <div onClick={()=>navigate("/")} className="font-['space_grotesk'] flex items-center gap-2 text-2xl  md:text-3xl text-[#cddefe] tracking-tight font-black">
+        <div onClick={()=>navigate("/")} className="font-['space_grotesk'] cursor-pointer flex items-center gap-2 text-2xl  md:text-3xl text-[#cddefe] tracking-tight font-black">
           <span>
             <FaCode />
           </span>

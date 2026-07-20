@@ -109,8 +109,8 @@ const Profile = () => {
             />
           </div>}
 
-          <div onClick={()=>navigate("/editprofile")} className="bg-[#4CD7F6] hover:bg-[#85e4f9] rounded-md mb-10 py-2 px-4">
-            <p className=" text-center uppercase  text-md  font-black tracking-tighter font-['IBM_Plex_Mono']">Edit profile</p>
+          <div onClick={()=>navigate("/editprofile")} className="bg-[#4CD7F6] cursor-pointer hover:bg-[#85e4f9] rounded-md mb-10 py-2 px-4">
+            <p className=" text-center uppercase cursor-pointer  text-md  font-black tracking-tighter font-['IBM_Plex_Mono']">Edit profile</p>
           </div>
 
         </section>
