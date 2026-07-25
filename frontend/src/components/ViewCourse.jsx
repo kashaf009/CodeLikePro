@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaPlay, FaLock } from "react-icons/fa";
 import { BASE_URL } from "../utils/constants";
 import { FaStar, FaUserGraduate } from "react-icons/fa";
+import { addUser } from "../utils/userSlice";
 
 const ViewCourse = () => {
   const user = useSelector((store) => store.user);
@@ -25,11 +26,12 @@ const ViewCourse = () => {
 
   const lectures = SelectedCourse?.lectures || [];
   const isEnrolled = Boolean(
-    user?.enrolledCourse &&
-      SelectedCourse?._id &&
-      user?.enrolledCourse === SelectedCourse?._id,
+    user?.enrolledCourse?.some(
+      (enrolledId) => String(enrolledId) === String(SelectedCourse?._id),
+    ),
   );
   const effectiveShowAllLectures = showAllLectures || isEnrolled;
+  const coursePrice = Number(SelectedCourse?.price || 0);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -63,6 +65,8 @@ const ViewCourse = () => {
     setPaymentAmount("");
   };
 
+  const dispatch = useDispatch();
+
   const handlePaymentSubmit = async () => {
     const amountNumber = Number(paymentAmount);
 
@@ -71,15 +75,27 @@ const ViewCourse = () => {
       return;
     }
 
+    if (amountNumber !== coursePrice) {
+      setPaymentError(`Enter the exact course price ₹${coursePrice}`);
+      return;
+    }
+
     setIsProcessing(true);
     try {
-      await axios.post(
+      const response = await axios.post(
         `${BASE_URL}/enroll/${courseId}`,
         { amount: amountNumber },
         { withCredentials: true },
       );
 
-      setPaymentSuccess("Payment successful. You are now enrolled!");
+      const updatedCourses = response?.data?.enrolledCourse;
+
+      if (Array.isArray(updatedCourses)) {
+        dispatch(addUser({ ...user, enrolledCourse: updatedCourses }));
+      }
+
+      const msg = response?.data?.message || "Enrolled successfully";
+      setPaymentSuccess(msg === "Already enrolled" ? "You are already enrolled!" : "Payment successful. You are now enrolled!");
       setShowAllLectures(true);
       setShowPaymentModal(false);
       navigate(`/lecture/${courseId}`);
@@ -144,11 +160,16 @@ const ViewCourse = () => {
           </div>
 
           <button
-            onClick={handleEnrollClick}
-            disabled={isEnrolled}
-            className={`mt-8 py-3 rounded-lg font-semibold ${isEnrolled ? "bg-gray-600 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800"}`}
+            onClick={() => {
+              if (isEnrolled) {
+                navigate(`/lecture/${courseId}`);
+                return;
+              }
+              handleEnrollClick();
+            }}
+            className={`mt-8 py-3 rounded-lg font-semibold ${isEnrolled ? "bg-emerald-600 hover:bg-emerald-700" : "bg-blue-700 hover:bg-blue-800"}`}
           >
-            {isEnrolled ? "Enrolled" : "Enroll Now"}
+            {isEnrolled ? "Continue Course" : "Enroll Now"}
           </button>
           {paymentSuccess && (
             <p className="mt-3 text-green-400">{paymentSuccess}</p>
@@ -159,7 +180,7 @@ const ViewCourse = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
           <div className="w-full max-w-md rounded-3xl bg-slate-900 p-6 text-white border border-gray-700 shadow-xl">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-2xl font-bold">Fake Payment</h2>
+              <h2 className="text-2xl font-bold">Buy Course</h2>
               <button
                 onClick={handleCloseModal}
                 className="text-gray-400 hover:text-white"
@@ -167,8 +188,20 @@ const ViewCourse = () => {
                 ✕
               </button>
             </div>
+            <div className="mb-6 rounded-3xl border border-gray-700 bg-slate-950 p-4 flex gap-4">
+              <img
+                className="h-20 w-28 rounded-xl object-cover"
+                src={SelectedCourse.thumbnail}
+                alt={SelectedCourse.title}
+              />
+              <div>
+                <p className="text-sm text-slate-400">Course</p>
+                <h3 className="text-xl font-semibold text-white">{SelectedCourse.title}</h3>
+                <p className="mt-2 text-cyan-400 font-bold text-lg">₹{coursePrice}</p>
+              </div>
+            </div>
             <p className="text-gray-400 mb-4">
-              Enter any numeric amount to simulate checkout and enroll in this course.
+              Enter the exact course price to complete the purchase.
             </p>
             <label className="block text-sm mb-2 text-gray-300">
               Amount
@@ -180,7 +213,7 @@ const ViewCourse = () => {
                 setPaymentError("");
               }}
               className="w-full rounded-xl border border-gray-600 bg-slate-950 px-4 py-3 text-white outline-none"
-              placeholder="Enter amount"
+              placeholder={`Enter exact amount ₹${coursePrice}`}
             />
             {paymentError && (
               <p className="text-red-500 mt-2">{paymentError}</p>

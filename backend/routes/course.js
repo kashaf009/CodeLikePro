@@ -216,15 +216,82 @@ courseRoute.post("/enroll/:courseId", isAuth, async (req, res) => {
       return res.status(404).json({ message: "course not found" });
     }
 
-    if (course.enrolled && course.enrolled.toString() === userId.toString()) {
-      return res.status(200).json({ message: "Already enrolled" });
+    const coursePrice = Number(course.price);
+    if (Number(amount) !== coursePrice) {
+      return res.status(400).json({
+        message: `Enter the exact course price ₹${course.price}`,
+      });
     }
 
-    await user.findByIdAndUpdate(userId, { enrolledCourse: courseId });
-    course.enrolled = userId;
-    await course.save();
+    const userDoc = await user.findById(userId);
 
-    return res.status(200).json({ message: "Enrollment successful" });
+    if (!userDoc) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isCorrupted = !Array.isArray(userDoc.enrolledCourse);
+    const enrolledList = isCorrupted
+      ? (userDoc.enrolledCourse ? [userDoc.enrolledCourse] : [])
+      : [...userDoc.enrolledCourse];
+
+    const isCourseCorrupted = !Array.isArray(course.enrolled);
+    const courseEnrolledList = isCourseCorrupted
+      ? (course.enrolled ? [course.enrolled] : [])
+      : course.enrolled;
+
+    const alreadyEnrolledInUser = enrolledList.some(
+      (id) => id.toString() === courseId,
+    );
+
+    const alreadyEnrolledInCourse = courseEnrolledList.some(
+      (userRef) => userRef.toString() === userId.toString(),
+    );
+
+    if (alreadyEnrolledInUser || alreadyEnrolledInCourse) {
+      if (!alreadyEnrolledInUser) {
+        const fixed = [...enrolledList, new mongoose.Types.ObjectId(courseId)];
+        await user.updateOne({ _id: userId }, { $set: { enrolledCourse: fixed } });
+        enrolledList.push(new mongoose.Types.ObjectId(courseId));
+      }
+      if (!alreadyEnrolledInCourse) {
+        if (isCourseCorrupted) {
+          const fixedCourse = [...courseEnrolledList, userId];
+          await courseModel.updateOne({ _id: courseId }, { $set: { enrolled: fixedCourse } });
+        } else {
+          await courseModel.updateOne({ _id: courseId }, { $addToSet: { enrolled: userId } });
+        }
+      }
+      return res.status(200).json({
+        message: "Already enrolled",
+        enrolledCourse: enrolledList,
+      });
+    }
+
+    const newEnrolled = [...enrolledList, new mongoose.Types.ObjectId(courseId)];
+
+    if (isCorrupted) {
+      await user.updateOne(
+        { _id: userId },
+        { $set: { enrolledCourse: newEnrolled } },
+      );
+    } else {
+      await user.updateOne(
+        { _id: userId },
+        { $addToSet: { enrolledCourse: new mongoose.Types.ObjectId(courseId) } },
+      );
+    }
+
+    if (isCourseCorrupted) {
+      const newCourseEnrolled = [...courseEnrolledList, userId];
+      await courseModel.updateOne({ _id: courseId }, { $set: { enrolled: newCourseEnrolled } });
+    } else {
+      await courseModel.updateOne({ _id: courseId }, { $addToSet: { enrolled: userId } });
+    }
+
+    return res.status(200).json({
+      message: "Enrollment successful",
+      enrolledCourse: newEnrolled,
+    });
   } catch (error) {
     return res.status(500).json({ message: `enroll course Error ${error.message}` });
   }

@@ -83,7 +83,7 @@ authRouter.post("/signup", async (req, res) => {
       emailId: User.emailId,
       role: User.role,
       photoUrl: User.photoUrl,
-      enrolledCourse: [],
+      enrolledCourse: User.enrolledCourse || [],
       profileLoaded: false,
     };
 
@@ -128,7 +128,7 @@ authRouter.post("/login", async (req, res) => {
       emailId: verifiedUser.emailId,
       role: verifiedUser.role,
       photoUrl: verifiedUser.photoUrl,
-      enrolledCourse: [],
+      enrolledCourse: verifiedUser.enrolledCourse || [],
       profileLoaded: false,
     };
 
@@ -191,7 +191,7 @@ authRouter.post("/googleSignin", async (req, res) => {
       emailId: verifiedUser.emailId,
       role: verifiedUser.role,
       photoUrl: verifiedUser.photoUrl,
-      enrolledCourse: [],
+      enrolledCourse: verifiedUser.enrolledCourse || [],
       profileLoaded: false,
     };
 
