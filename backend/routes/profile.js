@@ -18,6 +18,7 @@ profileRoute.get("/profile", isAuth, async (req, res) => {
       photoUrl: user.photoUrl,
       descprition: user.descprition,
       enrolledCourse: user.enrolledCourse || [],
+      courseProgress: user.courseProgress || [],
       profileLoaded: true,
     };
 

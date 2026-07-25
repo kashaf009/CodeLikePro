@@ -41,6 +41,19 @@ const userSchema = new mongoose.Schema(
         ref: "course",
       },
     ],
+    courseProgress: [
+      {
+        course: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "course",
+        },
+        completedLectures: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+          },
+        ],
+      },
+    ],
     otp: {
       type: String,
     },

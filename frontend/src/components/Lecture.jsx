@@ -17,20 +17,44 @@ const Lecture = () => {
   const [showCompletionNotify, setShowCompletionNotify] = useState(false);
   const videoRef = useRef(null);
 
-  // Load completed lectures from localStorage on mount
+  // Load completed lectures from backend, falling back to localStorage
   useEffect(() => {
-    const saved = localStorage.getItem(`lecture_progress_${courseId}`);
-    if (saved) {
-      setCompletedLectures(new Set(JSON.parse(saved)));
+    const loadProgress = async () => {
+      const localKey = `lecture_progress_${courseId}`;
+      const savedLocal = localStorage.getItem(localKey);
+      const localSet = savedLocal
+        ? new Set(JSON.parse(savedLocal))
+        : new Set();
+
+      try {
+        const res = await axios.get(`${BASE_URL}/getProgress/${courseId}`, {
+          withCredentials: true,
+        });
+        const serverLectures = res.data.completedLectures || [];
+        const serverSet = new Set(serverLectures.map(String));
+
+        const merged = new Set([...localSet, ...serverSet]);
+        setCompletedLectures(merged);
+
+        localStorage.setItem(localKey, JSON.stringify(Array.from(merged)));
+      } catch {
+        setCompletedLectures(localSet);
+      }
+    };
+
+    if (courseId) {
+      loadProgress();
     }
   }, [courseId]);
 
   // Save completed lectures to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem(
-      `lecture_progress_${courseId}`,
-      JSON.stringify(Array.from(completedLectures))
-    );
+    if (completedLectures.size > 0) {
+      localStorage.setItem(
+        `lecture_progress_${courseId}`,
+        JSON.stringify(Array.from(completedLectures)),
+      );
+    }
   }, [completedLectures, courseId]);
 
   useEffect(() => {
@@ -90,6 +114,16 @@ const Lecture = () => {
       setCompletedLectures(newCompleted);
       setShowCompletionNotify(true);
       setTimeout(() => setShowCompletionNotify(false), 3000);
+
+      axios
+        .post(
+          `${BASE_URL}/saveProgress/${courseId}`,
+          { completedLectures: Array.from(newCompleted) },
+          { withCredentials: true },
+        )
+        .catch((err) =>
+          console.error("Failed to save progress:", err.message),
+        );
     }
   };
 
