@@ -3,6 +3,7 @@ import "@fontsource/space-grotesk";
 import "@fontsource/jetbrains-mono";
 import "@fontsource/ibm-plex-mono";
 import Nav from "./Nav";
+import Footer from "./Footer";
 import code from "../assets/code.png";
 import { BsPeopleFill } from "react-icons/bs";
 import { LuBotMessageSquare } from "react-icons/lu";
@@ -221,6 +222,7 @@ const Home = () => {
           </div>
         </section>
       )}
+      <Footer />
     </div>
   );
 };
