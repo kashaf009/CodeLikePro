@@ -48,9 +48,6 @@ const Nav = () => {
           CodeLikePro
         </div>
         <div className="flex gap-6">
-          <p className="font-['ibm_plex_mono'] hover:text-[#eaf1fc] cursor-pointer transition-all delay-100 hidden md:block font-black text-[13px] text-[#c2c8d9] tracking-tight ">
-            Curriculum
-          </p>
          <Link to={"/bootcamps"}> <p  className="font-['ibm_plex_mono'] font-black cursor-pointer transition-all hover:text-[#eaf1fc] hidden md:block text-[13px] text-[#c2c8d9] delay-100 tracking-tight ">
             Bootcamps
           </p></Link>
