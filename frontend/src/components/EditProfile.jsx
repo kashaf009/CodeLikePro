@@ -94,31 +94,31 @@ const EditProfile = () => {
   }, []);
 
   return (
-    <div className="flex justify-center  min-h-screen bg-slate-950 items-center">
+    <div className="flex justify-center min-h-screen bg-slate-950 items-center px-4 py-10 md:py-16">
       {state == 1 && (
-        <section className="px-15 pt-8 rounded-xl border border-gray-400 bg-slate-900 w-[40%] ">
-          <h1 className="text-center    text-white  uppercase mb-10   text-xl  font-black firsttracking-tighter font-['IBM_Plex_Mono']">
+        <section className="w-full max-w-md md:max-w-lg px-6 sm:px-10 lg:px-12 py-8 md:py-10 rounded-xl border border-slate-700 bg-slate-900">
+          <h1 className="text-center text-white uppercase mb-8 text-xl font-black tracking-tighter font-['IBM_Plex_Mono']">
           Edit Profile 
           </h1>
           <div>
             <img
-              className="w-25 mb-3  rounded-full mx-auto"
+              className="w-24 h-24 md:w-28 md:h-28 mb-4 rounded-full mx-auto border-4 border-slate-700 object-cover"
               src={photo}
               alt="profile"
             />
           </div>
-          <p className="text-2xl font-bold  text-white text-center">{name}</p>
+          <p className="text-2xl font-bold text-white text-center mb-8">{name}</p>
 
-          <div className="mt-8 mb-5 items-center ">
+          <div className="mb-5">
             <label
-              className="text-[#cdd3de] uppercase  text-sm  font-black tracking-tighter font-['IBM_Plex_Mono']"
+              className="text-[#cdd3de] uppercase text-sm font-black tracking-tighter font-['IBM_Plex_Mono']"
               htmlFor="email"
             >
               Name
             </label>
             <input
               value={name}
-              className="w-full mt-2 cursor-pointer border rounded-md outline-none border-gray-600 text-[#dfe9f6] py-2 px-4"
+              className="w-full mt-2 cursor-pointer border rounded-md outline-none border-gray-600 bg-slate-800 text-[#dfe9f6] py-2.5 px-4 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
               id="text"
               onClick={() => seterror(null)}
               type="text"
@@ -126,15 +126,15 @@ const EditProfile = () => {
             />
           </div>
 
-          <div className=" mb-5 items-center ">
+          <div className="mb-5">
             <label
-              className="text-[#cdd3de] uppercase text-sm  font-black tracking-tighter font-['IBM_Plex_Mono']"
+              className="text-[#cdd3de] uppercase text-sm font-black tracking-tighter font-['IBM_Plex_Mono']"
               htmlFor="photo"
             >
               photo
             </label>
             <input
-              className="w-full mt-2 text-cyan-100 cursor-pointer border rounded-md outline-none border-gray-600  py-2 px-4"
+              className="w-full mt-2 text-cyan-100 cursor-pointer border rounded-md outline-none border-gray-600 bg-slate-800 py-2.5 px-4 file:mr-3 file:rounded-md file:border-0 file:bg-slate-700 file:px-3 file:py-1.5 file:text-sm file:text-gray-100 transition"
               id="photo"
               type="file"
               onClick={() => seterror(null)}
@@ -144,16 +144,16 @@ const EditProfile = () => {
           </div>
 
           {
-            <div className={` items-center ${error ? "mb-2" : "mb-5"}`}>
+            <div className={`${error ? "mb-2" : "mb-5"}`}>
               <label
-                className="text-[#cdd3de] uppercase  text-sm  font-black tracking-tighter font-['IBM_Plex_Mono']"
+                className="text-[#cdd3de] uppercase text-sm font-black tracking-tighter font-['IBM_Plex_Mono']"
                 htmlFor="bio"
               >
                 bio
               </label>
 
               <textarea
-                className="w-full cursor-pointer mt-2 border rounded-md outline-none border-gray-600 text-[#dfe9f6] py-2 px-4"
+                className="w-full cursor-pointer mt-2 border rounded-md outline-none border-gray-600 bg-slate-800 text-[#dfe9f6] py-2.5 px-4 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
                 id="bio"
                 onClick={() => seterror(null)}
                 onChange={(e) => setdescprition(e.target.value)}
@@ -166,13 +166,11 @@ const EditProfile = () => {
 
           <div
             onClick={handleupdateprofile}
-            className="bg-[#4CD7F6] cursor-pointer hover:bg-[#85e4f9] rounded-md mb-10 py-2 px-4"
+            className="bg-[#4CD7F6] cursor-pointer hover:bg-[#85e4f9] transition rounded-md mt-2 py-2.5 px-4"
           >
-            <p className=" text-center uppercase  text-md  font-black tracking-tighter font-['IBM_Plex_Mono']">
+            <p className="text-center uppercase text-md font-black tracking-tighter font-['IBM_Plex_Mono']">
               {loading ? (
-                <>
-                  <ImSpinner2 className="animate-spin mx-auto text-md  justify-center " />
-                </>
+                <ImSpinner2 className="animate-spin mx-auto text-md justify-center" />
               ) : (
                 "Save"
               )}
@@ -182,18 +180,18 @@ const EditProfile = () => {
       )}
 
       {state == 2 && (
-        <section className=" px-10  rounded-xl border border-gray-400 bg-slate-900 w-[40%] ">
-          <h1 className="text-2xl text-white mt-10 mb-5 font-['IBM_Plex_Mono']  text-center ">
+        <section className="w-full max-w-md px-6 sm:px-10 py-10 rounded-xl border border-slate-700 bg-slate-900">
+          <h1 className="text-2xl text-white mb-5 font-['IBM_Plex_Mono'] text-center">
             Profile updated successfully
           </h1>
 
           <div>
-            <IoCheckmarkDoneCircleSharp className="  fill-green-500 mb-8 mx-auto w-30 h-30" />
+            <IoCheckmarkDoneCircleSharp className="fill-green-500 mb-8 mx-auto w-30 h-30" />
           </div>
 
           <div
-            onClick={handlebacktologin }
-            className="text-center py-1 cursor-pointer mb-10 w-[70%] mx-auto rounded-md  bg-cyan-300 font-['IBM_Plex_Mono'] text-md"
+            onClick={handlebacktologin}
+            className="text-center py-1.5 cursor-pointer w-full md:w-[70%] mx-auto rounded-md bg-cyan-300 font-['IBM_Plex_Mono'] text-md"
           >
             <p className="text-black flex hover:gap-4 items-center transition-all justify-center gap-2">
               Back to Profile{" "}
@@ -206,11 +204,13 @@ const EditProfile = () => {
       )}
 
 
-       <div onClick={()=>navigate("/profile")} className="flex gap-1 cursor-pointer hover:left-9 absolute hover:gap-2 transition-all items-center top-15 left-10 ">
-               <IoIosArrowBack className="w-5 h-5  text-white"/>
+      <div onClick={()=>navigate("/profile")} className="z-10 absolute top-17 left-7 md:top-10 md:left-10 flex items-center gap-2 cursor-pointer group">
+        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 border border-slate-700 group-hover:border-cyan-500 text-white transition shrink-0">
+          <IoIosArrowBack className="w-4 h-4" />
+        </span>
 
-              <h1 className="flex gap-1 hover:text-cyan-200  border-b items-center text-xl font-['IBM_Plex_Mono']  text-white">Back to profile</h1>
-              </div> 
+       
+      </div> 
     </div>
   );
 };
