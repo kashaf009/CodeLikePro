@@ -25,60 +25,168 @@ const CreatorCourses = () => {
   }, []);
 
   return (
-    <div className="p-4 relative px-30 pb-30 pt-15 bg-slate-900 min-h-screen text-white">
-      <IoChevronBack onClick={()=>navigate("/dashboard")} className="absolute hover:text-cyan-500 cursor-pointer top-16 w-8 h-8 left-8" />
+    <div className="min-h-screen bg-slate-900 text-white p-4 md:p-8 lg:px-12">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-500 text-cyan-400 hover:text-cyan-300 transition cursor-pointer shrink-0"
+            aria-label="Go back"
+          >
+            <IoChevronBack size={22} />
+          </button>
 
-      <div
-        onClick={() => navigate("/dashboard/create-course")}
-        className="absolute text-white text-xl flex items-center cursor-pointer hover:bg-cyan-700 gap-2 bg-cyan-600 px-3 rounded-md py-1  top-16 right-31"
-      >
-        <div>
-          <AiOutlinePlus className="text-md" />
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">Your Courses</h1>
+            <p className="text-slate-400 text-sm mt-1">
+              Manage and create your published courses
+            </p>
+          </div>
         </div>
-        <p> Create course</p>
+
+        <button
+          onClick={() => navigate("/dashboard/create-course")}
+          className="flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-4 md:px-5 py-2.5 rounded-xl font-semibold transition cursor-pointer"
+        >
+          <AiOutlinePlus size={18} />
+          Create Course
+        </button>
       </div>
 
-      <h1 className="text-3xl font-bold mb-1">Your Courses</h1>
-      <table className="w-full   border border-gray-700 mt-10">
-        <thead>
-          <tr>
-            <th className="border border-gray-700 px-4 py-2">thumbnail</th>
-            <th className="border border-gray-700 px-4 py-2">Course Title</th>
-            <th className="border border-gray-700 px-4 py-2">Status</th>
-            <th className="border border-gray-700 px-4 py-2">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {courses.map((course) => (
-            <tr key={course._id}>
-              <td className="border border-gray-700 w-1/4 px-4 py-2">
+      {/* Mobile / Tablet: Card Grid */}
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5 md:hidden">
+        {courses.length === 0 && (
+          <div className="sm:col-span-2 bg-slate-800 border border-slate-700 rounded-2xl p-10 text-center text-slate-400">
+            No courses yet. Click "Create Course" to get started.
+          </div>
+        )}
+
+        {courses.map((course) => (
+          <div
+            key={course._id}
+            className="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden hover:border-cyan-500 transition-all duration-300"
+          >
+            <div className="aspect-video overflow-hidden bg-slate-700">
+              {course?.thumbnail ? (
                 <img
                   src={course?.thumbnail}
                   alt="Course Thumbnail"
-                  className=" w-full h-40 px-3 py-2  object-cover"
+                  className="w-full h-full object-cover"
                 />
-              </td>
-              <td className="border  border-gray-700 pl-10 pr-5  text-2xl font-bold py-2">
-                {course.title}
-              </td>
-              <td
-                className={`border border-gray-700 z-10 text-center text-black  px-4 py-2 ${course.ispublished == true ? "text-green-500" : "text-red-400"}`}
-              >
-                {course.ispublished == true ? "Published" : "Draft"}
-              </td>
-              <td className="border  border-gray-700 px-4 py-2">
-                <div className="w-full flex">
-                  <FiEdit
-                    onClick={() => navigate(`/dashboard/create-course/edit/${course._id}`)}
-                    className="mx-auto hover:text-blue-300 cursor-pointer "
-                  />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">
+                  No thumbnail
                 </div>
-              </td>
-            </tr>
-          ))}
-          {/* Add more courses as needed */}
-        </tbody>
-      </table>
+              )}
+            </div>
+
+            <div className="p-4">
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="font-semibold text-lg leading-snug line-clamp-2">
+                  {course.title}
+                </h3>
+
+                <span
+                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium ${
+                    course.ispublished == true
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
+                  }`}
+                >
+                  {course.ispublished == true ? "Published" : "Draft"}
+                </span>
+              </div>
+
+              <button
+                onClick={() =>
+                  navigate(`/dashboard/create-course/edit/${course._id}`)
+                }
+                className="mt-4 w-full flex items-center justify-center gap-2 bg-slate-700 hover:bg-cyan-600/20 hover:text-cyan-300 py-2.5 rounded-lg font-medium transition cursor-pointer"
+              >
+                <FiEdit size={16} />
+                Edit Course
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: Table */}
+      <div className="hidden md:block mt-8 overflow-hidden rounded-2xl border border-slate-700 bg-slate-800">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px]">
+            <thead>
+              <tr className="bg-slate-700/50 text-left text-slate-300">
+                <th className="px-5 py-4 font-semibold">Thumbnail</th>
+                <th className="px-5 py-4 font-semibold">Course Title</th>
+                <th className="px-5 py-4 font-semibold">Status</th>
+                <th className="px-5 py-4 font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="px-5 py-12 text-center text-slate-400">
+                    No courses yet. Click "Create Course" to get started.
+                  </td>
+                </tr>
+              )}
+
+              {courses.map((course) => (
+                <tr
+                  key={course._id}
+                  className="border-t border-slate-700 hover:bg-slate-700/30 transition"
+                >
+                  <td className="px-5 py-4 w-48">
+                    {course?.thumbnail ? (
+                      <img
+                        src={course?.thumbnail}
+                        alt="Course Thumbnail"
+                        className="w-40 h-24 object-cover rounded-lg"
+                      />
+                    ) : (
+                      <div className="w-40 h-24 rounded-lg bg-slate-700 flex items-center justify-center text-slate-400 text-sm">
+                        No thumbnail
+                      </div>
+                    )}
+                  </td>
+
+                  <td className="px-5 py-4">
+                    <p className="font-bold text-lg">{course.title}</p>
+                  </td>
+
+                  <td className="px-5 py-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        course.ispublished == true
+                          ? "bg-green-500/20 text-green-400"
+                          : "bg-red-500/20 text-red-400"
+                      }`}
+                    >
+                      {course.ispublished == true ? "Published" : "Draft"}
+                    </span>
+                  </td>
+
+                  <td className="px-5 py-4">
+                    <button
+                      onClick={() =>
+                        navigate(
+                          `/dashboard/create-course/edit/${course._id}`,
+                        )
+                      }
+                      className="flex items-center gap-2 bg-slate-700 hover:bg-cyan-600/20 hover:text-cyan-300 px-4 py-2 rounded-lg font-medium transition cursor-pointer"
+                    >
+                      <FiEdit size={16} />
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

@@ -126,48 +126,51 @@ const EditCourse = () => {
       <div
         className={
           DeleteSuccessfull === false && updateSuccessful === false
-            ? `max-w-5xl  mx-auto mb-20 mt-20 bg-slate-800 rounded-2xl shadow-xl overflow-hidden`
-            : ` bg-slate-950`
+            ? `min-h-screen bg-slate-950 p-4 md:p-6`
+            : `min-h-screen bg-slate-950`
         }
-      
       >
-        {/* Header */}
-        <div
-          onClick={() => navigate("/dashboard/courses")}
-          className="absolute text-2xl top-27 left-45 hover:text-gray-300 text-white cursor-pointer"
-        >
-          {" "}
-          <MdArrowBackIos />
-        </div>
+        {DeleteSuccessfull == false && updateSuccessful === false && (
+          <div className="max-w-5xl mx-auto mt-4 md:mt-10 mb-10 bg-slate-800 rounded-2xl shadow-xl overflow-hidden">
+            {/* Header */}
+            <div className="px-5 md:px-8 py-6 border-b border-slate-700">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => navigate("/dashboard/courses")}
+                    className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-700 border border-slate-600 hover:border-blue-400 text-white hover:text-gray-300 transition cursor-pointer shrink-0"
+                    aria-label="Go back"
+                  >
+                    <MdArrowBackIos size={18} />
+                  </button>
 
-        {DeleteSuccessfull == false && updateSuccessful=== false &&(
-          <>
-            (
-            <div className="px-8 py-6 border-b border-slate-700">
-              <h1 className="text-3xl pl-3 font-bold text-white">
-                Edit Course
-              </h1>
-              <p className="text-slate-400 mt-1 pl-3">
-                Update your course details and thumbnail
-              </p>
+                  <div>
+                    <h1 className="text-2xl md:text-3xl font-bold text-white">
+                      Edit Course
+                    </h1>
+                    <p className="text-slate-400 mt-1">
+                      Update your course details and thumbnail
+                    </p>
+                  </div>
+                </div>
 
-              <div
-                onClick={HandleDeleteCourse}
-                className="absolute right-65 top-30 bg-red-400 w-25 items-center gap-1 flex px-3 hover:bg-red-500 cursor-pointer transition-all justify-center rounded-md py-1"
-              >
-                <MdOutlineDeleteForever
-                  className={loading ? `hidden` : `w-5 inline h-5`}
-                />{" "}
-                <p className="text-md  font-medium">
+                <button
+                  onClick={HandleDeleteCourse}
+                  className="flex items-center justify-center gap-2 bg-red-400 hover:bg-red-500 text-white font-medium px-4 py-2.5 rounded-lg transition-all cursor-pointer"
+                >
+                  <MdOutlineDeleteForever
+                    className={loading ? `hidden` : `w-5 h-5`}
+                  />
                   {loading ? (
-                    <ImSpinner2 className="animate-spin   py-1  text-2xl " />
+                    <ImSpinner2 className="animate-spin text-2xl py-1" />
                   ) : (
                     "Delete"
                   )}
-                </p>
+                </button>
               </div>
             </div>
-            <div className="p-8 grid lg:grid-cols-2 gap-10">
+
+            <div className="p-5 md:p-8 grid lg:grid-cols-2 gap-8 md:gap-10">
               {/* Left Side - Thumbnail */}
               <div>
                 <label className="block text-white font-medium mb-3">
@@ -178,7 +181,7 @@ const EditCourse = () => {
                   <img
                     src={thumbnail}
                     alt="thumbnail"
-                    className="w-full h-72 object-cover rounded-xl border border-slate-700"
+                    className="w-full h-56 md:h-72 object-cover rounded-xl border border-slate-700"
                   />
 
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl flex items-center justify-center">
@@ -199,17 +202,17 @@ const EditCourse = () => {
                   Click the image to upload a new thumbnail.
                 </p>
 
-                <div
+                <button
                   onClick={() =>
                     navigate(
                       `/dashboard/create-course/edit/createLecture/${courseId}`,
                     )
                   }
-                  className="w-full py-1 mt-8 rounded-md hover:bg-blue-500 justify-center cursor-pointer flex items-center gap-1  bg-blue-400"
+                  className="w-full py-3 mt-8 rounded-lg hover:bg-blue-500 justify-center cursor-pointer flex items-center gap-1.5 bg-blue-400 font-medium transition"
                 >
-                  <IoIosAdd className="w-5 h-5 text-bold" />
-                  <p className="text-center font-medium">Add Lecture</p>
-                </div>
+                  <IoIosAdd className="w-5 h-5" />
+                  <span>Add Lecture</span>
+                </button>
               </div>
 
               {/* Right Side - Form */}
@@ -221,7 +224,7 @@ const EditCourse = () => {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                   />
                 </div>
 
@@ -234,7 +237,7 @@ const EditCourse = () => {
                     onChange={(e) =>
                       setCategory(e.target.value.trim().toLowerCase())
                     }
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                   />
                 </div>
 
@@ -244,7 +247,7 @@ const EditCourse = () => {
                   <select
                     value={level}
                     onChange={(e) => setLevel(e.target.value)}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500"
                   >
                     <option>Beginner</option>
                     <option>Intermediate</option>
@@ -259,7 +262,7 @@ const EditCourse = () => {
                     type="number"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                   />
                 </div>
 
@@ -270,7 +273,7 @@ const EditCourse = () => {
                     rows="5"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white resize-none"
+                    className="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-3 text-white resize-none focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition"
                   />
                 </div>
 
@@ -279,29 +282,31 @@ const EditCourse = () => {
                     type="checkbox"
                     checked={ispublished}
                     onChange={(e) => setIsPublished(e.target.checked)}
-                    className="w-5 h-5"
+                    className="w-5 h-5 accent-blue-600"
                   />
 
                   <span className="text-white">Publish Course</span>
                 </div>
-                
 
                 <button
                   type="submit"
                   onClick={handleSubmit}
                   className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-semibold text-white transition-all"
                 >
-                  {loading ? <ImSpinner2 className="text-xl animate-spin  mx-auto  "/> :"Save Changes"}
+                  {loading ? (
+                    <ImSpinner2 className="text-xl animate-spin mx-auto" />
+                  ) : (
+                    "Save Changes"
+                  )}
                 </button>
               </div>
             </div>
-            )
-          </>
+          </div>
         )}
 
         {DeleteSuccessfull && (
-          <div className="flex items-center h-screen justify-center min-h-[500px]">
-            <div className="bg-slate-800 shadow-xl rounded-2xl p-8 w-[420px] text-center border border-slate-700">
+          <div className="flex items-center justify-center min-h-[70vh] p-4">
+            <div className="w-full max-w-md bg-slate-800 shadow-xl rounded-2xl p-8 text-center border border-slate-700">
               <div className="flex justify-center mb-4">
                 <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center">
                   <span className="text-4xl text-white">✓</span>
@@ -318,7 +323,7 @@ const EditCourse = () => {
 
               <button
                 onClick={() => navigate("/dashboard/courses")}
-                className="w-full bg-blue-600 hover:bg-blue-700  transition-all py-3 rounded-lg text-white font-semibold"
+                className="w-full bg-blue-600 hover:bg-blue-700 transition-all py-3 rounded-lg text-white font-semibold"
               >
                 Back to Courses
               </button>
@@ -327,8 +332,8 @@ const EditCourse = () => {
         )}
 
         {updateSuccessful && (
-          <div className="flex items-center justify-center h-screen min-h-[500px]">
-            <div className="bg-slate-800 shadow-xl rounded-2xl p-8 w-[420px] text-center border border-slate-700">
+          <div className="flex items-center justify-center min-h-[70vh] p-4">
+            <div className="w-full max-w-md bg-slate-800 shadow-xl rounded-2xl p-8 text-center border border-slate-700">
               <div className="flex justify-center mb-4">
                 <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center">
                   <span className="text-4xl text-white">✓</span>
@@ -343,7 +348,7 @@ const EditCourse = () => {
                 Your course details have been updated successfully.
               </p>
 
-              <div className="flex gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => setUpdateSuccessful(false)}
                   className="flex-1 bg-slate-700 hover:bg-slate-600 transition-all py-3 rounded-lg text-white font-semibold"

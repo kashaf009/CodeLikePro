@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +8,8 @@ import {
   MdSettings,
   MdNotificationsNone,
   MdArrowBackIos,
+  MdMenu,
+  MdClose,
 } from "react-icons/md";
 
 import {
@@ -24,6 +27,7 @@ import {
 const CreatorDashboard = () => {
   const user = useSelector((store) => store.user);
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   if (!user) return null;
 
@@ -50,220 +54,252 @@ const CreatorDashboard = () => {
     },
   ];
 
+  const navItems = [
+    {
+      label: "Dashboard",
+      icon: <MdDashboard size={22} />,
+      active: true,
+      onClick: () => navigate("/dashboard"),
+    },
+    {
+      label: "Courses",
+      icon: <AiOutlineProduct size={22} />,
+      active: false,
+      onClick: () => navigate("/dashboard/courses"),
+    },
+    {
+      label: "Students",
+      icon: <AiOutlineUsergroupAdd size={22} />,
+      active: false,
+      onClick: () => {},
+    },
+    {
+      label: "Analytics",
+      icon: <MdOutlineAnalytics size={22} />,
+      active: false,
+      onClick: () => {},
+    },
+    {
+      label: "Settings",
+      icon: <MdSettings size={22} />,
+      active: false,
+      onClick: () => {},
+    },
+  ];
+
+  const renderNav = (items) =>
+    items.map((item, index) => (
+      <button
+        key={index}
+        onClick={() => {
+          item.onClick();
+          setMenuOpen(false);
+        }}
+        className={`flex items-center gap-3 w-full p-4 rounded-xl transition ${
+          item.active
+            ? "bg-cyan-500/10 text-cyan-400"
+            : "hover:bg-slate-800 text-gray-300"
+        }`}
+      >
+        {item.icon}
+        {item.label}
+      </button>
+    ));
+
   return (
-    <div className="min-h-screen bg-[#0F172A] text-white flex">
+    <div className="min-h-screen bg-[#0F172A] text-white">
+      {/* Back to home */}
+      <button
+        onClick={() => navigate("/")}
+        className="fixed top-4 left-4 lg:top-6 lg:left-2 z-30 flex items-center gap-1.5 bg-slate-900/80 backdrop-blur border border-slate-800 hover:border-cyan-500 text-cyan-500 hover:text-cyan-300 rounded-xl px-3 py-2 text-sm font-medium transition"
+      >
+        <MdArrowBackIos size={14} />
+      </button>
 
-      <div onClick={()=>navigate("/")} className="absolute text-xl top-7.5  left-7 hover:text-cyan-400 text-cyan-600 cursor-pointer"> <MdArrowBackIos/></div>
-
-      {/* Sidebar */}
-      <aside className="w-72 bg-[#111827] border-r border-slate-800 p-6 flex flex-col">
-
-        <h1 className="text-2xl pl-8 font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-          Creator Studio
-        </h1>
-
-        <div className="mt-12 space-y-2">
-
-          <button className="flex items-center gap-3 w-full p-4 rounded-xl bg-cyan-500/10 text-cyan-400">
-            <MdDashboard size={22} />
-            Dashboard
-          </button>
-
-          <button
-            onClick={() => navigate("/dashboard/courses")}
-            className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition"
-          >
-            <AiOutlineProduct size={22} />
-            Courses
-          </button>
-
-          <button className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition">
-            <AiOutlineUsergroupAdd size={22} />
-            Students
-          </button>
-
-          <button className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition">
-            <MdOutlineAnalytics size={22} />
-            Analytics
-          </button>
-
-          <button className="flex items-center gap-3 w-full p-4 rounded-xl hover:bg-slate-800 transition">
-            <MdSettings size={22} />
-            Settings
-          </button>
-
-        </div>
-      </aside>
-
-      {/* Main */}
-      <main className="flex-1 p-8">
-
-        {/* Top Navbar */}
-        <div className="flex justify-between items-center mb-10">
-
-          <div className="relative w-[450px]">
-
-            <FiSearch className="absolute left-4 top-4 text-gray-400" />
-
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-12 py-3 outline-none focus:border-cyan-500"
-            />
-
-          </div>
-
-          <div className="flex items-center gap-5">
-
-            <button className="relative bg-slate-900 p-3 rounded-xl">
-              <MdNotificationsNone size={25} />
-              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
-            </button>
-
-            <img
-              src={user.photoUrl}
-              alt=""
-              className="w-12 h-12 rounded-full border-2 border-cyan-500"
-            />
-
-          </div>
-
-        </div>
-
-        {/* Welcome Section */}
-        <div className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-3xl p-8 mb-8">
-
-          <h1 className="text-4xl font-bold">
-            Welcome Back, {user.name} 👋
+      <div className="flex min-h-screen">
+        {/* Sidebar (desktop) */}
+        <aside className="hidden lg:flex w-72 bg-[#111827] border-r border-slate-800 p-6 flex-col shrink-0">
+          <h1 className="text-2xl pl-8 font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            Creator Studio
           </h1>
 
-          <p className="text-slate-300 mt-3 text-lg">
-            Manage courses, track students, monitor revenue
-            and grow your creator business.
-          </p>
+          <div className="mt-12 space-y-2">{renderNav(navItems)}</div>
+        </aside>
 
-        </div>
-
-        {/* Stats */}
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6 mb-8">
-
-          {stats.map((item, index) => (
+        {/* Mobile drawer */}
+        {menuOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden">
             <div
-              key={index}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-cyan-500 transition-all duration-300"
-            >
-              <div className="flex justify-between items-center">
+              className="absolute inset-0 bg-black/60"
+              onClick={() => setMenuOpen(false)}
+            />
+            <aside className="absolute left-0 top-0 h-full w-72 bg-[#111827] border-r border-slate-800 p-6 flex flex-col shadow-2xl">
+              <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                  Creator Studio
+                </h1>
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="text-gray-400 hover:text-white transition"
+                >
+                  <MdClose size={26} />
+                </button>
+              </div>
 
-                <div>
-                  <p className="text-gray-400">
-                    {item.title}
-                  </p>
+              <div className="mt-10 space-y-2">{renderNav(navItems)}</div>
+            </aside>
+          </div>
+        )}
 
-                  <h2 className="text-3xl font-bold mt-2">
-                    {item.value}
-                  </h2>
-                </div>
+        {/* Main */}
+        <main className="flex-1 p-4 md:p-6 lg:p-8 min-w-0">
+          {/* Top Navbar */}
+          <div className="flex items-center justify-between gap-4 mb-8 lg:mb-10">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setMenuOpen(true)}
+                className="lg:hidden bg-slate-900 border border-slate-800 rounded-xl p-3 text-gray-300 hover:text-white transition"
+              >
+                <MdMenu size={22} />
+              </button>
 
-                <div className="text-4xl text-cyan-400">
-                  {item.icon}
-                </div>
+              <div className="relative w-full max-w-md">
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
 
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-12 py-3 outline-none focus:border-cyan-500 transition"
+                />
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Analytics + Actions */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+            <div className="flex items-center gap-3 md:gap-5">
+              <button className="relative bg-slate-900 border border-slate-800 p-3 rounded-xl hover:border-cyan-500 transition">
+                <MdNotificationsNone size={22} />
+                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
+              </button>
 
-          {/* Chart Area */}
-          <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6">
+              <img
+                src={user.photoUrl}
+                alt=""
+                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-cyan-500"
+              />
+            </div>
+          </div>
 
-            <h2 className="text-xl font-semibold mb-6">
-              Revenue Analytics
-            </h2>
+          {/* Welcome Section */}
+          <div className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl md:rounded-3xl p-6 md:p-8 mb-8">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
+              Welcome Back, {user.name} 👋
+            </h1>
 
-            <div className="h-[300px] rounded-xl bg-slate-800 flex items-center justify-center">
-              Chart Component Here
+            <p className="text-slate-300 mt-3 text-sm md:text-lg">
+              Manage courses, track students, monitor revenue
+              and grow your creator business.
+            </p>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+            {stats.map((item, index) => (
+              <div
+                key={index}
+                className="bg-slate-900 border border-slate-800 rounded-2xl p-5 md:p-6 hover:border-cyan-500 transition-all duration-300"
+              >
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-gray-400">{item.title}</p>
+
+                    <h2 className="text-2xl md:text-3xl font-bold mt-2">
+                      {item.value}
+                    </h2>
+                  </div>
+
+                  <div className="text-3xl md:text-4xl text-cyan-400">
+                    {item.icon}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Analytics + Actions */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
+            {/* Chart Area */}
+            <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl md:rounded-3xl p-5 md:p-6">
+              <h2 className="text-lg md:text-xl font-semibold mb-6">
+                Revenue Analytics
+              </h2>
+
+              <div className="h-[220px] md:h-[300px] rounded-xl bg-slate-800 flex items-center justify-center text-slate-400">
+                Chart Component Here
+              </div>
             </div>
 
+            {/* Actions */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl md:rounded-3xl p-5 md:p-6">
+              <h2 className="text-lg md:text-xl font-semibold mb-6">
+                Quick Actions
+              </h2>
+
+              <div className="space-y-4">
+                <button
+                  onClick={() => navigate("/dashboard/create-course")}
+                  className="w-full bg-cyan-500 hover:bg-cyan-600 py-3 md:py-4 rounded-xl font-semibold flex justify-center items-center gap-2 transition"
+                >
+                  <FiPlusCircle />
+                  Create Course
+                </button>
+
+                <button
+                  onClick={() => navigate("/dashboard/courses")}
+                  className="w-full bg-slate-800 hover:bg-slate-700 py-3 md:py-4 rounded-xl transition"
+                >
+                  Manage Courses
+                </button>
+
+                <button className="w-full bg-slate-800 hover:bg-slate-700 py-3 md:py-4 rounded-xl transition">
+                  View Students
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Actions */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-
-            <h2 className="text-xl font-semibold mb-6">
-              Quick Actions
+          {/* Recent Activity */}
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl md:rounded-3xl p-5 md:p-6">
+            <h2 className="text-lg md:text-xl font-semibold mb-6">
+              Recent Activity
             </h2>
 
-            <div className="space-y-4">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[560px]">
+                <thead>
+                  <tr className="text-left border-b border-slate-800">
+                    <th className="pb-4">Student</th>
+                    <th className="pb-4">Course</th>
+                    <th className="pb-4">Date</th>
+                    <th className="pb-4">Status</th>
+                  </tr>
+                </thead>
 
-              <button
-                onClick={() =>
-                  navigate("/dashboard/create-course")
-                }
-                className="w-full bg-cyan-500 hover:bg-cyan-600 py-4 rounded-xl font-semibold flex justify-center items-center gap-2"
-              >
-                <FiPlusCircle />
-                Create Course
-              </button>
-
-              <button
-                onClick={() =>
-                  navigate("/dashboard/courses")
-                }
-                className="w-full bg-slate-800 hover:bg-slate-700 py-4 rounded-xl"
-              >
-                Manage Courses
-              </button>
-
-              <button className="w-full bg-slate-800 hover:bg-slate-700 py-4 rounded-xl">
-                View Students
-              </button>
-
+                <tbody>
+                  <tr className="border-b border-slate-800">
+                    <td className="py-4">No Activity Yet</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                      <span className="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">
+                        Pending
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
           </div>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6">
-
-          <h2 className="text-xl font-semibold mb-6">
-            Recent Activity
-          </h2>
-
-          <div className="overflow-x-auto">
-
-            <table className="w-full">
-              <thead>
-                <tr className="text-left border-b border-slate-800">
-                  <th className="pb-4">Student</th>
-                  <th className="pb-4">Course</th>
-                  <th className="pb-4">Date</th>
-                  <th className="pb-4">Status</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr className="border-b border-slate-800">
-                  <td className="py-4">No Activity Yet</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>
-                    <span className="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full">
-                      Pending
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-
-        </div>
-
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
