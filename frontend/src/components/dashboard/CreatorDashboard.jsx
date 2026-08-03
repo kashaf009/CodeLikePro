@@ -6,7 +6,6 @@ import {
   MdDashboard,
   MdOutlineAnalytics,
   MdSettings,
-  MdNotificationsNone,
   MdArrowBackIos,
   MdMenu,
   MdClose,
@@ -19,7 +18,6 @@ import {
 } from "react-icons/ai";
 
 import {
-  FiSearch,
   FiPlusCircle,
   FiTrendingUp,
 } from "react-icons/fi";
@@ -153,39 +151,15 @@ const CreatorDashboard = () => {
 
         {/* Main */}
         <main className="flex-1 p-4 md:p-6 lg:p-8 min-w-0">
-          {/* Top Navbar */}
-          <div className="flex items-center justify-between gap-4 mb-8 lg:mb-10">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setMenuOpen(true)}
-                className="lg:hidden bg-slate-900 border border-slate-800 rounded-xl p-3 text-gray-300 hover:text-white transition"
-              >
-                <MdMenu size={22} />
-              </button>
-
-              <div className="relative w-full max-w-md">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-12 py-3 outline-none focus:border-cyan-500 transition"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 md:gap-5">
-              <button className="relative bg-slate-900 border border-slate-800 p-3 rounded-xl hover:border-cyan-500 transition">
-                <MdNotificationsNone size={22} />
-                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
-              </button>
-
-              <img
-                src={user.photoUrl}
-                alt=""
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-cyan-500"
-              />
-            </div>
+          {/* Mobile top bar with menu on the right */}
+          <div className="flex justify-end mb-6 lg:hidden">
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="bg-slate-900 border border-slate-800 rounded-xl p-3 text-gray-300 hover:text-white transition"
+              aria-label="Open menu"
+            >
+              <MdMenu size={22} />
+            </button>
           </div>
 
           {/* Welcome Section */}
