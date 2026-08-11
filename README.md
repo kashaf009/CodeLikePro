@@ -65,34 +65,12 @@ Built using the **MERN Stack** with a clean and responsive frontend powered by *
 - /editcourse
 - /deletecourse
 
----
-# 🚀 Upcoming Features
 
-The project is actively under development. Planned features include:
+# features
 
 - 📚 Course Management
-
 - 🎥 Video Lectures
-
-- 📝 Assignments & Quizzes
-
-- 📈 Student Progress Tracking
-
-- 👨‍🏫 Instructor Dashboard
-
-- 💳 Payment Integration
-
-- 🔔 Notifications System
-
-- 💬 Community Discussion
-
-- 🌙 Dark Mode
-
 - 📱 Mobile Optimization
-
-- 🔍 Advanced Search & Filters
-
-- 🧠 AI-Powered Learning Features
 
 ---
 # 👨‍💻 Author
