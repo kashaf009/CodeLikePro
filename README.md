@@ -64,6 +64,9 @@ Built using the **MERN Stack** with a clean and responsive frontend powered by *
 - /createcourse
 - /editcourse
 - /deletecourse
+- /createLecture
+- /editLecture
+- /updateProfile
 
 
 # features
